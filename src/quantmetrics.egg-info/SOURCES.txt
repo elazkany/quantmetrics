@@ -1,0 +1,9 @@
+LICENSE.txt
+README.md
+pyproject.toml
+src/quantmetrics/__init__.py
+src/quantmetrics/module1.py
+src/quantmetrics.egg-info/PKG-INFO
+src/quantmetrics.egg-info/SOURCES.txt
+src/quantmetrics.egg-info/dependency_links.txt
+src/quantmetrics.egg-info/top_level.txt

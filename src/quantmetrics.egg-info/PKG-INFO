@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: quantmetrics
+Version: 0.0.1
+Summary: A collection of tools for quantitative finance and econometrics
+Author-email: Ella Elazkany <elazkany@ualberta.ca>
+Project-URL: Homepage, https://github.com/elazkany/quantmetrics
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+
+# quantmetrics

@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quantmetrics"
+version = "0.0.1"
+authors = [
+  { name="Ella Elazkany", email="elazkany@ualberta.ca" },
+]
+description = "A collection of tools for quantitative finance and econometrics"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/elazkany/quantmetrics"
