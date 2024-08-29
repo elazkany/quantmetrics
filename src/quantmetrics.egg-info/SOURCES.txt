@@ -7,3 +7,7 @@ src/quantmetrics.egg-info/PKG-INFO
 src/quantmetrics.egg-info/SOURCES.txt
 src/quantmetrics.egg-info/dependency_links.txt
 src/quantmetrics.egg-info/top_level.txt
+src/quantmetrics/levy_models/__init__.py
+src/quantmetrics/levy_models/base_model.py
+src/quantmetrics/levy_models/geometric_brownian_motion.py
+tests/test_geometric_brownian_motion.py
