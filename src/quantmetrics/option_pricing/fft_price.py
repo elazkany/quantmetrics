@@ -1,4 +1,4 @@
-#option_pricing/fft_price.py
+# option_pricing/fft_price.py
 
 from quantmetrics.option_pricing import CharacteristicFunction
 
@@ -10,37 +10,45 @@ if TYPE_CHECKING:
     from quantmetrics.levy_models import LevyModel
     from quantmetrics.option_pricing import Option
 
+
 class FFTPrice:
-    def __init__(self,
-                 model : 'LevyModel',
-                 option : 'Option',
-                 ):
+    def __init__(
+        self,
+        model: "LevyModel",
+        option: "Option",
+    ):
         """
         Initialize the FFTPrice with a model and an option.
 
-        Parameters:
-        model (LevyModel): A Levy model.
-        option (Option): The option parameters.
+        Parameters
+        ----------
+        model : LevyModel
+            A Levy model used for pricing the option.
+        option : Option
+            The option parameters including interest rate, strike price, etc.
         """
         self.model = model
         self.option = option
 
     def calculate(
-                self,
-                N : int = 2**12,
-                eps : float = 1 / 150,
-                alpha : float = 0.75
-                ) -> float:
+        self, N: int = 2**12, eps: float = 1 / 150, alpha: float = 0.75
+    ) -> float:
         """
         Calculate the option price using the fast Fourier transform method.
 
-        Parameters:
-        N (int): Number of points for FFT.
-        eps (float): Grid spacing for FFT.
-        alpha (float): Damping factor for FFT.
+        Parameters
+        ----------
+        N : int, optional
+            Number of points for FFT (default is 2^12).
+        eps : float, optional
+            Grid spacing for FFT (default is 1/150).
+        alpha : float, optional
+            Damping factor for FFT (default is 0.75).
 
-        Returns:
-        float: The calculated option price.
+        Returns
+        -------
+        float
+            The calculated option price.
         """
         S0 = self.model.S0
         r = self.option.r

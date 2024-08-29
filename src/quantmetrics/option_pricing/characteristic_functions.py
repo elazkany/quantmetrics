@@ -1,4 +1,4 @@
-#option_pricing/characteristics_functions.py
+# option_pricing/characteristics_functions.py
 
 from quantmetrics.levy_models import GBM
 
@@ -9,17 +9,18 @@ if TYPE_CHECKING:
     from quantmetrics.levy_models import LevyModel
     from quantmetrics.option_pricing import Option
 
+
 class CharacteristicFunction:
-    def __init__(
-            self,
-            model : 'LevyModel',
-            option : 'Option'):
+    def __init__(self, model: "LevyModel", option: "Option"):
         """
         Initialize the CharacteristicFunction with a model and an option.
 
-        Parameters:
-        model (LevyModel): The Levy model.
-        option (Option): The option parameters.
+        Parameters
+        ----------
+        model : LevyModel
+            The Levy model used for calculating the characteristic function.
+        option : Option
+            The option parameters including interest rate, volatility, etc.
         """
         self.model = model
         self.option = option
@@ -28,11 +29,15 @@ class CharacteristicFunction:
         """
         Calculate the characteristic function for the given model.
 
-        Parameters:
-        u (np.ndarray): Input array for the characteristic function.
+        Parameters
+        ----------
+        u : np.ndarray
+            Input array for the characteristic function.
 
-        Returns:
-        np.ndarray: The characteristic function values.
+        Returns
+        -------
+        np.ndarray
+            The characteristic function values.
         """
         if isinstance(self.model, GBM):
             return self._gbm_characteristic_function(u)
@@ -41,11 +46,15 @@ class CharacteristicFunction:
         """
         Calculate the characteristic function for the GBM model.
 
-        Parameters:
-        u (np.ndarray): Input array for the characteristic function.
+        Parameters
+        ----------
+        u : np.ndarray
+            Input array for the characteristic function.
 
-        Returns:
-        np.ndarray: The characteristic function values.
+        Returns
+        -------
+        np.ndarray
+            The characteristic function values.
         """
         sigma = self.model.sigma
         r = self.option.r

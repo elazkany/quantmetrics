@@ -1,4 +1,4 @@
-#option_pricing/path_simulator.py
+# option_pricing/path_simulator.py
 
 from quantmetrics.levy_models import GBM
 
@@ -9,46 +9,66 @@ if TYPE_CHECKING:
     from quantmetrics.levy_models import LevyModel
     from quantmetrics.option_pricing import Option
 
-class SimulatePaths:
-    def __init__(
-            self,
-            model : 'LevyModel',
-            option : 'Option'):
-        """
-        Initialize the CharacteristicFunction with a model and an option.
 
-        Parameters:
-        model (LevyModel): The Levy model.
-        option (Option): The option parameters.
+class SimulatePaths:
+    def __init__(self, model: "LevyModel", option: "Option"):
+        """
+        Initialize the SimulatePaths with a model and an option.
+
+        Parameters
+        ----------
+        model : LevyModel
+            The Levy model used for path simulation.
+        option : Option
+            The option parameters including interest rate, dividend yield, etc.
         """
         self.model = model
         self.option = option
 
-    def simulate(self,
-                num_timesteps: int = 200,
-                num_paths: int = 1000,
-                seed: int = 1) -> dict:
+    def simulate(
+        self, num_timesteps: int = 200, num_paths: int = 10000, seed: int = 42
+    ) -> dict:
         """
-        Calculate the characteristic function for the given model.
+        Simulates paths for the given model.
 
-        Parameters:
-        u (np.ndarray): Input array for the characteristic function.
+        Parameters
+        ----------
+        num_timesteps : int, optional
+            Number of time steps (default is 200).
+        num_paths : int, optional
+            Number of simulated paths (default is 10000).
+        seed : int, optional
+            Seed for random number generator (default is 42).
 
-        Returns:
-        np.ndarray: The characteristic function values.
+        Returns
+        -------
+        dict
+            Dictionary containing the time steps and simulated paths.
         """
         if isinstance(self.model, GBM):
             return self._gbm_paths(num_timesteps, num_paths, seed)
 
     def _gbm_paths(self, num_timesteps, num_paths, seed):
         """
-        Calculate the characteristic function for the GBM model.
+        Generate paths for the Geometric Brownian Motion (GBM) model.
 
-        Parameters:
-        u (np.ndarray): Input array for the characteristic function.
+        Parameters
+        ----------
+        num_timesteps : int
+            Number of time steps.
+        num_paths : int
+            Number of simulated paths.
+        seed : int
+            Seed for random number generator.
 
-        Returns:
-        np.ndarray: The characteristic function values.
+        Returns
+        -------
+        dict
+            Dictionary containing the time steps and simulated paths.
+
+        References
+        ---------
+            Oosterlee, C. W., & Grzelak, L. A. (2019). Mathematical modeling and computation in finance: With exercises and python and matlab computer codes (1st ed.). World Scientific Publishing Co. Pte. Ltd.
         """
         np.random.seed(seed)
 
