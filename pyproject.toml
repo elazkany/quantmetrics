@@ -18,3 +18,6 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/elazkany/quantmetrics"
+
+[tool.setuptools.package-data]
+quantmetrics = ["df_wti/*.parquet"]

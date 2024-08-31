@@ -1,11 +1,16 @@
-import pytest
+# tests/test_gbm_bsm_mle.py
+
+# import pytest
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 from quantmetrics.levy_models import GBM
 
 from quantmetrics.option_pricing import Option, OptionPricer
+
+from quantmetrics.utils import load_data
 
 gbm = GBM()
 
@@ -20,10 +25,7 @@ pricer.fft()
 pricer.monte_carlo()
 
 
-wti_data = pd.read_excel(
-    "H:\My Drive\Projects\LatexProjects\Latex_projects\Esscher_application\data\RWTCd.xls",
-    sheet_name="Data 1",
-)
+wti_data = load_data('df_wti')
 
 wti_data["date"] = pd.to_datetime(wti_data["date"])
 
@@ -41,4 +43,5 @@ logreturns = np.diff(
 
 mle_gbm = gbm.fit(logreturns)
 
-mle_gbm
+mle_gbm_params = mle_gbm.x
+

@@ -4,6 +4,7 @@ from quantmetrics.option_pricing import SimulatePaths
 
 from typing import TYPE_CHECKING
 import numpy as np
+import time
 
 if TYPE_CHECKING:
     from quantmetrics.levy_models import LevyModel
@@ -26,7 +27,7 @@ class MonteCarloPrice:
         self.option = option
 
     def calculate(
-        self, num_timesteps: int = 200, num_paths: int = 10000, seed: int = 42
+        self, num_timesteps: int = 200, num_paths: int = 10000, seed: int = 42, sde="exact"
     ) -> float:
         """
         Calculate the Monte Carlo price for the given option.
@@ -48,10 +49,35 @@ class MonteCarloPrice:
         r = self.option.r
         K = self.option.K
         T = self.option.T
+
+        start_time = time.time()
+
         path_object = SimulatePaths(self.model, self.option)
 
         paths = path_object.simulate(num_timesteps, num_paths, seed)
 
-        S = paths["S"]
+        if (sde == "exact"):
+            S = paths["S"]
+        elif (sde == "euler"):
+            S = paths["S_Euler"]
+        else:
+            pass
+        
         payoff = np.maximum(S[-1, :] - K, 0)
-        return np.mean(np.exp(-r * T) * payoff)
+        
+        mc_price = np.mean(np.exp(-r * T) * payoff)
+
+        end_time = time.time()
+
+        elapsed_time = end_time - start_time
+
+        # Calculate the sample variance
+        sample_var = np.sum((payoff - mc_price)**2) /(num_paths -1)
+
+        # Calculate the standard error
+        standard_error = (sample_var/num_paths)**0.5
+
+        
+        print(f"Elapsed time : {elapsed_time} seconds   |   Standard error of simulation = {standard_error}")
+
+        return mc_price

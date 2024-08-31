@@ -89,19 +89,28 @@ class SimulatePaths:
         X[0, :] = np.log(S0)
         time = np.zeros(W.shape[0])
 
+        # Euler approximation of the stock SDE
+        S_Euler = np.zeros([num_timesteps+1, num_paths])
+        S_Euler[0, :] = S0
+
         for i in range(0, num_timesteps):
             # Making sure that samples from the normal distribution have mean 0 and variance 1
             if num_paths > 1:
                 Z[i, :] = (Z[i, :] - np.mean(Z[i, :])) / np.std(Z[i, :])
             W[i + 1, :] = W[i, :] + np.power(dt, 0.5) * Z[i, :]
+            # Exact formula of the stock equation has a return process
             X[i + 1, :] = (
                 X[i, :]
                 + (r - q - 0.5 * sigma**2) * dt
                 + sigma * (W[i + 1, :] - W[i, :])
             )
+
+            # Euler approximation
+            S_Euler[i+1,:] = S_Euler[i,:] + r * S_Euler[i,:]*dt + sigma * S_Euler[i,:] * (W[i + 1, :] - W[i, :])
+
             time[i + 1] = time[i] + dt
 
         # Compute exponent of ABM
         S = np.exp(X)
-        paths = {"time": time, "S": S}
+        paths = {"time": time, "S": S, "S_Euler":S_Euler}
         return paths

@@ -61,6 +61,7 @@ class OptionPricer:
         num_timesteps: int = 200,
         num_paths: int = 10000,
         seed: int = 42,
+        sde : str = "exact",
     ) -> float:
         """
         Calculate the option price using the Monte Carlo simulation method.
@@ -80,5 +81,5 @@ class OptionPricer:
             The calculated option price.
         """
         return MonteCarloPrice(self.model, self.option).calculate(
-            num_timesteps, num_paths, seed
+            num_timesteps, num_paths, seed, sde
         )
