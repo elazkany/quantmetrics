@@ -78,6 +78,6 @@ class MonteCarloPrice:
         standard_error = (sample_var/num_paths)**0.5
 
         
-        print(f"Elapsed time : {elapsed_time} seconds   |   Standard error of simulation = {standard_error}")
+        print(f"Elapsed time : {elapsed_time} seconds   |   Standard error = {standard_error}")
 
         return mc_price
