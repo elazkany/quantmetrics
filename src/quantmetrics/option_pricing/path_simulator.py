@@ -1,6 +1,7 @@
 # option_pricing/path_simulator.py
 
-from quantmetrics.levy_models import GBM
+from quantmetrics.levy_models import GBM, CJD, LJD
+from quantmetrics.option_pricing import RiskPremium
 
 import numpy as np
 from typing import TYPE_CHECKING
@@ -47,6 +48,12 @@ class SimulatePaths:
         """
         if isinstance(self.model, GBM):
             return self._gbm_paths(num_timesteps, num_paths, seed)
+        elif isinstance(self.model, CJD):
+            return self._cjd_paths(num_timesteps, num_paths, seed)
+        elif isinstance(self.model, LJD):
+            return self._ljd_paths(num_timesteps, num_paths, seed)
+        else:
+            pass
 
     def _gbm_paths(self, num_timesteps, num_paths, seed):
         """
@@ -114,3 +121,114 @@ class SimulatePaths:
         S = np.exp(X)
         paths = {"time": time, "S": S, "S_Euler":S_Euler}
         return paths
+    
+    def _cjd_paths(self, num_timesteps, num_paths, seed):
+        S0 = self.model.S0
+        mu = self.model.mu
+        sigma = self.model.sigma
+        lambda_ = self.model.lambda_
+        gamma = self.model.gamma
+        r = self.option.r
+        T = self.option.T
+        emm = self.option.emm
+        psi = self.option.psi
+
+        np.random.seed(seed)
+
+        dt = T / float(num_timesteps)
+
+        W = np.zeros((num_timesteps + 1, num_paths))
+        X = np.zeros([num_timesteps + 1, num_paths])
+        S = np.zeros([num_timesteps + 1, num_paths])
+        time = np.zeros([num_timesteps + 1])
+
+        
+        X[0, :] = np.log(S0)
+        S[0, :] = S0
+
+        gamma_tilde = np.exp(gamma) - 1
+
+        if emm == "Black-Scholes":
+            Lambda = lambda_
+        else:
+            theta = RiskPremium(self.model, self.option).calculate()
+            Lambda = (r - mu - theta *sigma**2 +lambda_*gamma_tilde) / gamma_tilde
+
+        # Check this
+        ZPois = np.random.poisson(Lambda * dt, [num_timesteps, num_paths])
+
+        Z = np.random.normal(0.0, 1.0, [num_timesteps, num_paths])
+
+
+        for i in range(0, num_timesteps):
+                # Making sure that samples from a normal have mean 0 and variance 1
+            if num_paths > 1:
+                Z[i, :] = (Z[i, :] - np.mean(Z[i, :])) / np.std(Z[i, :])
+                # Making sure that samples from a normal have mean 0 and variance 1
+            W[i + 1, :] = W[i, :] + np.power(dt, 0.5) * Z[i, :]
+            X[i + 1, :] = (
+                (
+                    X[i, :]
+                    + (r - Lambda* gamma_tilde - 0.5 * sigma**2) * dt
+                )
+                + sigma * (W[i + 1, :] - W[i, :])
+                + gamma * ZPois[i, :]
+            )
+
+            time[i + 1] = time[i] + dt
+
+        S = np.exp(X)
+        paths = {"time": time, "X": X, "S": S}
+        return paths
+    
+    def _ljd_paths(self, num_timesteps, num_paths, seed):
+        S0 = self.model.S0
+        sigma = self.model.sigma
+        lambda_ = self.model.lambda_
+        muJ = self.model.muJ
+        sigmaJ = self.model.sigmaJ
+        r = self.option.r
+        T = self.option.T
+
+        np.random.seed(seed)
+
+        dt = T / float(num_timesteps)
+
+        W = np.zeros((num_timesteps + 1, num_paths))
+        X = np.zeros([num_timesteps + 1, num_paths])
+        S = np.zeros([num_timesteps + 1, num_paths])
+        time = np.zeros([num_timesteps + 1])
+
+        
+        X[0, :] = np.log(S0)
+        S[0, :] = S0
+
+        kappa = np.exp(muJ + 0.5 * sigmaJ**2) - 1
+        
+        ZPois = np.random.poisson(lambda_ * dt, [num_timesteps, num_paths])
+
+        Z = np.random.normal(0.0, 1.0, [num_timesteps, num_paths])
+
+        J = np.random.normal(muJ, sigmaJ, [num_timesteps, num_paths])
+
+        for i in range(0, num_timesteps):
+                # Making sure that samples from a normal have mean 0 and variance 1
+            if num_paths > 1:
+                Z[i, :] = (Z[i, :] - np.mean(Z[i, :])) / np.std(Z[i, :])
+                # Making sure that samples from a normal have mean 0 and variance 1
+            W[i + 1, :] = W[i, :] + np.power(dt, 0.5) * Z[i, :]
+            X[i + 1, :] = (
+                (
+                    X[i, :]
+                    + (r - lambda_ * kappa - 0.5 * sigma**2) * dt
+                )
+                + sigma * (W[i + 1, :] - W[i, :])
+                + J[i, :] * ZPois[i, :]
+            )
+
+            time[i + 1] = time[i] + dt
+
+        S = np.exp(X)
+        paths = {"time": time, "X": X, "S": S}
+        return paths
+

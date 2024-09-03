@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from quantmetrics.levy_models import GBM
+from quantmetrics.levy_models import GBM, CJD, LJD
 
 from quantmetrics.option_pricing import Option, OptionPricer
 
@@ -44,4 +44,26 @@ logreturns = np.diff(
 mle_gbm = gbm.fit(logreturns)
 
 mle_gbm_params = mle_gbm.x
+
+cjd = CJD()
+
+option = Option(emm = "Esscher", psi = 1700.0)
+
+pricer = OptionPricer(model=cjd, option=option)
+
+pricer.exact()
+
+pricer.fft()
+
+pricer.monte_carlo(num_paths = 200000)
+
+ljd = LJD()#sigmaJ = 0)
+option = Option()
+
+pricer = OptionPricer(model=ljd, option=option)
+
+pricer.exact()
+pricer.fft()
+
+pricer.monte_carlo(num_timesteps=200, num_paths=200000)
 

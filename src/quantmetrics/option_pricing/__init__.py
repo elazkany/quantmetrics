@@ -1,4 +1,5 @@
 #option_pricing/__init__.py
+from .martingale_equation import RiskPremium
 from .exact_equation import ExactSolution
 from .option import Option
 from .characteristic_functions import CharacteristicFunction

@@ -1,4 +1,4 @@
-# levy_models/constant_jump_diffusion.py
+# quantmetrics/levy_models/lognormal_jump_diffusion.py
 from .levy_model import LevyModel
 import numpy as np
 from scipy.optimize import minimize, brute
@@ -7,14 +7,15 @@ import time
 import math
 from typing import Optional
 
-class ConstantJumpDiffusion(LevyModel):
+class LognormalJumpDiffusion(LevyModel):
     def __init__(
         self,
         S0: float = 60,
         mu: float = 0.00049883,
         sigma: float = 0.02320006,
         lambda_: float = 0.01508188,
-        gamma: float = -0.0934457,
+        muJ: float = -0.0934457,
+        sigmaJ : float = 0.04625031,
         N : int = 10,
     ):
         """
@@ -41,7 +42,8 @@ class ConstantJumpDiffusion(LevyModel):
             "mu": mu,
             "sigma": sigma,
             "lamnda": lambda_,
-            "gamma": gamma,
+            "muJ" : muJ,
+            "sigmaJ" : sigmaJ,
             "N": N,
         }
         super().__init__(params)
@@ -49,19 +51,20 @@ class ConstantJumpDiffusion(LevyModel):
         self.mu = mu
         self.sigma = sigma
         self.lambda_ = lambda_
-        self.gamma = gamma
+        self.muJ = muJ
+        self.sigmaJ = sigmaJ
         self.N = N
 
     def pdf(self, data: np.ndarray, est_params: np.ndarray) -> np.ndarray:
         """
-        Probability density function for the constant jump-diffusion model.
+        Probability density function for the lognormal jump-diffusion model.
 
         Parameters
         ----------
         data : np.ndarray
             The data points for which the PDF is calculated.
         est_params : np.ndarray
-            Estimated parameters (mu, sigma, lambda, gamma).
+            Estimated parameters (mu, sigma, lambda, muJ, sigmaJ).
 
         Returns
         -------
@@ -75,10 +78,10 @@ class ConstantJumpDiffusion(LevyModel):
             drift = mu - 0.5 * sigma**2
 
         sum_n = 0.0
-        for n in range(0, self.N + 1):
+        for n in range(0, self.n + 1):
             mean_n = drift + n * gamma
             std_n = np.sqrt(sigma**2)
-            poi_pmf = np.exp(-lambda_) * lambda_** n / math.factorial(n)
+            poi_pmf = np.exp(-lambda_) * lambda_**n / math.factorial(n)
             sum_n = sum_n + poi_pmf * st.norm.pdf(data, loc=mean_n, scale=std_n)
         return sum_n
 

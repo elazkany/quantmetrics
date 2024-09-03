@@ -4,12 +4,12 @@ class Option:
     def __init__(
             self,
             r: float = 0.05/365,
-            q: float = 0,
-            K: float = 60,
-            T: float = 63,
+            q: float = 0.0,
+            K: float = 60.0,
+            T: float = 63.0,
             payoff: str = "c",
             emm : str = "Black-Scholes",
-            psi : float = 0,
+            psi : float = 0.0,
             ):
         """
         Initialize option data
@@ -36,11 +36,10 @@ class Option:
             The equivalent martingale measure used for pricing the option. 
             Options include:
             - "Black-Scholes": The standard measure used in the Black-Scholes model, also the measure applied to Merton's jump-diffusion model.
-            - "Classical Esscher": A measure more general than the "Black-Scholes" measure which includes, for example, pricing jump risk.
-            - "Second-order Esscher": A measure more general than the "Classical Esscher", see References for more details.
+            - "Esscher": A measure more general than the "Black-Scholes" measure which includes, for example, pricing jump risk.
 
         psi: float
-            The free parameter of the second-order Esscher EMM. Default is 0 which corresponds to the classical Esscher EMM. See References for details.
+            A free parameter of the second-order Esscher EMM. Default is 0 which corresponds to the classical Esscher EMM. See References for details.
 
         References
         ----------

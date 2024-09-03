@@ -14,7 +14,7 @@ class LevyModel(ABC):
         """
         self.params = params
         self.validate_params()
-        self.setup_logging()
+        #self.setup_logging()
 
     def validate_params(self):
         """
