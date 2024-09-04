@@ -59,7 +59,13 @@ class GeometricBrownianMotion(LevyModel):
             drift = mu - 0.5 * sigma**2
             return st.norm.pdf(data, loc=drift, scale=sigma)
 
-    def fit(self, data: np.ndarray, method : str = "Nelder-Mead", init_params : np.ndarray = None, brute_tuple : tuple = ((-1,1,0.5),(0.05,2,0.5))):
+    def fit(
+        self,
+        data: np.ndarray,
+        method: str = "Nelder-Mead",
+        init_params: np.ndarray = None,
+        brute_tuple: tuple = ((-1, 1, 0.5), (0.05, 2, 0.5)),
+    ):
         """
         Fit the Geometric Brownian Motion model to the data using Maximum Likelihood Estimation (MLE).
 
@@ -72,10 +78,10 @@ class GeometricBrownianMotion(LevyModel):
             The minimization method, defualt is "Nelder-Mead".
 
         init_params : np.ndarray
-            A 2-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).
+            A 2x1-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).
 
         brute_tuple : tuple
-            If initial parameters are not specified, the brute function is applied with a 2-dimensional tuple for each parameter 
+            If initial parameters are not specified, the brute function is applied with a 2x3-dimensional tuple for each parameter
         as (start value, end value, step size).
 
         Returns
@@ -93,11 +99,11 @@ class GeometricBrownianMotion(LevyModel):
                     )
                 )
             )
-        
+
         start_time = time.time()
 
         if init_params is None:
-            params = brute(MLE, brute_tuple, finish = None)
+            params = brute(MLE, brute_tuple, finish=None)
         else:
             params = init_params
 
@@ -105,5 +111,5 @@ class GeometricBrownianMotion(LevyModel):
 
         end_time = time.time()
         print(f"Elapsed time is {end_time - start_time} seconds")
-        
+
         return result

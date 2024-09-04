@@ -96,7 +96,7 @@ class ConstantJumpDiffusion(LevyModel):
             The minimization method, defualt is "Nelder-Mead". Other options are the same as for the minimize function from scipy.optimize.
 
         init_params : np.ndarray
-            A 2-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).
+            A 4x1-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).
 
         brute_tuple : tuple
             If initial parameters are not specified, the brute function is applied with a 4x3-dimensional tuple for each parameter 
