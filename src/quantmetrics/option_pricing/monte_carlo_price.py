@@ -27,8 +27,13 @@ class MonteCarloPrice:
         self.option = option
 
     def calculate(
-        self, num_timesteps: int = 200, num_paths: int = 10000, seed: int = 42, sde="exact"
-    ) -> float:
+        self,
+        num_timesteps: int = 200,
+        num_paths: int = 10000,
+        seed: int = 42,
+        sde="exact",
+        print_time: bool = False,
+    ) -> np.ndarray:
         """
         Calculate the Monte Carlo price for the given option.
 
@@ -41,10 +46,13 @@ class MonteCarloPrice:
         seed : int, optional
             Seed for random number generator (default is 42).
 
+        print_time : bool, optional
+        Whether to print the elapsed time (default is False).
+
         Returns
         -------
-        float
-            The estimated price of the option.
+        np.ndarray
+            A two-dimensional array containing the estimated price of the option and the standard error.
         """
         r = self.option.r
         K = self.option.K
@@ -56,15 +64,15 @@ class MonteCarloPrice:
 
         paths = path_object.simulate(num_timesteps, num_paths, seed)
 
-        if (sde == "exact"):
+        if sde == "exact":
             S = paths["S"]
-        elif (sde == "euler"):
+        elif sde == "euler":
             S = paths["S_Euler"]
         else:
             pass
-        
+
         payoff = np.maximum(S[-1, :] - K, 0)
-        
+
         mc_price = np.mean(np.exp(-r * T) * payoff)
 
         end_time = time.time()
@@ -72,12 +80,14 @@ class MonteCarloPrice:
         elapsed_time = end_time - start_time
 
         # Calculate the sample variance
-        sample_var = np.sum((payoff - mc_price)**2) /(num_paths -1)
+        sample_var = np.sum((payoff - mc_price) ** 2) / (num_paths - 1)
 
         # Calculate the standard error
-        standard_error = (sample_var/num_paths)**0.5
+        standard_error = (sample_var / num_paths) ** 0.5
 
-        
-        print(f"Elapsed time : {elapsed_time} seconds   |   Standard error = {standard_error}")
+        if print_time:
+            print(
+                f"Elapsed time : {elapsed_time} seconds   |   Standard error = {standard_error}"
+            )
 
-        return mc_price
+        return np.array([mc_price, standard_error])

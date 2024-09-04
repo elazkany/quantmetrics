@@ -1,6 +1,7 @@
 # option_pricing/characteristics_functions.py
 
-from quantmetrics.levy_models import GBM
+from quantmetrics.levy_models import GBM, CJD, LJD
+from quantmetrics.option_pricing import RiskPremium
 
 import numpy as np
 from typing import TYPE_CHECKING
@@ -41,6 +42,12 @@ class CharacteristicFunction:
         """
         if isinstance(self.model, GBM):
             return self._gbm_characteristic_function(u)
+        elif isinstance(self.model, CJD):
+            return self._cjd_characteristic_function(u)
+        elif isinstance(self.model, LJD):
+            return self._ljd_characteristic_function(u)
+        else:
+            pass
 
     def _gbm_characteristic_function(self, u: np.ndarray) -> np.ndarray:
         """
@@ -63,3 +70,74 @@ class CharacteristicFunction:
         b = r - 0.5 * sigma**2
         char_func = np.exp(T * (-0.5 * sigma**2 * u**2 + 1j * u * b))
         return char_func
+    
+    def _cjd_characteristic_function(self, u: np.ndarray) -> np.ndarray:
+        mu = self.model.mu  
+        sigma = self.model.sigma
+        lambda_ = self.model.lambda_
+        gamma = self.model.gamma
+        r = self.option.r
+        q = self.option.q
+        K = self.option.K
+        T = self.option.T
+        payoff = self.option.payoff
+        emm = self.option.emm
+        psi = self.option.psi
+
+        gamma_tilde = np.exp(gamma) - 1
+
+        if emm == "Black-Scholes":
+            b = r -sigma**2/2 -lambda_ *gamma_tilde
+            char_func = np.exp(T * (
+                1j * u *b
+                - sigma**2 * u**2/2
+                + lambda_ * (np.exp(1j *u * gamma) -1)
+            ))
+        else:
+            theta = RiskPremium(self.model, self.option).calculate()
+            b = mu - sigma**2/2 - lambda_*gamma_tilde + theta*sigma**2
+            char_func = np.exp(
+                    T
+                    * (
+                        1j * u * b
+                        - u**2 * sigma**2 / 2
+                        + lambda_
+                        * (
+                            np.exp(
+                                (theta + 1j * u) * gamma
+                                + psi * gamma**2
+                            )
+                            - np.exp(theta * gamma + psi * gamma**2)
+                        )
+                    )
+                )
+        
+        return char_func
+    
+    def _ljd_characteristic_function(self, u:np.ndarray) -> np.ndarray:
+        mu = self.model.mu  
+        sigma = self.model.sigma
+        lambda_ = self.model.lambda_
+        muJ = self.model.muJ
+        sigmaJ = self.model.sigmaJ
+        r = self.option.r
+        q = self.option.q
+        K = self.option.K
+        T = self.option.T
+        payoff = self.option.payoff
+        emm = self.option.emm
+        psi = self.option.psi
+
+        if emm == "Black-Scholes":
+            b = r -sigma**2/2 -lambda_ * (np.exp(muJ + sigmaJ**2 / 2) - 1)
+            char_func = np.exp(T * (
+                1j * u *b
+                - sigma**2 * u**2/2
+                + lambda_ * (np.exp(1j *u * muJ - u**2 * sigmaJ**2/2) -1)
+            ))
+        else:
+            # TODO:
+            pass
+        
+        return char_func
+
