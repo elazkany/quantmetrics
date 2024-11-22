@@ -97,7 +97,7 @@ class SimulatePaths:
         time = np.zeros(W.shape[0])
 
         # Euler approximation of the stock SDE
-        S_Euler = np.zeros([num_timesteps+1, num_paths])
+        S_Euler = np.zeros([num_timesteps + 1, num_paths])
         S_Euler[0, :] = S0
 
         for i in range(0, num_timesteps):
@@ -113,15 +113,19 @@ class SimulatePaths:
             )
 
             # Euler approximation
-            S_Euler[i+1,:] = S_Euler[i,:] + r * S_Euler[i,:]*dt + sigma * S_Euler[i,:] * (W[i + 1, :] - W[i, :])
+            S_Euler[i + 1, :] = (
+                S_Euler[i, :]
+                + r * S_Euler[i, :] * dt
+                + sigma * S_Euler[i, :] * (W[i + 1, :] - W[i, :])
+            )
 
             time[i + 1] = time[i] + dt
 
         # Compute exponent of ABM
         S = np.exp(X)
-        paths = {"time": time, "S": S, "S_Euler":S_Euler}
+        paths = {"time": time, "S": S, "S_Euler": S_Euler}
         return paths
-    
+
     def _cjd_paths(self, num_timesteps, num_paths, seed):
         S0 = self.model.S0
         mu = self.model.mu
@@ -142,7 +146,6 @@ class SimulatePaths:
         S = np.zeros([num_timesteps + 1, num_paths])
         time = np.zeros([num_timesteps + 1])
 
-        
         X[0, :] = np.log(S0)
         S[0, :] = S0
 
@@ -152,25 +155,21 @@ class SimulatePaths:
             Lambda = lambda_
         else:
             theta = RiskPremium(self.model, self.option).calculate()
-            Lambda = (r - mu - theta *sigma**2 +lambda_*gamma_tilde) / gamma_tilde
+            Lambda = (r - mu - theta * sigma**2 + lambda_ * gamma_tilde) / gamma_tilde
 
         # Check this
         ZPois = np.random.poisson(Lambda * dt, [num_timesteps, num_paths])
 
         Z = np.random.normal(0.0, 1.0, [num_timesteps, num_paths])
 
-
         for i in range(0, num_timesteps):
-                # Making sure that samples from a normal have mean 0 and variance 1
+            # Making sure that samples from a normal have mean 0 and variance 1
             if num_paths > 1:
                 Z[i, :] = (Z[i, :] - np.mean(Z[i, :])) / np.std(Z[i, :])
                 # Making sure that samples from a normal have mean 0 and variance 1
             W[i + 1, :] = W[i, :] + np.power(dt, 0.5) * Z[i, :]
             X[i + 1, :] = (
-                (
-                    X[i, :]
-                    + (r - Lambda* gamma_tilde - 0.5 * sigma**2) * dt
-                )
+                (X[i, :] + (r - Lambda * gamma_tilde - 0.5 * sigma**2) * dt)
                 + sigma * (W[i + 1, :] - W[i, :])
                 + gamma * ZPois[i, :]
             )
@@ -180,7 +179,7 @@ class SimulatePaths:
         S = np.exp(X)
         paths = {"time": time, "X": X, "S": S}
         return paths
-    
+
     def _ljd_paths(self, num_timesteps, num_paths, seed):
         S0 = self.model.S0
         sigma = self.model.sigma
@@ -189,6 +188,8 @@ class SimulatePaths:
         sigmaJ = self.model.sigmaJ
         r = self.option.r
         T = self.option.T
+        emm = self.option.emm
+        psi = self.option.psi
 
         np.random.seed(seed)
 
@@ -199,29 +200,39 @@ class SimulatePaths:
         S = np.zeros([num_timesteps + 1, num_paths])
         time = np.zeros([num_timesteps + 1])
 
-        
         X[0, :] = np.log(S0)
         S[0, :] = S0
 
-        kappa = np.exp(muJ + 0.5 * sigmaJ**2) - 1
-        
-        ZPois = np.random.poisson(lambda_ * dt, [num_timesteps, num_paths])
+        if emm == "Black-Scholes":
+            Lambda = lambda_
+            kappa = np.exp(muJ + 0.5 * sigmaJ**2) - 1
+        else:
+            theta = RiskPremium(self.model, self.option).calculate()
+
+            g_psi = 1 - 2 * psi * sigmaJ**2
+
+            f = lambda x: np.exp(
+                (muJ * x + 0.5 * sigmaJ**2 * x**2 + psi * muJ**2) / g_psi
+            ) / (g_psi**0.5)
+
+            Lambda = lambda_ * f(theta)  # * g_psi**0.5
+
+            kappa = f(theta + 1) / f(theta) - 1
+
+        ZPois = np.random.poisson(Lambda * dt, [num_timesteps, num_paths])
 
         Z = np.random.normal(0.0, 1.0, [num_timesteps, num_paths])
 
         J = np.random.normal(muJ, sigmaJ, [num_timesteps, num_paths])
 
         for i in range(0, num_timesteps):
-                # Making sure that samples from a normal have mean 0 and variance 1
+            # Making sure that samples from a normal have mean 0 and variance 1
             if num_paths > 1:
                 Z[i, :] = (Z[i, :] - np.mean(Z[i, :])) / np.std(Z[i, :])
                 # Making sure that samples from a normal have mean 0 and variance 1
             W[i + 1, :] = W[i, :] + np.power(dt, 0.5) * Z[i, :]
             X[i + 1, :] = (
-                (
-                    X[i, :]
-                    + (r - lambda_ * kappa - 0.5 * sigma**2) * dt
-                )
+                (X[i, :] + (r - Lambda * kappa - 0.5 * sigma**2) * dt)
                 + sigma * (W[i + 1, :] - W[i, :])
                 + J[i, :] * ZPois[i, :]
             )
@@ -231,4 +242,3 @@ class SimulatePaths:
         S = np.exp(X)
         paths = {"time": time, "X": X, "S": S}
         return paths
-

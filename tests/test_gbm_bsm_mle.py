@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 from quantmetrics.levy_models import GBM, CJD, LJD
 
-from quantmetrics.option_pricing import Option, OptionPricer
+from quantmetrics.option_pricing import Option, OptionPricer, RiskPremium
 
 from quantmetrics.utils import load_data
 
@@ -119,3 +119,90 @@ pricer.exact()
 pricer.fft()
 
 pricer.monte_carlo(num_timesteps=200, num_paths=200000)
+
+
+# Nov 18 testing the Merton M.E with Esscher
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from quantmetrics.levy_models import GBM, CJD, LJD
+
+from quantmetrics.option_pricing import Option, OptionPricer, RiskPremium
+
+
+1 / (2 * ljd.sigmaJ**2)
+
+gbm = GBM()
+cjd = CJD()
+ljd = LJD()
+
+option = Option(emm="Black-Scholes")
+
+option = Option(emm="Esscher", psi=-5)
+
+gbm_price = OptionPricer(model=gbm, option=Option(emm="Black-Scholes"))
+cjd_price = OptionPricer(model=cjd, option=option)
+ljd_price = OptionPricer(model=ljd, option=option)
+
+gbm_price.exact()
+gbm_price.fft()
+gbm_price.monte_carlo(num_timesteps=200, num_paths=100000)
+cjd_price.exact()
+cjd_price.fft()
+cjd_price.monte_carlo(num_timesteps=200, num_paths=100000)
+ljd_price.exact()
+ljd_price.fft()
+ljd_price.monte_carlo(num_timesteps=200, num_paths=100000)
+
+
+
+
+psi = np.arange(-500, 50, 50)
+
+thetas = np.array([])
+thetas2 = np.array([])
+cjd_prices_exact = np.array([])
+cjd_prices_fft = np.array([])
+cjd_prices_mc = np.array([])
+cjd_prices_mc = np.array([])
+ljd_prices_exact = np.array([])
+ljd_prices_fft = np.array([])
+ljd_prices_mc = np.array([])
+
+for i in range(0, len(psi)):
+    cjd = CJD()
+    ljd = LJD()
+    option = Option(emm="Esscher", psi=psi[i])
+    ljd_price = OptionPricer(model=ljd, option=option)
+    thetas = np.append(thetas, RiskPremium(ljd, option).calculate())
+    ljd_prices_exact = np.append(ljd_prices_exact, ljd_price.exact())
+    ljd_prices_fft = np.append(ljd_prices_fft, ljd_price.fft())
+    ljd_prices_mc = np.append(
+        ljd_prices_mc, ljd_price.monte_carlo(num_timesteps=200, num_paths=100000)[0]
+    )
+
+    cjd_price = OptionPricer(model=cjd, option=option)
+    thetas2 = np.append(thetas2, RiskPremium(cjd, option).calculate())
+    cjd_prices_exact = np.append(cjd_prices_exact, cjd_price.exact())
+    cjd_prices_fft = np.append(cjd_prices_fft, cjd_price.fft())
+    cjd_prices_mc = np.append(
+        cjd_prices_mc, cjd_price.monte_carlo(num_timesteps=200, num_paths=100000)[0]
+    )
+
+
+#plt.plot(psi, cjd_prices_fft, label="cjd fft")
+plt.plot(psi, ljd_prices_fft, label="ljd fft")
+plt.plot(psi, ljd_prices_exact, label="ljd exact")
+#plt.plot(psi, cjd_prices_exact, label="cjd exact")
+plt.plot(psi, ljd_prices_mc, label="ljd MC")
+#plt.plot(psi, cjd_prices_mc, label="cjd MC")
+#plt.plot(psi, ljd_prices_exact, label="ljd exact")
+plt.title("Comparison of LJD Prices")
+plt.xlabel("Psi")
+plt.ylabel("Prices")
+plt.legend()  # Adding the legend
+plt.show()
+
+
+

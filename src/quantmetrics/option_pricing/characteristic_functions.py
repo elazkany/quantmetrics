@@ -70,9 +70,9 @@ class CharacteristicFunction:
         b = r - 0.5 * sigma**2
         char_func = np.exp(T * (-0.5 * sigma**2 * u**2 + 1j * u * b))
         return char_func
-    
+
     def _cjd_characteristic_function(self, u: np.ndarray) -> np.ndarray:
-        mu = self.model.mu  
+        mu = self.model.mu
         sigma = self.model.sigma
         lambda_ = self.model.lambda_
         gamma = self.model.gamma
@@ -87,35 +87,35 @@ class CharacteristicFunction:
         gamma_tilde = np.exp(gamma) - 1
 
         if emm == "Black-Scholes":
-            b = r -sigma**2/2 -lambda_ *gamma_tilde
-            char_func = np.exp(T * (
-                1j * u *b
-                - sigma**2 * u**2/2
-                + lambda_ * (np.exp(1j *u * gamma) -1)
-            ))
+            b = r - sigma**2 / 2 - lambda_ * gamma_tilde
+            char_func = np.exp(
+                T
+                * (
+                    1j * u * b
+                    - sigma**2 * u**2 / 2
+                    + lambda_ * (np.exp(1j * u * gamma) - 1)
+                )
+            )
         else:
             theta = RiskPremium(self.model, self.option).calculate()
-            b = mu - sigma**2/2 - lambda_*gamma_tilde + theta*sigma**2
+            b = mu - sigma**2 / 2 - lambda_ * gamma_tilde + theta * sigma**2
             char_func = np.exp(
-                    T
+                T
+                * (
+                    1j * u * b
+                    - u**2 * sigma**2 / 2
+                    + lambda_
                     * (
-                        1j * u * b
-                        - u**2 * sigma**2 / 2
-                        + lambda_
-                        * (
-                            np.exp(
-                                (theta + 1j * u) * gamma
-                                + psi * gamma**2
-                            )
-                            - np.exp(theta * gamma + psi * gamma**2)
-                        )
+                        np.exp((theta + 1j * u) * gamma + psi * gamma**2)
+                        - np.exp(theta * gamma + psi * gamma**2)
                     )
                 )
-        
+            )
+
         return char_func
-    
-    def _ljd_characteristic_function(self, u:np.ndarray) -> np.ndarray:
-        mu = self.model.mu  
+
+    def _ljd_characteristic_function(self, u: np.ndarray) -> np.ndarray:
+        mu = self.model.mu
         sigma = self.model.sigma
         lambda_ = self.model.lambda_
         muJ = self.model.muJ
@@ -129,15 +129,37 @@ class CharacteristicFunction:
         psi = self.option.psi
 
         if emm == "Black-Scholes":
-            b = r -sigma**2/2 -lambda_ * (np.exp(muJ + sigmaJ**2 / 2) - 1)
-            char_func = np.exp(T * (
-                1j * u *b
-                - sigma**2 * u**2/2
-                + lambda_ * (np.exp(1j *u * muJ - u**2 * sigmaJ**2/2) -1)
-            ))
+            b = r - sigma**2 / 2 - lambda_ * (np.exp(muJ + sigmaJ**2 / 2) - 1)
+            char_func = np.exp(
+                T
+                * (
+                    1j * u * b
+                    - sigma**2 * u**2 / 2
+                    + lambda_ * (np.exp(1j * u * muJ - u**2 * sigmaJ**2 / 2) - 1)
+                )
+            )
         else:
-            # TODO:
-            pass
-        
-        return char_func
+            theta = RiskPremium(self.model, self.option).calculate()
+            b = (
+                mu
+                - 0.5 * sigma**2
+                - lambda_ * (np.exp(muJ + sigmaJ**2 / 2) - 1)
+                + theta * sigma**2
+            )
 
+            g_psi = 1 - 2 * psi * sigmaJ**2
+
+            f = lambda x: np.exp(
+                (muJ * x + 0.5 * sigmaJ**2 * x**2 + psi * muJ**2) / g_psi
+            ) / (g_psi**0.5)
+
+            char_func = np.exp(
+                T
+                * (
+                    1j * u * b
+                    - u**2 * sigma**2 / 2
+                    + lambda_ * (f(theta + 1j * u) - f(theta))
+                )
+            )
+
+        return char_func
