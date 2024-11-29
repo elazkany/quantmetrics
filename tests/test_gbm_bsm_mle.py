@@ -131,7 +131,7 @@ from quantmetrics.levy_models import GBM, CJD, LJD
 from quantmetrics.option_pricing import Option, OptionPricer, RiskPremium
 
 
-1 / (2 * ljd.sigmaJ**2)
+
 
 gbm = GBM()
 cjd = CJD()
@@ -158,7 +158,7 @@ ljd_price.monte_carlo(num_timesteps=200, num_paths=100000)
 
 
 
-psi = np.arange(-500, 50, 50)
+psi = np.arange(-500, 220, 20) #50, 50)
 
 thetas = np.array([])
 thetas2 = np.array([])
@@ -205,4 +205,33 @@ plt.legend()  # Adding the legend
 plt.show()
 
 
+
+# Nov 25
+
+psi = np.arange(-500, 220, 1)
+
+thetas = np.array([])
+
+for i in range(0, len(psi)):
+    ljd = LJD()
+    #ljd.mu = .2
+    #ljd.sigma =.2
+    #ljd.lambda_ = .2
+    #ljd.muJ = .2
+    #ljd.sigmaJ=.2
+    
+    option = Option(emm="Esscher", psi=psi[i])
+    thetas = np.append(thetas, RiskPremium(ljd, option).calculate())
+
+psi_cond = 1 / (2 * ljd.sigmaJ**2)
+theta_point =  -ljd.muJ / (ljd.sigmaJ**2)
+
+plt.plot(psi, thetas, label="theta")
+plt.axvline(x=psi_cond, color='r', linestyle='--', linewidth=2)
+#plt.axhline(y=theta_point, color='g', linestyle='--', linewidth=2)
+plt.title("martingale equation")
+plt.xlabel("Psi")
+plt.ylabel("theta")
+plt.legend()  # Adding the legend
+plt.show()
 

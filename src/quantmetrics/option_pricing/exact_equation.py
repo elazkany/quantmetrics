@@ -142,19 +142,19 @@ class ExactSolution:
         emm = self.option.emm
         psi = self.option.psi
 
+        option_price = 0
+        kappa = np.exp(muJ + sigmaJ**2 / 2) - 1
+
         if emm == "Black-Scholes":
-            option_price = 0
-            Lambda = lambda_
+            lambda_Q = lambda_
+
             for n in range(0, N + 1):
-                x_n = S0 * np.exp(
-                    n * (muJ + sigmaJ**2 / 2)
-                    - Lambda * (np.exp(muJ + sigmaJ**2 / 2) - 1) * T
-                )
+                x_n = S0 * np.exp(n * (muJ + sigmaJ**2 / 2) - lambda_Q * kappa * T)
 
                 sigma_n = np.sqrt(sigma**2 + n * sigmaJ**2 / T)
 
                 poisson_pdf = (
-                    np.exp(-Lambda * T) * (Lambda * T) ** n / math.factorial(n)
+                    np.exp(-lambda_Q * T) * (lambda_Q * T) ** n / math.factorial(n)
                 )
 
                 d_plus = (np.log(x_n / K) + (r + sigma_n**2 / 2) * T) / (
@@ -169,14 +169,95 @@ class ExactSolution:
 
                 option_price = option_price + poisson_pdf * bs_option_price
         else:
-            option_price = 0
+            """
+            # check condition on psi
+            try:
+                if psi < 1 / (2 * N * sigmaJ**2):
+                    raise ValueError("psi should be < 1 / (2 N sigma_J^2)")
+            except ValueError as e:
+                print(f"Error: {e}")
+            """
+
             theta = RiskPremium(self.model, self.option).calculate()
+
             g_psi = 1 - 2 * psi * sigmaJ**2
 
             f = lambda x: np.exp(
                 (muJ * x + 0.5 * sigmaJ**2 * x**2 + psi * muJ**2) / g_psi
             ) / (g_psi**0.5)
 
+            lambda_Q = lambda_ * f(theta)
+
+            kappa_Q = (kappa + 1) * np.exp(theta * sigmaJ**2) ** (1 / g_psi) - 1
+
+            for n in range(0, N + 1):
+                sigma_n = np.sqrt(sigma**2 + n * sigmaJ**2 / T)
+
+                sigma_tilde = 1 / np.sqrt(1 - 2 * n * psi * sigmaJ**2)
+
+                mu_tilde = lambda x: sigma_tilde**2 * (
+                    1 + (2 * n * psi * muJ * sigmaJ) / (x * sigma_n * T**0.5)
+                )
+
+                delta = sigma_tilde * sigma_n
+
+                Delta = (
+                    n * g_psi * np.log(kappa_Q + 1)
+                    - lambda_Q * kappa_Q * T
+                    + sigma_n**2
+                    * (theta * (mu_tilde(theta) - 1) + 0.5 * (sigma_tilde**2 - 1))
+                    * T
+                )
+
+                x_n = S0 * np.exp(Delta)
+
+                Delta_tilde = (
+                    n * g_psi * np.log(kappa_Q + 1)
+                    - lambda_Q * kappa_Q * T
+                    + sigma_n**2
+                    * (
+                        theta * (mu_tilde(theta + 1) - 1)
+                        + 0.5 * (sigma_tilde**2 - 1)
+                        + mu_tilde(theta + 1)
+                        - sigma_tilde**2
+                    )
+                    * T
+                )
+
+                x_n_tilde = S0 * np.exp(Delta_tilde)
+
+                d_minus = (np.log(x_n / K) + (r - delta**2 / 2) * T) / (
+                    delta * T**0.5
+                )
+
+                d_plus = (np.log(x_n_tilde / K) + (r + delta**2 / 2) * T) / (
+                    delta * T**0.5
+                )
+
+                poisson_pdf = (
+                    np.exp(-lambda_Q * T) * (lambda_Q * T) ** n / math.factorial(n)
+                )
+
+                Gamma = (
+                    n * (theta * muJ + psi * muJ**2)
+                    - n * np.log(f(theta))
+                    + np.log(sigma_tilde)
+                    + 0.5
+                    * theta**2
+                    * (sigma_n**2 * (mu_tilde(theta) / sigma_tilde) ** 2 - sigma**2)
+                    * T
+                )
+
+                Gamma_tilde = 0
+
+                bs_like_option_price = np.exp(Gamma) * (
+                    S0 * np.exp(Gamma_tilde) * st.norm.cdf(d_plus)
+                    - K * np.exp(-r * T) * st.norm.cdf(d_minus)
+                )
+
+                option_price = option_price + poisson_pdf * bs_like_option_price
+
+        """
             nu_theta = f(theta) - 1
             nu_theta_plus = f(theta + 1) - 1
 
@@ -242,5 +323,6 @@ class ExactSolution:
                 )
 
                 option_price = option_price + poisson_pdf * bs_like_option_price
+            """
 
         return option_price
