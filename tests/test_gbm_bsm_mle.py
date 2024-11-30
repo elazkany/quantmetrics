@@ -12,6 +12,7 @@ from quantmetrics.option_pricing import Option, OptionPricer
 
 from quantmetrics.utils import load_data
 
+
 wti_data = load_data("df_wti")
 
 wti_data["date"] = pd.to_datetime(wti_data["date"])
@@ -100,7 +101,7 @@ pricer.monte_carlo()[0]
 
 cjd = CJD()
 
-option = Option(emm="Esscher", psi=0.0)
+option = Option(emm="Esscher", psi=50000.0)
 
 pricer = OptionPricer(model=cjd, option=option)
 
