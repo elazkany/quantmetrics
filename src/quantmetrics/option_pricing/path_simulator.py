@@ -215,7 +215,7 @@ class SimulatePaths:
                 (muJ * x + 0.5 * sigmaJ**2 * x**2 + psi * muJ**2) / g_psi
             ) / (g_psi**0.5)
 
-            Lambda = lambda_ * f(theta)  # * g_psi**0.5
+            Lambda = lambda_ * f(theta) 
 
             kappa = f(theta + 1) / f(theta) - 1
 
