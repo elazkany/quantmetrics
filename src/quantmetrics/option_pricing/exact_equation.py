@@ -48,7 +48,6 @@ class ExactSolution:
         elif isinstance(self.model, LJD):
             return self._ljd_exact_solution()
 
-
     def _black_scholes_exact_price(self):
         """
         Calculate the European option price using the Black-Scholes exact equation.
@@ -85,10 +84,10 @@ class ExactSolution:
                 -d_minus
             ) - S0 * st.norm.cdf(-d_plus)
         return option_price
-    
+
     def _cjd_exact_solution(self):
         S0 = self.model.S0
-        mu = self.model.mu  
+        mu = self.model.mu
         sigma = self.model.sigma
         lambda_ = self.model.lambda_
         gamma = self.model.gamma
@@ -107,40 +106,29 @@ class ExactSolution:
             Lambda = lambda_
         else:
             theta = RiskPremium(self.model, self.option).calculate()
-            Lambda = (r - mu - theta *sigma**2 +lambda_*gamma_tilde) / gamma_tilde
+            Lambda = (r - mu - theta * sigma**2 + lambda_ * gamma_tilde) / gamma_tilde
 
         option_price = 0
         for n in range(0, N + 1):
-            x_n = S0 * np.exp(
-                n * gamma - Lambda * gamma_tilde * T
-                )
+            x_n = S0 * np.exp(n * gamma - Lambda * gamma_tilde * T)
 
-            poisson_pdf = (
-                np.exp(-Lambda *  T)
-                * (Lambda * T) ** n
-                / math.factorial(n)
-                )
+            poisson_pdf = np.exp(-Lambda * T) * (Lambda * T) ** n / math.factorial(n)
 
-            d_plus = (
-                np.log(x_n / K)
-                + (r + sigma**2 / 2) * T
-                ) / (sigma * T**0.5)
+            d_plus = (np.log(x_n / K) + (r + sigma**2 / 2) * T) / (sigma * T**0.5)
 
             d_minus = d_plus - sigma * T**0.5
 
-            bs_option_price = x_n * st.norm.cdf(
-                    d_plus
-                ) - K * np.exp(-r * T) * st.norm.cdf(
-                    d_minus
-                )
+            bs_option_price = x_n * st.norm.cdf(d_plus) - K * np.exp(
+                -r * T
+            ) * st.norm.cdf(d_minus)
 
             option_price = option_price + poisson_pdf * bs_option_price
 
-        return option_price 
-    
+        return option_price
+
     def _ljd_exact_solution(self):
         S0 = self.model.S0
-        mu = self.model.mu  
+        mu = self.model.mu
         sigma = self.model.sigma
         lambda_ = self.model.lambda_
         muJ = self.model.muJ
@@ -154,46 +142,32 @@ class ExactSolution:
         emm = self.option.emm
         psi = self.option.psi
 
-        if emm == "Black-Scholes":
-            Lambda = lambda_
-        else:
-            # TODO:
-            pass
-
         option_price = 0
-        for n in range(0, N + 1):
-            x_n = S0 * np.exp(
-                n * (muJ + sigmaJ**2 / 2)
-                - Lambda
-                * (np.exp(muJ + sigmaJ**2 / 2) - 1)
-                * T
-            )
+        kappa = np.exp(muJ + sigmaJ**2 / 2) - 1
 
-            sigma_n = np.sqrt(
-                sigma**2 + n * sigmaJ**2 / T
+        if emm == "Black-Scholes":
+            lambda_Q = lambda_
+
+            for n in range(0, N + 1):
+                x_n = S0 * np.exp(n * (muJ + sigmaJ**2 / 2) - lambda_Q * kappa * T)
+
+                sigma_n = np.sqrt(sigma**2 + n * sigmaJ**2 / T)
+
+                poisson_pdf = (
+                    np.exp(-lambda_Q * T) * (lambda_Q * T) ** n / math.factorial(n)
                 )
 
-            poisson_pdf = (
-                np.exp(-Lambda * T)
-                * (Lambda * T) ** n
-                / math.factorial(n)
+                d_plus = (np.log(x_n / K) + (r + sigma_n**2 / 2) * T) / (
+                    sigma_n * T**0.5
                 )
 
-            d_plus = (
-                np.log(x_n / K)
-                + (r + sigma_n**2 / 2) * T
-                ) / (sigma_n * T**0.5)
+                d_minus = d_plus - sigma_n * T**0.5
 
-            d_minus = d_plus - sigma_n * T**0.5
-
-            bs_option_price = x_n * st.norm.cdf(
-                    d_plus
-                ) - K * np.exp(
+                bs_option_price = x_n * st.norm.cdf(d_plus) - K * np.exp(
                     -r * T
-                ) * st.norm.cdf(
-                    d_minus
-                )
+                ) * st.norm.cdf(d_minus)
 
-            option_price = option_price + poisson_pdf * bs_option_price
-
+                option_price = option_price + poisson_pdf * bs_option_price
+        else:
+            pass
         return option_price
