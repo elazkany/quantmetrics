@@ -172,7 +172,6 @@ class OptionChainPreprocessor:
         ticker: str,
         start_date: datetime,
         end_date: datetime,
-        num_days_in_year: int = 365,
     ):
         """
         Download historical intereset rates from FRED and merge them with the dataframe.
@@ -185,12 +184,10 @@ class OptionChainPreprocessor:
                 The start date of the series of historical prices.
         end_date : datetime64
                 The end date of the series of historical prices.
-        num_days_in_year : int
-                Number of days in a year. Default is 365 days.
         """
         try:
             interest_rate_data = web.DataReader(ticker, "fred", start_date, end_date)
-            interest_rate_data = interest_rate_data / (100 * num_days_in_year)
+            interest_rate_data = interest_rate_data / 100 
             self.dataframe = self.dataframe.merge(
                 interest_rate_data, left_on="date", right_index=True, how="left"
             )
