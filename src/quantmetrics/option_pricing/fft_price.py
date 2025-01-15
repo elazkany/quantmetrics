@@ -56,6 +56,9 @@ class FFTPrice:
         T = self.option.T
         char_func = CharacteristicFunction(self.model, self.option)
 
+        if np.isscalar(K):
+            K = np.array([K])
+
         k = np.log(K / S0)
         x0 = np.log(S0 / S0)
         g = 2  # factor to increase accuracy
@@ -66,53 +69,58 @@ class FFTPrice:
         u = np.arange(1, N + 1, 1)
         vo = eta * (u - 1)
 
-        # Modifications to ensure integrability
-        if S0 >= 0.95 * K:  # ITM case
-            alpha = 1.5
-            omega = vo - (alpha + 1) * 1j
-            modcharFunc = np.exp(-r * T) * (
-                char_func.calculate(omega)
-                / (alpha**2 + alpha - vo**2 + 1j * (2 * alpha + 1) * vo)
-            )
-        else:  # OTM case
-            alpha = 1.1
-            omega = (vo - 1j * alpha) - 1j
-            modcharFunc1 = np.exp(-r * T) * (
-                1 / (1 + 1j * (vo - 1j * alpha))
-                - np.exp(r * T) / (1j * (vo - 1j * alpha))
-                - char_func.calculate(omega)
-                / ((vo - 1j * alpha) ** 2 - 1j * (vo - 1j * alpha))
-            )
-            omega = (vo + 1j * alpha) - 1j
-            modcharFunc2 = np.exp(-r * T) * (
-                1 / (1 + 1j * (vo + 1j * alpha))
-                - np.exp(r * T) / (1j * (vo + 1j * alpha))
-                - char_func.calculate(omega)
-                / ((vo + 1j * alpha) ** 2 - 1j * (vo + 1j * alpha))
-            )
-        # Numerical FFT Routine
-        delt = np.zeros(N)  # , dtype=np.float)
-        delt[0] = 1
-        j = np.arange(1, N + 1, 1)
-        SimpsonW = (3 + (-1) ** j - delt) / 3
-        if S0 >= 0.95 * K:
-            FFTFunc = np.exp(1j * b * vo) * modcharFunc * eta * SimpsonW
-            payoff = (fft(FFTFunc)).real
-            CallValueM = np.exp(-alpha * k) / np.pi * payoff
-        else:
-            FFTFunc = (
-                np.exp(1j * b * vo)
-                * (modcharFunc1 - modcharFunc2)
-                * 0.5
-                * eta
-                * SimpsonW
-            )
-            payoff = (fft(FFTFunc)).real
-            CallValueM = payoff / (np.sinh(alpha * k) * np.pi)
-        pos = int((k + b) / eps)
-        CallValue = CallValueM[pos] * S0
-        # klist = np.exp((np.arange(0, N, 1) - 1) * eps - b) * S0
-        if CallValue <= 0.0:
-            return 0.0
-        else:
-            return CallValue  # , klist[pos - 50:pos + 50]
+        prices = np.array([])
+
+        for i in range(0, len(K)):
+            # Modifications to ensure integrability
+            if S0 >= 0.95 * K[i]:  # ITM case
+                alpha = 1.5
+                omega = vo - (alpha + 1) * 1j
+                modcharFunc = np.exp(-r * T) * (
+                    char_func.calculate(omega)
+                    / (alpha**2 + alpha - vo**2 + 1j * (2 * alpha + 1) * vo)
+                )
+            else:  # OTM case
+                alpha = 1.1
+                omega = (vo - 1j * alpha) - 1j
+                modcharFunc1 = np.exp(-r * T) * (
+                    1 / (1 + 1j * (vo - 1j * alpha))
+                    - np.exp(r * T) / (1j * (vo - 1j * alpha))
+                    - char_func.calculate(omega)
+                    / ((vo - 1j * alpha) ** 2 - 1j * (vo - 1j * alpha))
+                )
+                omega = (vo + 1j * alpha) - 1j
+                modcharFunc2 = np.exp(-r * T) * (
+                    1 / (1 + 1j * (vo + 1j * alpha))
+                    - np.exp(r * T) / (1j * (vo + 1j * alpha))
+                    - char_func.calculate(omega)
+                    / ((vo + 1j * alpha) ** 2 - 1j * (vo + 1j * alpha))
+                )
+            # Numerical FFT Routine
+            delt = np.zeros(N)  # , dtype=np.float)
+            delt[0] = 1
+            j = np.arange(1, N + 1, 1)
+            SimpsonW = (3 + (-1) ** j - delt) / 3
+            if S0 >= 0.95 * K[i]:
+                FFTFunc = np.exp(1j * b[i] * vo) * modcharFunc * eta * SimpsonW
+                payoff = (fft(FFTFunc)).real
+                CallValueM = np.exp(-alpha * k[i]) / np.pi * payoff
+            else:
+                FFTFunc = (
+                    np.exp(1j * b[i] * vo)
+                    * (modcharFunc1 - modcharFunc2)
+                    * 0.5
+                    * eta
+                    * SimpsonW
+                )
+                payoff = (fft(FFTFunc)).real
+                CallValueM = payoff / (np.sinh(alpha * k[i]) * np.pi)
+            pos = int((k[i] + b[i]) / eps)
+            CallValue = CallValueM[pos] * S0
+            # klist = np.exp((np.arange(0, N, 1) - 1) * eps - b) * S0
+            if CallValue <= 0.0:
+                prices = np.append(prices, 0.0)
+            else:
+                prices = np.append(prices, CallValue)  # , klist[pos - 50:pos + 50]
+
+        return prices
