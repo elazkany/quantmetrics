@@ -26,15 +26,48 @@ class GeometricBrownianMotion(LevyModel):
             Volatility (annualized). Divide by the square root of the number of days in a year (e.g., 360) to convert to daily.
         """
 
-        params = {
-            "S0": S0,
-            "mu": mu,
-            "sigma": sigma,
-        }
-        super().__init__(params)
         self.S0 = S0
-        self.mu = mu
-        self.sigma = sigma
+        self._mu = mu
+        self._sigma = sigma
+
+        self.params = {
+            "S0": self.S0,
+            "mu": self._mu,
+            "sigma": self._sigma,
+        }
+
+        self.model_params = {
+            "mu": self._mu,
+            "sigma" : self._sigma,
+        }        
+
+        super().__init__(self.params)
+
+    @property
+    def mu(self) -> float:
+        return self._mu
+    
+    @mu.setter
+    def mu(self, value: float):
+        self._mu = value
+        self.params['mu'] = value
+        self.model_params['mu'] = value
+        
+        
+    @property
+    def sigma(self) -> float:
+        return self._sigma
+    
+    @sigma.setter
+    def sigma(self, value: float):
+        self._sigma = value
+        self.params['sigma'] = value
+        self.model_params['sigma'] = value
+
+    @property
+    def model_params_conds_valid(self):
+        return self.model_params['sigma'] > 0.0
+        
 
     def pdf(self, data: np.ndarray, est_params: np.ndarray) -> np.ndarray:
         """
@@ -53,7 +86,7 @@ class GeometricBrownianMotion(LevyModel):
             The probability density values.
         """
         mu, sigma = est_params
-        if sigma <= 0.0:
+        if not self.model_params_conds_valid: #sigma <= 0.0:
             return 500.0
         else:
             drift = mu - 0.5 * sigma**2

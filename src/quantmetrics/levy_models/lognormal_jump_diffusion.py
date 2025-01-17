@@ -40,23 +40,104 @@ class LognormalJumpDiffusion(LevyModel):
             Number of big jumps (the Poisson jumps).
         """
 
-        params = {
-            "S0": S0,
-            "mu": mu,
-            "sigma": sigma,
-            "lambda": lambda_,
-            "muJ": muJ,
-            "sigmaJ": sigmaJ,
-            "N": N,
-        }
-        super().__init__(params)
         self.S0 = S0
-        self.mu = mu
-        self.sigma = sigma
-        self.lambda_ = lambda_
-        self.muJ = muJ
-        self.sigmaJ = sigmaJ
+        self._mu = mu
+        self._sigma = sigma
+        self._lambda_ = lambda_
+        self._muJ = muJ
+        self._sigmaJ = sigmaJ
         self.N = N
+
+        self.params = {
+            "S0": self.S0,
+            "mu": self._mu,
+            "sigma": self._sigma,
+            "lambda": self._lambda_,
+            "muJ": self._muJ,
+            "sigmaJ": self._sigmaJ,
+            "N": self.N,
+        }
+
+        self.model_params = {
+            "mu": self._mu,
+            "sigma": self._sigma,
+            "lambda": self._lambda_,
+            "muJ": self._muJ,
+            "sigmaJ": self._sigmaJ,
+        }
+
+        super().__init__(self.params)
+        
+        
+    @property
+    def mu(self) -> float:
+        return self._mu
+    
+    @mu.setter
+    def mu(self, value: float):
+        self._mu = value
+        self.params['mu'] = value
+        self.model_params['mu'] = value
+        
+        
+    @property
+    def sigma(self) -> float:
+        return self._sigma
+    
+    @sigma.setter
+    def sigma(self, value: float):
+        self._sigma = value
+        self.params['sigma'] = value
+        self.model_params['sigma'] = value
+
+    @property
+    def lambda_(self) -> float:
+        return self._lambda_
+    
+    @lambda_.setter
+    def lambda_(self, value: float):
+        self._lambda_ = value
+        self.params['lambda'] = value
+        self.model_params['lambda'] = value
+
+    @property
+    def muJ(self) -> float:
+        return self._muJ
+    
+    @muJ.setter
+    def muJ(self, value: float):
+        self._muJ = value
+        self.params['muJ'] = value
+        self.model_params['muJ'] = value
+
+    @property
+    def sigmaJ(self) -> float:
+        return self._sigmaJ
+    
+    @sigmaJ.setter
+    def sigmaJ(self, value: float):
+        self._sigmaJ = value
+        self.params['sigmaJ'] = value
+        self.model_params['sigmaJ'] = value
+
+    @property
+    def model_params_conds_valid(self):
+        return self._validate_model_params()
+    
+    def _validate_model_params(self) -> bool:
+        """
+        Validate model parameters
+
+        Returns
+        -------
+        bool
+            True if all conditions on parameters are met, False otherwise.
+        """
+        return all([
+            self.model_params['sigma'] > 0.0,
+            self.model_params['lambda'] > 0.0,
+            self.model_params['sigmaJ'] > 0.0,
+            ])
 
     def pdf(self, data: np.ndarray, est_params: np.ndarray) -> np.ndarray:
         """
@@ -75,7 +156,7 @@ class LognormalJumpDiffusion(LevyModel):
             The probability density values.
         """
         mu, sigma, lambda_, muJ, sigmaJ = est_params
-        if sigma <= 0.0 or lambda_ <= 0.0 or sigmaJ <= 0.0:
+        if not self.model_params_conds_valid: #sigma <= 0.0 or lambda_ <= 0.0 or sigmaJ <= 0.0:
             return 500.0
         else:
             drift = mu - 0.5 * sigma**2  # TODO: consider a different drift
