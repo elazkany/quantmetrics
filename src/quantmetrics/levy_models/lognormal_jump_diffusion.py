@@ -52,7 +52,7 @@ class LognormalJumpDiffusion(LevyModel):
             "S0": self.S0,
             "mu": self._mu,
             "sigma": self._sigma,
-            "lambda": self._lambda_,
+            "lambda_": self._lambda_,
             "muJ": self._muJ,
             "sigmaJ": self._sigmaJ,
             "N": self.N,
@@ -61,7 +61,7 @@ class LognormalJumpDiffusion(LevyModel):
         self.model_params = {
             "mu": self._mu,
             "sigma": self._sigma,
-            "lambda": self._lambda_,
+            "lambda_": self._lambda_,
             "muJ": self._muJ,
             "sigmaJ": self._sigmaJ,
         }
@@ -97,8 +97,8 @@ class LognormalJumpDiffusion(LevyModel):
     @lambda_.setter
     def lambda_(self, value: float):
         self._lambda_ = value
-        self.params['lambda'] = value
-        self.model_params['lambda'] = value
+        self.params['lambda_'] = value
+        self.model_params['lambda_'] = value
 
     @property
     def muJ(self) -> float:
@@ -135,7 +135,7 @@ class LognormalJumpDiffusion(LevyModel):
         """
         return all([
             self.model_params['sigma'] > 0.0,
-            self.model_params['lambda'] > 0.0,
+            self.model_params['lambda_'] > 0.0,
             self.model_params['sigmaJ'] > 0.0,
             ])
 

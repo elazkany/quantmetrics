@@ -47,7 +47,7 @@ class ConstantJumpDiffusion(LevyModel):
             "S0": self.S0,
             "mu": self._mu,
             "sigma": self._sigma,
-            "lambda": self._lambda_,
+            "lambda_": self._lambda_,
             "gamma": self._gamma,
             "N": self.N,
         }
@@ -55,7 +55,7 @@ class ConstantJumpDiffusion(LevyModel):
         self.model_params = {
             "mu": self._mu,
             "sigma": self._sigma,
-            "lambda": self._lambda_,
+            "lambda_": self._lambda_,
             "gamma": self._gamma,
         }
 
@@ -90,8 +90,8 @@ class ConstantJumpDiffusion(LevyModel):
     @lambda_.setter
     def lambda_(self, value: float):
         self._lambda_ = value
-        self.params['lambda'] = value
-        self.model_params['lambda'] = value
+        self.params['lambda_'] = value
+        self.model_params['lambda_'] = value
 
     @property
     def gamma(self) -> float:
@@ -118,7 +118,7 @@ class ConstantJumpDiffusion(LevyModel):
         """
         return all([
             self.model_params['sigma'] > 0.0,
-            self.model_params['lambda'] > 0.0,
+            self.model_params['lambda_'] > 0.0,
             self.model_params['gamma'] > -1,
             self.model_params['gamma'] != 0
             ])
