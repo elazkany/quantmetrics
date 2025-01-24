@@ -41,7 +41,7 @@ class BlackScholesImpliedVolatility:
 
     ```python
     import numpy as np
-    from quantmetrics.implied_volatility import ImpliedVolatility
+    from quantmetrics.implied_volatility import bs_iv
 
     S0 = 100
     T = 1.0
@@ -50,7 +50,7 @@ class BlackScholesImpliedVolatility:
     option_prices = np.array([10, 8, 6])
     init_sigma = 0.2
 
-    iv_calculator = ImpliedVolatility(S0, T, r, K, option_prices, init_sigma)
+    iv_calculator = bs_iv(S0, T, r, K, option_prices, init_sigma)
     implied_vols = iv_calculator.calculate_iv()
     print("Implied Volatilities:", implied_vols)
     ```
