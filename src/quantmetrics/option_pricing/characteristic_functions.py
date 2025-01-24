@@ -1,6 +1,6 @@
 # option_pricing/characteristics_functions.py
 
-from quantmetrics.levy_models import GBM, CJD, LJD
+from quantmetrics.levy_models import GBM, CJD, LJD, DEJD
 from quantmetrics.option_pricing import RiskPremium
 
 import numpy as np
@@ -46,6 +46,8 @@ class CharacteristicFunction:
             return self._cjd_characteristic_function(u)
         elif isinstance(self.model, LJD):
             return self._ljd_characteristic_function(u)
+        elif isinstance(self.model, DEJD):
+            return self._dejd_characteristic_function(u)
         else:
             pass
 
@@ -161,5 +163,68 @@ class CharacteristicFunction:
                     + lambda_ * (f(theta + 1j * u) - f(theta))
                 )
             )
+
+        return char_func
+
+    def _dejd_characteristic_function(self, u: np.ndarray) -> np.ndarray:
+        mu = self.model.mu
+        sigma = self.model.sigma
+        lambda_ = self.model.lambda_
+        eta1 = self.model.eta1
+        eta2 = self.model.eta2
+        p = self.model.p
+        r = self.option.r
+        q = self.option.q
+        K = self.option.K
+        T = self.option.T
+        payoff = self.option.payoff
+        emm = self.option.emm
+        psi = self.option.psi
+
+        if emm == "Black-Scholes":
+            b = (
+                r
+                - sigma**2 / 2
+                - lambda_ * (p * eta1 / (eta1 - 1) + (1 - p) * eta2 / (eta2 + 1) - 1)
+            )
+            char_func = np.exp(
+                T
+                * (
+                    1j * u * b
+                    - sigma**2 * u**2 / 2
+                    + lambda_
+                    * (
+                        p * eta1 / (eta1 - 1j * u)
+                        + (1 - p) * eta2 / (eta2 + 1j * u)
+                        - 1
+                    )
+                )
+            )
+        elif (emm == "Esscher") & (psi == 0.0):
+            theta = RiskPremium(self.model, self.option).calculate()
+
+            b = (
+                mu
+                - 0.5 * sigma**2
+                - lambda_ * (p / (eta1 - 1) - (1 - p) / (eta2 + 1) + theta * sigma**2)
+            )
+
+            char_func = np.exp(
+                T
+                * (
+                    1j * u * b
+                    - 0.5 * sigma**2 * u**2
+                    + lambda_
+                    * (
+                        (
+                            p * eta1 / (eta1 - (theta + 1j * u))
+                            + (1 - p) * eta2 / (eta2 + (theta + 1j * u))
+                        )
+                        - (p * eta1 / (eta1 - theta) + (1 - p) * eta2 / (eta2 + theta))
+                    )
+                )
+            )
+        else:
+            pass
 
         return char_func
