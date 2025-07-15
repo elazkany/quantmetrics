@@ -1,0 +1,197 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>quantmetrics.price_calculators.vg_pricing.vg_characteristic_function &mdash; quantmetrics  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            quantmetrics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sections:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/index.html">API Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/levy_models.html">Levy Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/option_pricing.html">Optio pricing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/price_calculators.html">Price Calculators</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">quantmetrics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">quantmetrics.price_calculators.vg_pricing.vg_characteristic_function</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for quantmetrics.price_calculators.vg_pricing.vg_characteristic_function</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">from</span> <span class="nn">quantmetrics.utils.exceptions</span> <span class="kn">import</span> <span class="n">FeatureNotImplementedError</span><span class="p">,</span> <span class="n">UnsupportedEMMTypeError</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">quantmetrics.levy_models</span> <span class="kn">import</span> <span class="n">LevyModel</span>
+    <span class="kn">from</span> <span class="nn">quantmetrics.option_pricing</span> <span class="kn">import</span> <span class="n">Option</span>
+
+<div class="viewcode-block" id="VGCharacteristicFunction">
+<a class="viewcode-back" href="../../../../api/_autosummary/quantmetrics.price_calculators.vg_pricing.vg_characteristic_function.VGCharacteristicFunction.html#quantmetrics.price_calculators.vg_pricing.vg_characteristic_function.VGCharacteristicFunction">[docs]</a>
+<span class="k">class</span> <span class="nc">VGCharacteristicFunction</span><span class="p">:</span>
+<div class="viewcode-block" id="VGCharacteristicFunction.__init__">
+<a class="viewcode-back" href="../../../../api/_autosummary/quantmetrics.price_calculators.vg_pricing.vg_characteristic_function.VGCharacteristicFunction.html#quantmetrics.price_calculators.vg_pricing.vg_characteristic_function.VGCharacteristicFunction.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="s2">&quot;LevyModel&quot;</span><span class="p">,</span> <span class="n">option</span><span class="p">:</span> <span class="s2">&quot;Option&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the VGCharacteristicFunction with a model and an option.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model : LevyModel</span>
+<span class="sd">            The Levy model used for calculating the characteristic function.</span>
+<span class="sd">        option : Option</span>
+<span class="sd">            The option parameters including interest rate, volatility, etc.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">option</span> <span class="o">=</span> <span class="n">option</span></div>
+
+
+<div class="viewcode-block" id="VGCharacteristicFunction.calculate">
+<a class="viewcode-back" href="../../../../api/_autosummary/price_calculators/vg/quantmetrics.price_calculators.vg_pricing.vg_characteristic_function.VGCharacteristicFunction.html#quantmetrics.price_calculators.vg_pricing.vg_characteristic_function.VGCharacteristicFunction.calculate">[docs]</a>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the characteristic function for the given model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : np.ndarray</span>
+<span class="sd">            Input array for the characteristic function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            The characteristic function values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vg_characteristic_function</span><span class="p">(</span><span class="n">u</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_vg_characteristic_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the characteristic function for the GBM model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : np.ndarray</span>
+<span class="sd">            Input array for the characteristic function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            The characteristic function values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mu</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">m</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">delta</span>
+        <span class="n">kappa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">kappa</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">r</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">emm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">emm</span>
+        <span class="n">psi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">psi</span>
+
+        <span class="k">if</span> <span class="n">emm</span> <span class="o">==</span> <span class="s2">&quot;mean-correcting&quot;</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">m</span><span class="o">*</span><span class="n">kappa</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">kappa</span><span class="o">*</span><span class="n">delta</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">kappa</span>
+            <span class="n">char_func</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+                <span class="n">T</span>
+                <span class="o">*</span> <span class="p">(</span>
+                    <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">u</span> <span class="o">*</span> <span class="n">b</span>
+                    <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">m</span><span class="o">*</span><span class="n">kappa</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">u</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span><span class="n">kappa</span> <span class="o">*</span><span class="n">delta</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span><span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">kappa</span>
+                    <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">emm</span> <span class="o">==</span> <span class="s2">&quot;Esscher&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FeatureNotImplementedError</span><span class="p">(</span><span class="n">emm</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnsupportedEMMTypeError</span><span class="p">(</span><span class="n">emm</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">char_func</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ella Elazkany.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
