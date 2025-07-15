@@ -53,7 +53,7 @@
 <p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../levy_models.html">Levy Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../option_pricing.html">Optio pricing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../option_pricing.html">Option pricing</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../price_calculators.html">Price Calculators</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../price_calculators.html#modules">Modules</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../../price_calculators.html#classes">Classes</a><ul class="current">
@@ -128,7 +128,7 @@
 </section>
 <section id="notes">
 <h3>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h3>
-<p>The closed-form solution for the European option depends on the equivalent martingale measure (EMM) considered.</p>
+<p>The closed-form solution for the European option has the following formula”</p>
 <ul class="simple">
 <li><p>For <code class="docutils literal notranslate"><span class="pre">emm</span> <span class="pre">=</span> <span class="pre">&quot;mean-correcting&quot;</span></code>:</p></li>
 </ul>
@@ -139,6 +139,10 @@
 \[\widetilde{p} = \left(\frac{p}{1+\kappa}\right) \left(\frac{\eta_1}{\eta_1 - 1}\right), \quad \widetilde{\eta}_1 = \eta_1 - 1, \quad \widetilde{\eta}_2 = \eta_2 +1,\]</div>
 <div class="math notranslate nohighlight">
 \[\widetilde{\lambda}= \lambda (\kappa+1), \quad \kappa = \frac{p\eta_1}{\eta_1 -1} + \frac{q\eta_2}{\eta_2+1} - 1\]</div>
+<ul class="simple">
+<li><p>For <code class="docutils literal notranslate"><span class="pre">emm</span> <span class="pre">=</span> <span class="pre">&quot;Esscher&quot;</span></code>:</p></li>
+</ul>
+<p>Feature is not supported.</p>
 </section>
 <section id="references">
 <h3>References<a class="headerlink" href="#references" title="Link to this heading"></a></h3>

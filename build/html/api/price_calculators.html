@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="GBMCalculator" href="_autosummary/price_calculators/gbm/quantmetrics.price_calculators.gbm_pricing.gbm_calculator.GBMCalculator.html" />
-    <link rel="prev" title="Optio pricing" href="option_pricing.html" /> 
+    <link rel="prev" title="Option pricing" href="option_pricing.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,7 +52,7 @@
 <p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="levy_models.html">Levy Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="option_pricing.html">Optio pricing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="option_pricing.html">Option pricing</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Price Calculators</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#modules">Modules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#classes">Classes</a><ul>
@@ -208,7 +208,7 @@ Implements the Variance Gamma (VG) model. This submodule includes:</p>
 <td><p>Implements the closed-form solution for pricing European options under a constant jump-diffusion (CJD) model.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.cjd_pricing.cjd_characteristic_function.CJDCharacteristicFunction.html#quantmetrics.price_calculators.cjd_pricing.cjd_characteristic_function.CJDCharacteristicFunction" title="quantmetrics.price_calculators.cjd_pricing.cjd_characteristic_function.CJDCharacteristicFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.cjd_pricing.cjd_characteristic_function.CJDCharacteristicFunction</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Implements the characteristic function for a constant jump-diffusion (CJD) model.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.cjd_pricing.cjd_paths_Q.CJDSimulatePathsQ.html#quantmetrics.price_calculators.cjd_pricing.cjd_paths_Q.CJDSimulatePathsQ" title="quantmetrics.price_calculators.cjd_pricing.cjd_paths_Q.CJDSimulatePathsQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.cjd_pricing.cjd_paths_Q.CJDSimulatePathsQ</span></code></a></p></td>
 <td><p>Implements the paths simulation for a constant jump-diffusion (CJD) model under the risk-neutral measure.</p></td>
@@ -227,7 +227,7 @@ Implements the Variance Gamma (VG) model. This submodule includes:</p>
 <td><p>Implements the closed-form solution for pricing European options under a lognormal jump-diffusion (LJD) model.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.ljd_pricing.ljd_characteristic_function.LJDCharacteristicFunction.html#quantmetrics.price_calculators.ljd_pricing.ljd_characteristic_function.LJDCharacteristicFunction" title="quantmetrics.price_calculators.ljd_pricing.ljd_characteristic_function.LJDCharacteristicFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.ljd_pricing.ljd_characteristic_function.LJDCharacteristicFunction</span></code></a></p></td>
-<td><p>Implements the characteristic function for a Geometric Brownian Motion (GBM) model.</p></td>
+<td><p>Implements the characteristic function for a lognormal jump-diffusion (LJD) model.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.ljd_pricing.ljd_paths_Q.LJDSimulatePathsQ.html#quantmetrics.price_calculators.ljd_pricing.ljd_paths_Q.LJDSimulatePathsQ" title="quantmetrics.price_calculators.ljd_pricing.ljd_paths_Q.LJDSimulatePathsQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.ljd_pricing.ljd_paths_Q.LJDSimulatePathsQ</span></code></a></p></td>
 <td><p>Implements the paths simulation for a lognormal jump-diffusion (LJD) model under the risk-neutral measure.</p></td>
@@ -240,13 +240,13 @@ Implements the Variance Gamma (VG) model. This submodule includes:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.dejd_pricing.dejd_calculator.DEJDCalculator.html#quantmetrics.price_calculators.dejd_pricing.dejd_calculator.DEJDCalculator" title="quantmetrics.price_calculators.dejd_pricing.dejd_calculator.DEJDCalculator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.dejd_pricing.dejd_calculator.DEJDCalculator</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Calculator for option pricing under the lognormal jump-diffusion (LJD) model.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.dejd_pricing.dejd_closed_form.DEJDClosedForm.html#quantmetrics.price_calculators.dejd_pricing.dejd_closed_form.DEJDClosedForm" title="quantmetrics.price_calculators.dejd_pricing.dejd_closed_form.DEJDClosedForm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.dejd_pricing.dejd_closed_form.DEJDClosedForm</span></code></a></p></td>
-<td><p>Initialize the DEJDClosedForm with a model and an option.</p></td>
+<td><p>Implements the closed-form solution for pricing European options under a lognormal jump-diffusion (LJD) model.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.dejd_pricing.dejd_characteristic_function.DEJDCharacteristicFunction.html#quantmetrics.price_calculators.dejd_pricing.dejd_characteristic_function.DEJDCharacteristicFunction" title="quantmetrics.price_calculators.dejd_pricing.dejd_characteristic_function.DEJDCharacteristicFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.dejd_pricing.dejd_characteristic_function.DEJDCharacteristicFunction</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Implements the characteristic function for a lognormal jump-diffusion (LJD) model.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.dejd_pricing.dejd_paths_Q.DEJDSimulatePathsQ.html#quantmetrics.price_calculators.dejd_pricing.dejd_paths_Q.DEJDSimulatePathsQ" title="quantmetrics.price_calculators.dejd_pricing.dejd_paths_Q.DEJDSimulatePathsQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.dejd_pricing.dejd_paths_Q.DEJDSimulatePathsQ</span></code></a></p></td>
 <td><p></p></td>
@@ -280,7 +280,7 @@ Implements the Variance Gamma (VG) model. This submodule includes:</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="option_pricing.html" class="btn btn-neutral float-left" title="Optio pricing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="option_pricing.html" class="btn btn-neutral float-left" title="Option pricing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="_autosummary/price_calculators/gbm/quantmetrics.price_calculators.gbm_pricing.gbm_calculator.GBMCalculator.html" class="btn btn-neutral float-right" title="GBMCalculator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

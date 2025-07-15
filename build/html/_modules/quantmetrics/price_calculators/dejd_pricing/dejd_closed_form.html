@@ -49,7 +49,7 @@
 <p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/levy_models.html">Levy Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/option_pricing.html">Optio pricing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/option_pricing.html">Option pricing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/price_calculators.html">Price Calculators</a></li>
 </ul>
 
@@ -126,7 +126,7 @@
 <span class="sd">        </span>
 <span class="sd">        Notes</span>
 <span class="sd">        -------</span>
-<span class="sd">        The closed-form solution for the European option depends on the equivalent martingale measure (EMM) considered.</span>
+<span class="sd">        The closed-form solution for the European option has the following formula&quot;</span>
 
 <span class="sd">        - For ``emm = &quot;mean-correcting&quot;``:</span>
 
@@ -144,6 +144,10 @@
 
 <span class="sd">            \\widetilde{\\lambda}= \\lambda (\\kappa+1), \\quad \\kappa = \\frac{p\\eta_1}{\\eta_1 -1} + \\frac{q\\eta_2}{\\eta_2+1} - 1</span>
 
+<span class="sd">        - For ``emm = &quot;Esscher&quot;``:</span>
+
+<span class="sd">        Feature is not supported.</span>
+
 <span class="sd">        References</span>
 <span class="sd">        ----------</span>
 <span class="sd">        .. [1] Kou, S. G. (2002). A jump-diffusion model for option pricing. Management science, 48(8), 1086-1101.</span>
@@ -154,7 +158,6 @@
     <span class="k">def</span> <span class="nf">_closed_form_solution</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
         <span class="c1"># implements the closed form calculations</span>
         <span class="n">S0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">S0</span>
-        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mu</span>
         <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">sigma</span>
         <span class="n">lambda_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lambda_</span>
         <span class="n">eta1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eta1</span>
@@ -167,7 +170,6 @@
         <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">T</span>
         <span class="n">payoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">payoff</span>
         <span class="n">emm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">emm</span>
-        <span class="n">psi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">psi</span>
 
         <span class="k">if</span> <span class="n">emm</span> <span class="o">==</span> <span class="s2">&quot;mean-correcting&quot;</span><span class="p">:</span>
 
@@ -290,22 +292,22 @@
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="n">result</span>
 
-            <span class="n">zeta</span> <span class="o">=</span> <span class="n">p</span> <span class="o">*</span> <span class="n">eta1</span> <span class="o">/</span> <span class="p">(</span><span class="n">eta1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">eta2</span> <span class="o">/</span> <span class="p">(</span><span class="n">eta2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">kappa</span> <span class="o">=</span> <span class="n">p</span> <span class="o">*</span> <span class="n">eta1</span> <span class="o">/</span> <span class="p">(</span><span class="n">eta1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">eta2</span> <span class="o">/</span> <span class="p">(</span><span class="n">eta2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
-            <span class="n">p_tilde</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">zeta</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">eta1</span> <span class="o">/</span> <span class="p">(</span><span class="n">eta1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">p_tilde</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">kappa</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">eta1</span> <span class="o">/</span> <span class="p">(</span><span class="n">eta1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
 
-            <span class="n">lambda_tilde</span> <span class="o">=</span> <span class="n">lambda_</span> <span class="o">*</span> <span class="p">(</span><span class="n">zeta</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">lambda_tilde</span> <span class="o">=</span> <span class="n">lambda_</span> <span class="o">*</span> <span class="p">(</span><span class="n">kappa</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
             <span class="n">eta1_tilde</span> <span class="o">=</span> <span class="n">eta1</span> <span class="o">-</span> <span class="mi">1</span>
 
             <span class="n">eta2_tilde</span> <span class="o">=</span> <span class="n">eta2</span> <span class="o">+</span> <span class="mi">1</span>
 
-            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">K</span> <span class="o">/</span> <span class="n">S0</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">K</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">q</span><span class="o">*</span><span class="n">T</span><span class="p">)</span><span class="o">*</span><span class="n">S0</span><span class="p">))</span>
 
-            <span class="n">mu1</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">lambda_</span> <span class="o">*</span> <span class="n">zeta</span>
-            <span class="n">mu2</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">lambda_</span> <span class="o">*</span> <span class="n">zeta</span>
+            <span class="n">mu1</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">lambda_</span> <span class="o">*</span> <span class="n">kappa</span>
+            <span class="n">mu2</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">lambda_</span> <span class="o">*</span> <span class="n">kappa</span>
 
-            <span class="n">option_price</span> <span class="o">=</span> <span class="n">S0</span> <span class="o">*</span> <span class="n">_Upsilon</span><span class="p">(</span>
+            <span class="n">option_price</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">q</span><span class="o">*</span><span class="n">T</span><span class="p">)</span><span class="o">*</span><span class="n">S0</span> <span class="o">*</span> <span class="n">_Upsilon</span><span class="p">(</span>
                 <span class="n">x</span><span class="p">,</span>
                 <span class="n">T</span><span class="p">,</span>
                 <span class="n">mu1</span><span class="p">,</span>
