@@ -52,7 +52,7 @@ pyparsing==3.1.4
 pyproject_hooks==1.1.0
 pytest==8.3.2
 python-slugify==8.0.4
-pywin32==306
+
 rich==13.9.4
 roman-numerals-py==3.1.0
 
