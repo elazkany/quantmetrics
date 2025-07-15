@@ -1,2 +1,2 @@
-Optio pricing
+Option pricing
 =============
