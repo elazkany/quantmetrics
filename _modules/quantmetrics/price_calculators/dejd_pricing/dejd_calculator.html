@@ -49,7 +49,7 @@
 <p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/levy_models.html">Levy Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/option_pricing.html">Optio pricing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/option_pricing.html">Option pricing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/price_calculators.html">Price Calculators</a></li>
 </ul>
 
@@ -130,7 +130,9 @@
 <div class="viewcode-block" id="DEJDCalculator.__init__">
 <a class="viewcode-back" href="../../../../api/_autosummary/quantmetrics.price_calculators.dejd_pricing.dejd_calculator.DEJDCalculator.html#quantmetrics.price_calculators.dejd_pricing.dejd_calculator.DEJDCalculator.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="s2">&quot;LevyModel&quot;</span><span class="p">,</span> <span class="n">option</span><span class="p">:</span> <span class="s2">&quot;Option&quot;</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">option</span><span class="p">)</span>
+        <span class="c1">#super().__init__(model, option)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">=</span><span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">=</span><span class="n">option</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_pricing_params</span><span class="p">()</span></div>
 
 
