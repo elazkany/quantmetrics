@@ -1,0 +1,217 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GBMClosedForm &mdash; quantmetrics  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="GBMCharacteristicFunction" href="quantmetrics.price_calculators.gbm_pricing.gbm_characteristic_function.GBMCharacteristicFunction.html" />
+    <link rel="prev" title="GBMCalculator" href="quantmetrics.price_calculators.gbm_pricing.gbm_calculator.GBMCalculator.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            quantmetrics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sections:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../levy_models.html">Levy Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../option_pricing.html">Optio pricing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../price_calculators.html">Price Calculators</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../price_calculators.html#modules">Modules</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../price_calculators.html#classes">Classes</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../../price_calculators.html#geometric-brownian-motion-gbm"><strong>Geometric Brownian Motion (GBM)</strong></a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="quantmetrics.price_calculators.gbm_pricing.gbm_calculator.GBMCalculator.html">GBMCalculator</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">GBMClosedForm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantmetrics.price_calculators.gbm_pricing.gbm_characteristic_function.GBMCharacteristicFunction.html">GBMCharacteristicFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantmetrics.price_calculators.gbm_pricing.gbm_paths_Q.GBMSimulatePathsQ.html">GBMSimulatePathsQ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../price_calculators.html#constant-jump-diffusion-cjd"><strong>Constant Jump Diffusion (CJD)</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../price_calculators.html#lognormal-jump-diffusion-ljd"><strong>Lognormal Jump Diffusion (LJD)</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../price_calculators.html#double-exponential-jump-diffusion-dejd"><strong>Double Exponential Jump Diffusion (DEJD)</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../price_calculators.html#variance-gamma-vg"><strong>Variance Gamma (VG)</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">quantmetrics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API Overview</a></li>
+          <li class="breadcrumb-item"><a href="../../../price_calculators.html">Price Calculators</a></li>
+      <li class="breadcrumb-item active">GBMClosedForm</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/api/_autosummary/price_calculators/gbm/quantmetrics.price_calculators.gbm_pricing.gbm_closed_form.GBMClosedForm.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gbmclosedform">
+<h1>GBMClosedForm<a class="headerlink" href="#gbmclosedform" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">quantmetrics.price_calculators.gbm_pricing.gbm_closed_form.</span></span><span class="sig-name descname"><span class="pre">GBMClosedForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LevyModel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Option</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/quantmetrics/price_calculators/gbm_pricing/gbm_closed_form.html#GBMClosedForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Implements the closed-form solution for pricing European options under a Geometric Brownian Motion (GBM) model.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>model<span class="classifier">LevyModel</span></dt><dd><p>A LevyModel object specifying the underlying asset’s model and its parameters.</p>
+</dd>
+<dt>option<span class="classifier">Option</span></dt><dd><p>An Option object specifying the option parameters: interest rate, strike price, time to maturity, dividend yield and the equivalent martingale measure.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../../../_modules/quantmetrics/price_calculators/gbm_pricing/gbm_closed_form.html#GBMClosedForm.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Calculate the European option price using the Black-Scholes exact equation.</p>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>Union[float, np.ndarray]</dt><dd><p>The calculated option price.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h3>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h3>
+<p>The closed-form solution for the European call option:</p>
+<div class="math notranslate nohighlight">
+\[C = e^{-qT}S_0 \ N(d_+) - e^{-rT}K \ N(d_-)\]</div>
+<p>and for the European put option:</p>
+<div class="math notranslate nohighlight">
+\[P = e^{-rT}K\ N(-d_-) - e^{-qT} S_0 \ N(-d_+)\]</div>
+<p>Where:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[d_+ = \frac{\ln(\frac{e^{-qT}S_0}{K}) + (r + \frac{\sigma^2}{2})T}{\sigma \sqrt{T}} \quad \text{and} \quad d_- = d_+ - \sigma \sqrt{T}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(C\)</span> is the call option price.</p></li>
+<li><p><span class="math notranslate nohighlight">\(P\)</span> is the put option price.</p></li>
+<li><p><span class="math notranslate nohighlight">\(q\)</span> is the dividend yield.</p></li>
+<li><p><span class="math notranslate nohighlight">\(T\)</span> is the time to maturity.</p></li>
+<li><p><span class="math notranslate nohighlight">\(S_0\)</span> is the underlying price.</p></li>
+<li><p><span class="math notranslate nohighlight">\(r\)</span> is the risk-free interest rate.</p></li>
+<li><p><span class="math notranslate nohighlight">\(K\)</span> is the strike price.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is the volatility.</p></li>
+<li><p><span class="math notranslate nohighlight">\(N(x)\)</span> is the standard normal cumulative distribution function: <span class="math notranslate nohighlight">\(N(x)= \frac{1}{\sqrt{2\pi}}\int_{-\infty}^x e^{-\frac{u^2}{2}}du\)</span>.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">quantmetrics.levy_models</span> <span class="kn">import</span> <span class="n">GBM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">quantmetrics.option_pricing</span> <span class="kn">import</span> <span class="n">Option</span><span class="p">,</span> <span class="n">OptionPricer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gbm</span> <span class="o">=</span> <span class="n">GBM</span><span class="p">()</span> <span class="c1"># S0=50, sigma=0.2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">option</span> <span class="o">=</span> <span class="n">Option</span><span class="p">(</span><span class="n">K</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">80</span><span class="p">]))</span> <span class="c1"># r=0.05, q=0.02, T=0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gbm_pricer</span> <span class="o">=</span> <span class="n">OptionPricer</span><span class="p">(</span><span class="n">gbm</span><span class="p">,</span> <span class="n">option</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gbm_pricer</span><span class="o">.</span><span class="n">closed_form</span><span class="p">()</span>
+<span class="go">array([2.99962934e+01, 3.15381758e+00, 1.52305781e-03])</span>
+</pre></div>
+</div>
+</section>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Link to this heading"></a></h3>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Black, F., &amp; Scholes, M. (1973). The pricing of options and corporate liabilities. Journal of political economy, 81(3), 637-654.</p>
+</aside>
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Matsuda, K. (2004). Introduction to option pricing with Fourier transform: Option pricing with exponential Lévy models. Department of Economics The Graduate Center, The City University of New York, 1-241.</p>
+</aside>
+</aside>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quantmetrics.price_calculators.gbm_pricing.gbm_calculator.GBMCalculator.html" class="btn btn-neutral float-left" title="GBMCalculator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quantmetrics.price_calculators.gbm_pricing.gbm_characteristic_function.GBMCharacteristicFunction.html" class="btn btn-neutral float-right" title="GBMCharacteristicFunction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ella Elazkany.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

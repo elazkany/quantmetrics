@@ -9,10 +9,42 @@ from typing import Optional
 
 
 class DoubleExponentialJumpDiffusion(LevyModel):
+    """
+    Double exponential jump-diffusion model.
+
+    Parameters
+    ----------
+    S0 : float
+        Initial stock price.
+    mu : float
+        Expected return (drift).
+    sigma : float
+        Volatility (annualized). Divide by the square root of the number of days in a year (e.g., 360) to convert to daily.
+    ``lambda_`` : float
+        Jump intensity rate is strictly greater than zero.
+    eta1 : float
+        to be defined
+    eta2 : float
+        to be defined
+    p : float
+        to be defined
+    N : int
+        Number of big jumps (the Poisson jumps).
+
+
+    References
+    ----------
+    Kou, S. G. (2002). A jump-diffusion model for option pricing. Management science, 48(8), 1086-1101.
+    Ramezani, C. A., & Zeng, Y. (2007). Maximum likelihood estimation of the double exponential jump-diffusion process. Annals of Finance, 3, 487-507.
+
+    Examples
+    --------
+    
+    """
     def __init__(
         self,
         S0: float = 100,
-        mu: float = 0.025,
+        mu: float = 0.05,
         sigma: float = 0.16,
         lambda_: float = 1,
         eta1: float = 10,
@@ -20,47 +52,7 @@ class DoubleExponentialJumpDiffusion(LevyModel):
         p: float = 0.4,
         N: int = 10,
     ):
-        """
-        Double exponential jump-diffusion model.
-
-        Parameters
-        ----------
-        S0 : float
-            Initial stock price.
-        mu : float
-            Expected return (drift).
-        sigma : float
-            Volatility (annualized). Divide by the square root of the number of days in a year (e.g., 360) to convert to daily.
-        lambda_ : float
-            Jump intensity rate is strictly greater than zero.
-        eta1 : float
-            ...
-        eta2 : float
-            ...
-        p : float
-            ...
-        N : int
-            Number of big jumps (the Poisson jumps).
-
-
-        References
-        ----------
-        Kou, S. G. (2002). A jump-diffusion model for option pricing. Management science, 48(8), 1086-1101.
-        Ramezani, C. A., & Zeng, Y. (2007). Maximum likelihood estimation of the double exponential jump-diffusion process. Annals of Finance, 3, 487-507.
-
-        Examples
-        --------
-        ```python
-        from quantmetrics.levy_models import DEJD
-        from quantmetrics.option_pricing import Option, OptionPricer
-
-        dejd = DEJD()
-        option = Option(T=0.5, r=0.05, K=98)
-        dejd_price = OptionPricer(model=dejd, option=option)
-        # calculating the option price as in Kou, S. G. (2002)
-        dejd_price.exact()
-        ```
-        """
+        
 
         self.S0 = S0
         self._mu = mu
@@ -223,8 +215,7 @@ class DoubleExponentialJumpDiffusion(LevyModel):
             A 5x1-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).
 
         brute_tuple : tuple
-            If initial parameters are not specified, the brute function is applied with a 5x3-dimensional tuple for each parameter
-        as (start value, end value, step size).
+            If initial parameters are not specified, the brute function is applied with a 5x3-dimensional tuple for each parameter as (start value, end value, step size).
 
         Returns
         -------

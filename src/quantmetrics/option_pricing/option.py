@@ -3,12 +3,13 @@
 class Option:
     def __init__(
             self,
-            r: float = 0.05/365,
-            q: float = 0.0,
-            K: float = 60.0,
-            T: float = 63.0,
+            r: float = 0.05,
+            q: float = 0.02,
+            K: float = 50.0,
+            T: float = 0.5,
+            option_type : str = "e",
             payoff: str = "c",
-            emm : str = "Black-Scholes",
+            emm : str = "mean-correcting",
             psi : float = 0.0,
             ):
         """
@@ -28,15 +29,16 @@ class Option:
             Strike price of the option
         T : float or int
             Time to maturity in years
-
-            Multiply by the number of days in a year (ex. 360) to convert to daily
+            Multiply by the number of days in a year (ex. 360) to convert to daily 
+        option_type : str
+            Option type, "e" for European options and "a" for American options.
         payoff : str
             "c" for call option and "p" for put option
         emm : str
             The equivalent martingale measure used for pricing the option. 
             Options include:
-            - "Black-Scholes": The standard measure used in the Black-Scholes model, also the measure applied to Merton's jump-diffusion model.
-            - "Esscher": A measure more general than the "Black-Scholes" measure which includes, for example, pricing jump risk.
+            - "mean-correcting": Mean-correcting measure which is the equivalent martingale measure used in the Black-Scholes model.
+            - "Esscher": A measure more general than the "mean-correcting" measure which includes, for example, pricing jump risk.
 
         psi: float
             A free parameter of the second-order Esscher EMM. Default is 0 which corresponds to the classical Esscher EMM. See References for details.
@@ -51,6 +53,7 @@ class Option:
         self.q = q
         self.K = K
         self.T = T
+        self.option_type = option_type
         self.payoff = payoff
         self.emm = emm
         self.psi = psi

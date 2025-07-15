@@ -8,33 +8,34 @@ import math
 from typing import Optional
 
 class ConstantJumpDiffusion(LevyModel):
+    """
+    Constant jump-diffusion model.
+
+    Parameters
+    ----------
+    S0 : float
+        Initial stock price.
+    mu : float
+        Expected return (drift).
+    sigma : float
+        Volatility (annualized). Divide by the square root of the number of days in a year (e.g., 360) to convert to daily.
+    ``lambda_`` : float
+        Jump intensity rate is strictly greater than zero.
+    gamma : float
+        Mean jump size is strictly greater than -1 and non-zero.
+    N : int
+        Number of big jumps (the Poisson jumps).
+    """
     def __init__(
         self,
-        S0: float = 60,
-        mu: float = 0.00049883,
-        sigma: float = 0.02320006,
-        lambda_: float = 0.01508188,
-        gamma: float = -0.0934457,
+        S0: float = 50,
+        mu: float = 0.05,
+        sigma: float = 0.2,
+        lambda_: float = 1,
+        gamma: float = -0.1,
         N : int = 10,
     ):
-        """
-        Constant jump-diffusion model.
-
-        Parameters
-        ----------
-        S0 : float
-            Initial stock price.
-        mu : float
-            Expected return (drift).
-        sigma : float
-            Volatility (annualized). Divide by the square root of the number of days in a year (e.g., 360) to convert to daily.
-        lambda_ : float
-            Jump intensity rate is strictly greater than zero.
-        gamma : float
-            Mean jump size is strictly greater than -1 and non-zero.
-        N : int
-            Number of big jumps (the Poisson jumps).
-        """
+        
 
         self.S0 = S0
         self._mu = mu
@@ -144,8 +145,8 @@ class ConstantJumpDiffusion(LevyModel):
         mu, sigma, lambda_, gamma = est_params
         if not self.model_params_conds_valid: #sigma <= 0.0 or lambda_ <= 0.0 or gamma ==0.0 or gamma <= -1:
             return 500.0
-        else:
-            drift = mu - 0.5 * sigma**2
+        
+        drift = mu - 0.5 * sigma**2 - lambda_ *(np.exp(gamma) - 1)
 
         sum_n = 0.0
         for n in range(0, self.N + 1):
@@ -172,13 +173,13 @@ class ConstantJumpDiffusion(LevyModel):
             A 4x1-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).
 
         brute_tuple : tuple
-            If initial parameters are not specified, the brute function is applied with a 4x3-dimensional tuple for each parameter 
-        as (start value, end value, step size).
+            If initial parameters are not specified, the brute function is applied with a 4x3-dimensional tuple for each parameter as (start value, end value, step size).
 
         Returns
         -------
         minimize
             The result of the minimization process containing the estimated parameters.
+        
         """
 
         def MLE(params):
@@ -201,6 +202,6 @@ class ConstantJumpDiffusion(LevyModel):
         result = minimize(MLE, params, method=method)
 
         end_time = time.time()
-        print(f"Elapsed time is {end_time - start_time} seconds")
+        #print(f"Elapsed time is {end_time - start_time} seconds")
         
         return result

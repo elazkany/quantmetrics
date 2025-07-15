@@ -3,5 +3,6 @@
         "ndarray",
         "quantmetrics"
     ],
-    "python.REPL.enableREPLSmartSend": false
+    "python.REPL.enableREPLSmartSend": false,
+    "makefile.configureOnOpen": true
 }

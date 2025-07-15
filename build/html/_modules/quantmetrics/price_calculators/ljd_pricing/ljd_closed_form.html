@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>quantmetrics.price_calculators.ljd_pricing.ljd_closed_form &mdash; quantmetrics  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            quantmetrics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sections:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/index.html">API Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/levy_models.html">Levy Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/option_pricing.html">Optio pricing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/price_calculators.html">Price Calculators</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">quantmetrics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">quantmetrics.price_calculators.ljd_pricing.ljd_closed_form</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for quantmetrics.price_calculators.ljd_pricing.ljd_closed_form</h1><div class="highlight"><pre>
+<span></span><span class="c1">#src\quantmetrics\price_calculators\ljd_pricing\ljd_closed_form.py</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">st</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="c1">#from quantmetrics.risk_calculators.martingale_equation import RiskPremium</span>
+<span class="kn">from</span> <span class="nn">quantmetrics.utils.exceptions</span> <span class="kn">import</span> <span class="n">UnknownPayoffTypeError</span><span class="p">,</span> <span class="n">FeatureNotImplementedError</span><span class="p">,</span> <span class="n">UnsupportedEMMTypeError</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">quantmetrics.levy_models</span> <span class="kn">import</span> <span class="n">LevyModel</span>
+    <span class="kn">from</span> <span class="nn">quantmetrics.option_pricing</span> <span class="kn">import</span> <span class="n">Option</span>
+
+<div class="viewcode-block" id="LJDClosedForm">
+<a class="viewcode-back" href="../../../../api/_autosummary/quantmetrics.price_calculators.ljd_pricing.ljd_closed_form.LJDClosedForm.html#quantmetrics.price_calculators.ljd_pricing.ljd_closed_form.LJDClosedForm">[docs]</a>
+<span class="k">class</span> <span class="nc">LJDClosedForm</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Implements the closed-form solution for pricing European options under a lognormal jump-diffusion (LJD) model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model : LevyModel</span>
+<span class="sd">            A LevyModel object specifying the underlying asset&#39;s model and its parameters.</span>
+<span class="sd">        option : Option</span>
+<span class="sd">            An Option object specifying the option parameters: interest rate, strike price, time to maturity, dividend yield and the equivalent martingale measure.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="LJDClosedForm.__init__">
+<a class="viewcode-back" href="../../../../api/_autosummary/quantmetrics.price_calculators.ljd_pricing.ljd_closed_form.LJDClosedForm.html#quantmetrics.price_calculators.ljd_pricing.ljd_closed_form.LJDClosedForm.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="s2">&quot;LevyModel&quot;</span><span class="p">,</span> <span class="n">option</span><span class="p">:</span> <span class="s2">&quot;Option&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">option</span> <span class="o">=</span> <span class="n">option</span></div>
+
+
+<div class="viewcode-block" id="LJDClosedForm.calculate">
+<a class="viewcode-back" href="../../../../api/_autosummary/price_calculators/ljd/quantmetrics.price_calculators.ljd_pricing.ljd_closed_form.LJDClosedForm.html#quantmetrics.price_calculators.ljd_pricing.ljd_closed_form.LJDClosedForm.calculate">[docs]</a>
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the European option price using the lognormal jump-diffusion exact equation.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Union[float, np.ndarray]</span>
+<span class="sd">            The calculated option price.</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -------</span>
+<span class="sd">        The closed-form solution for the European option depends on the equivalent martingale measure (EMM) considered.</span>
+
+<span class="sd">        - For ``emm = &quot;mean-correcting&quot;``:</span>
+<span class="sd">        </span>
+<span class="sd">        This measure is the same in the Black-Scholes framework and the equation for the option price is the Merton jump-diffusion option price formula [3]_ where the jump risk is not priced and :math:`\\lambda^\\mathbb{Q}=\\lambda`. The formula for the European call option is:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            C =\\sum_{n\\geq 0} \\frac{e^{-\\lambda T}(\\lambda T)^n}{n!}\\left(e^{-qT} S^{(n)} \\ N(d_+^{(n)})  - e^{-rT}K \\ N(d_-^{(n)}) \\right)</span>
+
+<span class="sd">        and for the European put option, we use the call-put parity:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            P = C + e^{-rT} K - e^{-qT}S_0</span>
+
+<span class="sd">        where:</span>
+<span class="sd">  </span>
+<span class="sd">        </span>
+<span class="sd">            .. math::</span>
+<span class="sd">            </span>
+<span class="sd">                d_+^{(n)} = \\frac{\\ln \\left(\\frac{e^{-qT}S^{(n)}}{K}\\right) + (r + \\frac{(\\sigma^{(n)})^2}{2})T}{\\sigma^{(n)} \\sqrt{T}},</span>
+
+<span class="sd">            .. math::    </span>
+
+<span class="sd">                d_-^{(n)} = d_+^{(n)} - \\sigma^{(n)} \\sqrt{T}, \quad \\kappa = \\exp\\left(\\mu_J + \\frac{\\sigma_J^2}{2} \\right) -1  </span>
+
+<span class="sd">            .. math::</span>
+
+<span class="sd">                S^{(n)} = S_0 \\exp \\left(n(\\mu_J + \\frac{\\sigma_J^2}{2}) - \\lambda \\kappa T \\right) \\quad \\text{and} \\quad  \\sigma^{(n)} = \\sqrt{\\sigma^2 + \\frac{n\\sigma_J^2}{T}}</span>
+
+
+<span class="sd">            - :math:`C` is the call option price.</span>
+<span class="sd">            - :math:`P` is the put option price.</span>
+<span class="sd">            - :math:`q` is the dividend yield.</span>
+<span class="sd">            - :math:`T` is the time to maturity.</span>
+<span class="sd">            - :math:`S_0` is the underlying price.</span>
+<span class="sd">            - :math:`r` is the risk-free interest rate.            </span>
+<span class="sd">            - :math:`K` is the strike price.</span>
+<span class="sd">            - :math:`\\sigma` is the volatility.</span>
+<span class="sd">            - :math:`\\mu_J` is the mean of the jump sizes.</span>
+<span class="sd">            - :math:`\\sigma_J` is the standard deviation of the jump sizes.</span>
+<span class="sd">            - :math:`\\lambda` is the jump intensity rate.</span>
+<span class="sd">            - :math:`N(x)` is the standard normal cumulative distribution function: :math:`N(x)= \\frac{1}{\\sqrt{2\pi}}\\int_{-\\infty}^x e^{-\\frac{u^2}{2}}du`.  </span>
+
+<span class="sd">        - For ``emm = Esscher&quot;``:</span>
+<span class="sd">        </span>
+<span class="sd">        Under the Esscher EMM, the jump risk is priced, see [2]_ for details.</span>
+
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from quantmetrics.levy_models import LJD</span>
+<span class="sd">        &gt;&gt;&gt; from quantmetrics.option_pricing import Option, OptionPricer</span>
+<span class="sd">        &gt;&gt;&gt; ljd = LJD() # S0=50, sigma=0.2, lambda_=1, muJ=-0.1, sigmaJ=0.1</span>
+<span class="sd">        &gt;&gt;&gt; option = Option(K=np.array([20,50,80]), T = 20/252) # r=0.05, q=0.02</span>
+<span class="sd">        &gt;&gt;&gt; ljd_pricer = OptionPricer2(ljd, option)</span>
+<span class="sd">        &gt;&gt;&gt; ljd_pricer.closed_form()</span>
+<span class="sd">        array([2.99999057e+01, 1.32940700e+00, 1.19634276e-07])</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        .. [1] Choulli, T., Elazkany, E., &amp; Vanmaele, M. (2024). Applications of the Second-Order Esscher Pricing in Risk Management. arXiv preprint arXiv:2410.21649.</span>
+<span class="sd">        </span>
+<span class="sd">        .. [2] Matsuda, K. (2004). Introduction to option pricing with Fourier transform: Option pricing with exponential Lévy models. Department of Economics The Graduate Center, The City University of New York, 1-241.</span>
+
+<span class="sd">        .. [3] Merton, R. C. (1976). Option pricing when underlying stock returns are discontinuous. Journal of financial economics, 3(1-2), 125-144.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed_form_solution</span><span class="p">()</span></div>
+
+    
+    <span class="k">def</span> <span class="nf">_closed_form_solution</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="c1"># implements the closed form calculations</span>
+        <span class="n">S0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">S0</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mu</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">sigma</span>
+        <span class="n">lambda_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">lambda_</span>
+        <span class="n">muJ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">muJ</span>
+        <span class="n">sigmaJ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">sigmaJ</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">N</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">r</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">q</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">K</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">payoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">payoff</span>
+        <span class="n">emm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">emm</span>
+        <span class="n">psi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">psi</span>
+
+        <span class="n">option_price</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">kappa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">muJ</span> <span class="o">+</span> <span class="n">sigmaJ</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">emm</span> <span class="o">==</span> <span class="s2">&quot;mean-correcting&quot;</span><span class="p">:</span>
+            <span class="n">lambda_Q</span> <span class="o">=</span> <span class="n">lambda_</span>
+
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">x_n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">q</span><span class="o">*</span><span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">S0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">muJ</span> <span class="o">+</span> <span class="n">sigmaJ</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">lambda_Q</span> <span class="o">*</span> <span class="n">kappa</span> <span class="o">*</span> <span class="n">T</span><span class="p">)</span>
+
+                <span class="n">sigma_n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">n</span> <span class="o">*</span> <span class="n">sigmaJ</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">T</span><span class="p">)</span>
+
+                <span class="n">poisson_pdf</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">lambda_Q</span> <span class="o">*</span> <span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">lambda_Q</span> <span class="o">*</span> <span class="n">T</span><span class="p">)</span> <span class="o">**</span> <span class="n">n</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+                <span class="p">)</span>
+
+                <span class="n">d_plus</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x_n</span> <span class="o">/</span> <span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="n">sigma_n</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+                    <span class="n">sigma_n</span> <span class="o">*</span> <span class="n">T</span><span class="o">**</span><span class="mf">0.5</span>
+                <span class="p">)</span>
+
+                <span class="n">d_minus</span> <span class="o">=</span> <span class="n">d_plus</span> <span class="o">-</span> <span class="n">sigma_n</span> <span class="o">*</span> <span class="n">T</span><span class="o">**</span><span class="mf">0.5</span>
+
+                <span class="n">bs_option_price</span> <span class="o">=</span> <span class="n">x_n</span> <span class="o">*</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">d_plus</span><span class="p">)</span> <span class="o">-</span> <span class="n">K</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+                    <span class="o">-</span><span class="n">r</span> <span class="o">*</span> <span class="n">T</span>
+                <span class="p">)</span> <span class="o">*</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">d_minus</span><span class="p">)</span>
+
+                <span class="n">option_price</span> <span class="o">=</span> <span class="n">option_price</span> <span class="o">+</span> <span class="n">poisson_pdf</span> <span class="o">*</span> <span class="n">bs_option_price</span>
+        <span class="k">elif</span> <span class="n">emm</span> <span class="o">==</span> <span class="s2">&quot;Esscher&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FeatureNotImplementedError</span><span class="p">(</span><span class="n">emm</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnsupportedEMMTypeError</span><span class="p">(</span><span class="n">emm</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">payoff</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">option_price</span>
+        <span class="k">elif</span> <span class="n">payoff</span> <span class="o">==</span> <span class="s1">&#39;p&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">option_price</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">r</span><span class="o">*</span><span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">K</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">q</span><span class="o">*</span><span class="n">T</span><span class="p">)</span><span class="o">*</span><span class="n">S0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnknownPayoffTypeError</span><span class="p">(</span><span class="n">payoff</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ella Elazkany.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

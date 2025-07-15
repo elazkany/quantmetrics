@@ -7,24 +7,24 @@ import time
 
 
 class GeometricBrownianMotion(LevyModel):
+    """
+    Geometric Brownian motion model.
+
+    Parameters
+    ----------
+    S0 : float
+        Initial stock price.
+    mu : float
+        Expected return (drift).
+    sigma : float
+        Volatility (annualized). Divide by the square root of the number of days in a year (e.g., 360) to convert to daily.
+    """
     def __init__(
         self,
-        S0: float = 60,
-        mu: float = 0.025,
-        sigma: float = 0.02320006,
+        S0: float = 50,
+        mu: float = 0.05,
+        sigma: float = 0.2,
     ):
-        """
-        Geometric Brownian motion model.
-
-        Parameters
-        ----------
-        S0 : float
-            Initial stock price.
-        mu : float
-            Expected return (drift).
-        sigma : float
-            Volatility (annualized). Divide by the square root of the number of days in a year (e.g., 360) to convert to daily.
-        """
 
         self.S0 = S0
         self._mu = mu
@@ -114,13 +114,13 @@ class GeometricBrownianMotion(LevyModel):
             A 2x1-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).
 
         brute_tuple : tuple
-            If initial parameters are not specified, the brute function is applied with a 2x3-dimensional tuple for each parameter
-        as (start value, end value, step size).
+            If initial parameters are not specified, the brute function is applied with a 2x3-dimensional tuple for each parameter as (start value, end value, step size).
 
         Returns
         -------
         minimize
             The result of the minimization process containing the estimated parameters.
+        
         """
 
         def MLE(params):

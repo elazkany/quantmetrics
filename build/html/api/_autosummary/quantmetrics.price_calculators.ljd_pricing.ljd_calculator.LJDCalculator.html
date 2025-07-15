@@ -1,0 +1,173 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator &mdash; quantmetrics  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            quantmetrics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sections:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">API Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../levy_models.html">Levy Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../option_pricing.html">Optio pricing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../price_calculators.html">Price Calculators</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">quantmetrics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/_autosummary/quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quantmetrics-price-calculators-ljd-pricing-ljd-calculator-ljdcalculator">
+<h1>quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator<a class="headerlink" href="#quantmetrics-price-calculators-ljd-pricing-ljd-calculator-ljdcalculator" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">quantmetrics.price_calculators.ljd_pricing.ljd_calculator.</span></span><span class="sig-name descname"><span class="pre">LJDCalculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LevyModel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Option</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/quantmetrics/price_calculators/ljd_pricing/ljd_calculator.html#LJDCalculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator" title="Link to this definition"></a></dt>
+<dd><p>Calculator for option pricing under the lognormal jump-diffusion (LJD) model.</p>
+<p>This class provides a unified interface for computing option prices and related quantities
+using the LJD model. It leverages several specialized classes to perform tasks such as 
+computing the closed-form solution for European options, evaluating the characteristic 
+function (useful for Fourier-based methods), and simulating asset price paths under LJD dynamics.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>model<span class="classifier">LevyModel</span></dt><dd><p>An instance of a Levy model that defines the underlying asset dynamics, including parameters such as the initial asset price (S0) and volatility (sigma).</p>
+</dd>
+<dt>option<span class="classifier">Option</span></dt><dd><p>An instance of an Option containing parameters such as the risk-free rate (r), dividend yield (q), time to maturity (T), strike price (K), and payoff type.</p>
+</dd>
+</dl>
+</section>
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>calculate_closed_form()<span class="classifier">Union[float, np.ndarray]</span></dt><dd><p>Computes the option price using the closed-form solution for the LJD model.</p>
+</dd>
+<dt>calculate_characteristic_function(u<span class="classifier">np.ndarray)</span><span class="classifier">np.ndarray</span></dt><dd><p>Evaluates the characteristic function of the LJD model at the provided input values.
+This is typically used in Fourier-based pricing methods.</p>
+</dd>
+<dt>simulate_paths_Q(num_timesteps<span class="classifier">int, num_paths</span><span class="classifier">int, seed</span><span class="classifier">int)</span><span class="classifier">dict</span></dt><dd><p>Simulates asset price paths of the LJD dynamics the risk-neutral measure <span class="math notranslate nohighlight">\(\mathbb{Q}\)</span>.
+Returns a dictionary with keys:</p>
+<ul class="simple">
+<li><p>‘time’: 1D array of time points.</p></li>
+<li><p>‘S’: The exact solution paths (via the multiplicative formula).</p></li>
+<li><p>‘S_euler’: The Euler–Maruyama approximation paths.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LevyModel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Option</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/quantmetrics/price_calculators/ljd_pricing/ljd_calculator.html#LJDCalculator.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator.__init__" title="quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(model, option)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_characteristic_function</span></code>(u)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_closed_form</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulate_paths_Q</span></code>(num_timesteps, num_paths, seed)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ella Elazkany.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

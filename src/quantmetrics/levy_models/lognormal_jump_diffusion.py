@@ -9,36 +9,37 @@ from typing import Optional
 
 
 class LognormalJumpDiffusion(LevyModel):
+    """
+    Lognormal jump-diffusion model.
+
+    Parameters
+    ----------
+    S0 : float
+        Initial stock price.
+    mu : float
+        Expected return (drift).
+    sigma : float
+        Volatility (annualized). Divide by the square root of the number of days in a year (e.g., 360) to convert to daily.
+    ``lambda_`` : float
+        Jump intensity rate is strictly greater than zero.
+    muJ : float
+        Mean jump size is strictly greater than -1 and non-zero.
+    sigmaJ : float
+        Standard deviation of the jump size. It is a positive number.
+    N : int
+        Number of big jumps (the Poisson jumps).
+    """
     def __init__(
         self,
-        S0: float = 60,
-        mu: float = 0.00049883,
-        sigma: float = 0.02320006,
-        lambda_: float = 0.01508188,
-        muJ: float = -0.0934457,
-        sigmaJ: float = 0.04625031,
+        S0: float = 50,
+        mu: float = 0.05,
+        sigma: float = 0.2,
+        lambda_: float = 1,
+        muJ: float = -0.1,
+        sigmaJ: float = 0.1,
         N: int = 10,
     ):
-        """
-        Lognormal jump-diffusion model.
-
-        Parameters
-        ----------
-        S0 : float
-            Initial stock price.
-        mu : float
-            Expected return (drift).
-        sigma : float
-            Volatility (annualized). Divide by the square root of the number of days in a year (e.g., 360) to convert to daily.
-        lambda_ : float
-            Jump intensity rate is strictly greater than zero.
-        muJ : float
-            Mean jump size is strictly greater than -1 and non-zero.
-        sigmaJ : float
-            Standard deviation of the jump size. It is a positive number.
-        N : int
-            Number of big jumps (the Poisson jumps).
-        """
+        
 
         self.S0 = S0
         self._mu = mu
@@ -158,8 +159,8 @@ class LognormalJumpDiffusion(LevyModel):
         mu, sigma, lambda_, muJ, sigmaJ = est_params
         if not self.model_params_conds_valid: #sigma <= 0.0 or lambda_ <= 0.0 or sigmaJ <= 0.0:
             return 500.0
-        else:
-            drift = mu - 0.5 * sigma**2  # TODO: consider a different drift
+        
+        drift = mu - 0.5 * sigma**2 - lambda_ *(np.exp(muJ + sigmaJ**2/2) - 1) # TODO: consider a different drift
 
         sum_n = 0.0
         for n in range(0, self.N + 1):
@@ -197,8 +198,7 @@ class LognormalJumpDiffusion(LevyModel):
             A 5x1-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).
 
         brute_tuple : tuple
-            If initial parameters are not specified, the brute function is applied with a 5x3-dimensional tuple for each parameter
-        as (start value, end value, step size).
+            If initial parameters are not specified, the brute function is applied with a 5x3-dimensional tuple for each parameter as (start value, end value, step size).
 
         Returns
         -------
@@ -226,6 +226,6 @@ class LognormalJumpDiffusion(LevyModel):
         result = minimize(MLE, params, method=method)
 
         end_time = time.time()
-        print(f"Elapsed time is {end_time - start_time} seconds")
+        #print(f"Elapsed time is {end_time - start_time} seconds")
 
         return result

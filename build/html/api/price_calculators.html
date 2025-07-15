@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Price Calculators &mdash; quantmetrics  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="GBMCalculator" href="_autosummary/price_calculators/gbm/quantmetrics.price_calculators.gbm_pricing.gbm_calculator.GBMCalculator.html" />
+    <link rel="prev" title="Optio pricing" href="option_pricing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            quantmetrics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sections:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">API Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="levy_models.html">Levy Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="option_pricing.html">Optio pricing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Price Calculators</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#modules">Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#geometric-brownian-motion-gbm"><strong>Geometric Brownian Motion (GBM)</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/gbm/quantmetrics.price_calculators.gbm_pricing.gbm_calculator.GBMCalculator.html">GBMCalculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/gbm/quantmetrics.price_calculators.gbm_pricing.gbm_closed_form.GBMClosedForm.html">GBMClosedForm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/gbm/quantmetrics.price_calculators.gbm_pricing.gbm_characteristic_function.GBMCharacteristicFunction.html">GBMCharacteristicFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/gbm/quantmetrics.price_calculators.gbm_pricing.gbm_paths_Q.GBMSimulatePathsQ.html">GBMSimulatePathsQ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#constant-jump-diffusion-cjd"><strong>Constant Jump Diffusion (CJD)</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/cjd/quantmetrics.price_calculators.cjd_pricing.cjd_calculator.CJDCalculator.html">CJDCalculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/cjd/quantmetrics.price_calculators.cjd_pricing.cjd_closed_form.CJDClosedForm.html">CJDClosedForm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/cjd/quantmetrics.price_calculators.cjd_pricing.cjd_characteristic_function.CJDCharacteristicFunction.html">CJDCharacteristicFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/cjd/quantmetrics.price_calculators.cjd_pricing.cjd_paths_Q.CJDSimulatePathsQ.html">CJDSimulatePathsQ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lognormal-jump-diffusion-ljd"><strong>Lognormal Jump Diffusion (LJD)</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/ljd/quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator.html">LJDCalculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/ljd/quantmetrics.price_calculators.ljd_pricing.ljd_closed_form.LJDClosedForm.html">LJDClosedForm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/ljd/quantmetrics.price_calculators.ljd_pricing.ljd_characteristic_function.LJDCharacteristicFunction.html">LJDCharacteristicFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/ljd/quantmetrics.price_calculators.ljd_pricing.ljd_paths_Q.LJDSimulatePathsQ.html">LJDSimulatePathsQ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#double-exponential-jump-diffusion-dejd"><strong>Double Exponential Jump Diffusion (DEJD)</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/dejd/quantmetrics.price_calculators.dejd_pricing.dejd_calculator.DEJDCalculator.html">DEJDCalculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/dejd/quantmetrics.price_calculators.dejd_pricing.dejd_closed_form.DEJDClosedForm.html">DEJDClosedForm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/dejd/quantmetrics.price_calculators.dejd_pricing.dejd_characteristic_function.DEJDCharacteristicFunction.html">DEJDCharacteristicFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/dejd/quantmetrics.price_calculators.dejd_pricing.dejd_paths_Q.DEJDSimulatePathsQ.html">DEJDSimulatePathsQ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#variance-gamma-vg"><strong>Variance Gamma (VG)</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/vg/quantmetrics.price_calculators.vg_pricing.vg_calculator.VGCalculator.html">VGCalculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/vg/quantmetrics.price_calculators.vg_pricing.vg_closed_form.VGClosedForm.html">VGClosedForm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/vg/quantmetrics.price_calculators.vg_pricing.vg_characteristic_function.VGCharacteristicFunction.html">VGCharacteristicFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/price_calculators/vg/quantmetrics.price_calculators.vg_pricing.vg_paths_Q.VGSimulatePathsQ.html">VGSimulatePathsQ</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">quantmetrics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Overview</a></li>
+      <li class="breadcrumb-item active">Price Calculators</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/price_calculators.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="price-calculators">
+<h1>Price Calculators<a class="headerlink" href="#price-calculators" title="Link to this heading"></a></h1>
+<p>The <cite>price_calculators</cite> module contains tools for implementing different pricing models, including closed-form solutions, characteristic functions, and numerical methods.</p>
+<section id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Link to this heading"></a></h2>
+<p>The <cite>price_calculators</cite> module is organized into the following submodules:</p>
+<ul class="simple">
+<li><p><strong>base_calculator.py</strong>:
+Defines the base class for all pricing models. This is not meant to be instantiated directly but serves as the foundation for other calculators.</p></li>
+<li><p><strong>gbm_pricing</strong>:
+Contains classes for the Geometric Brownian Motion (GBM) model. This submodule includes:</p>
+<ul>
+<li><p><cite>gbm_calculator.py</cite>: Contains the <cite>GBMCalculator</cite> class for pricing using the GBM model.</p></li>
+<li><p><cite>gbm_closed_form.py</cite>: Provides closed-form solutions for options under the GBM model.</p></li>
+<li><p><cite>gbm_paths_Q.py</cite>: Implements path simulations under the GBM model.</p></li>
+</ul>
+</li>
+<li><p><strong>cjd_pricing</strong>:
+Implements the Constant Jump Diffusion (CJD) model. This submodule includes:</p>
+<ul>
+<li><p><cite>cjd_calculator.py</cite>: Contains the <cite>CJDCalculator</cite> class for pricing using the CJD model.</p></li>
+<li><p><cite>cjd_characteristic_function.py</cite>: Implements the characteristic function for the CJD model.</p></li>
+<li><p><cite>cjd_closed_form.py</cite>: Provides closed-form solutions for options under the CJD model.</p></li>
+<li><p><cite>cjd_paths_Q.py</cite>: Implements path simulations under the CJD model.</p></li>
+</ul>
+</li>
+<li><p><strong>ljd_pricing</strong>:
+Implements the Lognormal Jump Diffusion (LJD) model. This submodule includes:</p>
+<ul>
+<li><p><cite>ljd_calculator.py</cite>: Contains the <cite>LJDCalculator</cite> class for pricing using the LJD model.</p></li>
+<li><p><cite>ljd_characteristic_function.py</cite>: Implements the characteristic function for the LJD model.</p></li>
+<li><p><cite>ljd_closed_form.py</cite>: Provides closed-form solutions for options under the LJD model.</p></li>
+<li><p><cite>ljd_paths_Q.py</cite>: Implements path simulations under the LJD model.</p></li>
+</ul>
+</li>
+<li><p><strong>dejd_pricing</strong>:
+Provides tools for the Double Exponential Jump Diffusion (DEJD) model. This submodule includes:</p>
+<ul>
+<li><p><cite>dejd_calculator.py</cite>: Contains the <cite>DEJDCalculator</cite> class for pricing using the DEJD model.</p></li>
+<li><p><cite>dejd_characteristic_function.py</cite>: Implements the characteristic function for the DEJD model.</p></li>
+<li><p><cite>dejd_closed_form.py</cite>: Provides closed-form solutions for options under the DEJD model.</p></li>
+<li><p><cite>dejd_paths_Q.py</cite>: Implements path simulations under the DEJD model.</p></li>
+</ul>
+</li>
+<li><p><strong>vg_pricing</strong>:
+Implements the Variance Gamma (VG) model. This submodule includes:</p>
+<ul>
+<li><p><cite>vg_calculator.py</cite>: Contains the <cite>VGCalculator</cite> class for pricing using the VG model.</p></li>
+<li><p><cite>vg_characteristic_function.py</cite>: Implements the characteristic function for the VG model.</p></li>
+<li><p><cite>vg_closed_form.py</cite>: Provides closed-form solutions for options under the VG model.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
+<section id="geometric-brownian-motion-gbm">
+<h3><strong>Geometric Brownian Motion (GBM)</strong><a class="headerlink" href="#geometric-brownian-motion-gbm" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.gbm_pricing.gbm_calculator.GBMCalculator.html#quantmetrics.price_calculators.gbm_pricing.gbm_calculator.GBMCalculator" title="quantmetrics.price_calculators.gbm_pricing.gbm_calculator.GBMCalculator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.gbm_pricing.gbm_calculator.GBMCalculator</span></code></a></p></td>
+<td><p>Calculator for option pricing under the Geometric Brownian Motion (GBM) model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.gbm_pricing.gbm_closed_form.GBMClosedForm.html#quantmetrics.price_calculators.gbm_pricing.gbm_closed_form.GBMClosedForm" title="quantmetrics.price_calculators.gbm_pricing.gbm_closed_form.GBMClosedForm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.gbm_pricing.gbm_closed_form.GBMClosedForm</span></code></a></p></td>
+<td><p>Implements the closed-form solution for pricing European options under a Geometric Brownian Motion (GBM) model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.gbm_pricing.gbm_characteristic_function.GBMCharacteristicFunction.html#quantmetrics.price_calculators.gbm_pricing.gbm_characteristic_function.GBMCharacteristicFunction" title="quantmetrics.price_calculators.gbm_pricing.gbm_characteristic_function.GBMCharacteristicFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.gbm_pricing.gbm_characteristic_function.GBMCharacteristicFunction</span></code></a></p></td>
+<td><p>Implements the characteristic function for a Geometric Brownian Motion (GBM) model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.gbm_pricing.gbm_paths_Q.GBMSimulatePathsQ.html#quantmetrics.price_calculators.gbm_pricing.gbm_paths_Q.GBMSimulatePathsQ" title="quantmetrics.price_calculators.gbm_pricing.gbm_paths_Q.GBMSimulatePathsQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.gbm_pricing.gbm_paths_Q.GBMSimulatePathsQ</span></code></a></p></td>
+<td><p>Implements the paths simulation for a Geometric Brownian Motion (GBM) model under the risk-neutral measure.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="constant-jump-diffusion-cjd">
+<h3><strong>Constant Jump Diffusion (CJD)</strong><a class="headerlink" href="#constant-jump-diffusion-cjd" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.cjd_pricing.cjd_calculator.CJDCalculator.html#quantmetrics.price_calculators.cjd_pricing.cjd_calculator.CJDCalculator" title="quantmetrics.price_calculators.cjd_pricing.cjd_calculator.CJDCalculator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.cjd_pricing.cjd_calculator.CJDCalculator</span></code></a></p></td>
+<td><p>Calculator for option pricing under the Constant jump-diffusion (CJD) model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.cjd_pricing.cjd_closed_form.CJDClosedForm.html#quantmetrics.price_calculators.cjd_pricing.cjd_closed_form.CJDClosedForm" title="quantmetrics.price_calculators.cjd_pricing.cjd_closed_form.CJDClosedForm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.cjd_pricing.cjd_closed_form.CJDClosedForm</span></code></a></p></td>
+<td><p>Implements the closed-form solution for pricing European options under a constant jump-diffusion (CJD) model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.cjd_pricing.cjd_characteristic_function.CJDCharacteristicFunction.html#quantmetrics.price_calculators.cjd_pricing.cjd_characteristic_function.CJDCharacteristicFunction" title="quantmetrics.price_calculators.cjd_pricing.cjd_characteristic_function.CJDCharacteristicFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.cjd_pricing.cjd_characteristic_function.CJDCharacteristicFunction</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.cjd_pricing.cjd_paths_Q.CJDSimulatePathsQ.html#quantmetrics.price_calculators.cjd_pricing.cjd_paths_Q.CJDSimulatePathsQ" title="quantmetrics.price_calculators.cjd_pricing.cjd_paths_Q.CJDSimulatePathsQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.cjd_pricing.cjd_paths_Q.CJDSimulatePathsQ</span></code></a></p></td>
+<td><p>Implements the paths simulation for a constant jump-diffusion (CJD) model under the risk-neutral measure.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="lognormal-jump-diffusion-ljd">
+<h3><strong>Lognormal Jump Diffusion (LJD)</strong><a class="headerlink" href="#lognormal-jump-diffusion-ljd" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator.html#quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator" title="quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.ljd_pricing.ljd_calculator.LJDCalculator</span></code></a></p></td>
+<td><p>Calculator for option pricing under the lognormal jump-diffusion (LJD) model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.ljd_pricing.ljd_closed_form.LJDClosedForm.html#quantmetrics.price_calculators.ljd_pricing.ljd_closed_form.LJDClosedForm" title="quantmetrics.price_calculators.ljd_pricing.ljd_closed_form.LJDClosedForm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.ljd_pricing.ljd_closed_form.LJDClosedForm</span></code></a></p></td>
+<td><p>Implements the closed-form solution for pricing European options under a lognormal jump-diffusion (LJD) model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.ljd_pricing.ljd_characteristic_function.LJDCharacteristicFunction.html#quantmetrics.price_calculators.ljd_pricing.ljd_characteristic_function.LJDCharacteristicFunction" title="quantmetrics.price_calculators.ljd_pricing.ljd_characteristic_function.LJDCharacteristicFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.ljd_pricing.ljd_characteristic_function.LJDCharacteristicFunction</span></code></a></p></td>
+<td><p>Implements the characteristic function for a Geometric Brownian Motion (GBM) model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.ljd_pricing.ljd_paths_Q.LJDSimulatePathsQ.html#quantmetrics.price_calculators.ljd_pricing.ljd_paths_Q.LJDSimulatePathsQ" title="quantmetrics.price_calculators.ljd_pricing.ljd_paths_Q.LJDSimulatePathsQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.ljd_pricing.ljd_paths_Q.LJDSimulatePathsQ</span></code></a></p></td>
+<td><p>Implements the paths simulation for a lognormal jump-diffusion (LJD) model under the risk-neutral measure.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="double-exponential-jump-diffusion-dejd">
+<h3><strong>Double Exponential Jump Diffusion (DEJD)</strong><a class="headerlink" href="#double-exponential-jump-diffusion-dejd" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.dejd_pricing.dejd_calculator.DEJDCalculator.html#quantmetrics.price_calculators.dejd_pricing.dejd_calculator.DEJDCalculator" title="quantmetrics.price_calculators.dejd_pricing.dejd_calculator.DEJDCalculator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.dejd_pricing.dejd_calculator.DEJDCalculator</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.dejd_pricing.dejd_closed_form.DEJDClosedForm.html#quantmetrics.price_calculators.dejd_pricing.dejd_closed_form.DEJDClosedForm" title="quantmetrics.price_calculators.dejd_pricing.dejd_closed_form.DEJDClosedForm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.dejd_pricing.dejd_closed_form.DEJDClosedForm</span></code></a></p></td>
+<td><p>Initialize the DEJDClosedForm with a model and an option.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.dejd_pricing.dejd_characteristic_function.DEJDCharacteristicFunction.html#quantmetrics.price_calculators.dejd_pricing.dejd_characteristic_function.DEJDCharacteristicFunction" title="quantmetrics.price_calculators.dejd_pricing.dejd_characteristic_function.DEJDCharacteristicFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.dejd_pricing.dejd_characteristic_function.DEJDCharacteristicFunction</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.dejd_pricing.dejd_paths_Q.DEJDSimulatePathsQ.html#quantmetrics.price_calculators.dejd_pricing.dejd_paths_Q.DEJDSimulatePathsQ" title="quantmetrics.price_calculators.dejd_pricing.dejd_paths_Q.DEJDSimulatePathsQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.dejd_pricing.dejd_paths_Q.DEJDSimulatePathsQ</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="variance-gamma-vg">
+<h3><strong>Variance Gamma (VG)</strong><a class="headerlink" href="#variance-gamma-vg" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.vg_pricing.vg_calculator.VGCalculator.html#quantmetrics.price_calculators.vg_pricing.vg_calculator.VGCalculator" title="quantmetrics.price_calculators.vg_pricing.vg_calculator.VGCalculator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.vg_pricing.vg_calculator.VGCalculator</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.vg_pricing.vg_closed_form.VGClosedForm.html#quantmetrics.price_calculators.vg_pricing.vg_closed_form.VGClosedForm" title="quantmetrics.price_calculators.vg_pricing.vg_closed_form.VGClosedForm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.vg_pricing.vg_closed_form.VGClosedForm</span></code></a></p></td>
+<td><p>Implements the closed-form &quot;numerical&quot; solution for pricing European options under a Variance Gamma (VG) model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.vg_pricing.vg_characteristic_function.VGCharacteristicFunction.html#quantmetrics.price_calculators.vg_pricing.vg_characteristic_function.VGCharacteristicFunction" title="quantmetrics.price_calculators.vg_pricing.vg_characteristic_function.VGCharacteristicFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.vg_pricing.vg_characteristic_function.VGCharacteristicFunction</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/quantmetrics.price_calculators.vg_pricing.vg_paths_Q.VGSimulatePathsQ.html#quantmetrics.price_calculators.vg_pricing.vg_paths_Q.VGSimulatePathsQ" title="quantmetrics.price_calculators.vg_pricing.vg_paths_Q.VGSimulatePathsQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quantmetrics.price_calculators.vg_pricing.vg_paths_Q.VGSimulatePathsQ</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="option_pricing.html" class="btn btn-neutral float-left" title="Optio pricing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="_autosummary/price_calculators/gbm/quantmetrics.price_calculators.gbm_pricing.gbm_calculator.GBMCalculator.html" class="btn btn-neutral float-right" title="GBMCalculator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ella Elazkany.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

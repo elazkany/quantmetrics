@@ -77,7 +77,7 @@ class OptionCalibration:
         return self._get_params_to_be_calibrated()
 
     def _get_params_to_be_calibrated(self):
-        if self.option.emm == "Black-Scholes":
+        if self.option.emm == "mean-correcting":
             return {k: v for k, v in self.model.model_params.items() if k != "mu"}
         elif (self.option.emm == "Esscher") & (self.calibrate_psi == False):
             return self.model.model_params.copy()

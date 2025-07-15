@@ -1,0 +1,184 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examples &mdash; quantmetrics  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Overview" href="api/index.html" />
+    <link rel="prev" title="Usage Guide" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            quantmetrics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sections:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#calculating-option-prices">Calculating Option Prices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#monte-carlo-simulations">Monte Carlo Simulations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#efficient-frontier-construction">Efficient Frontier Construction</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/levy_models.html">Levy Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/option_pricing.html">Optio pricing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/price_calculators.html">Price Calculators</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">quantmetrics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Examples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/examples.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h1>
+<p>This section provides practical examples to help you understand how to use the <cite>quantmetrics</cite> package for option pricing, calibration, and more. These examples are designed to demonstrate the functionality of the core modules and classes.</p>
+<section id="calculating-option-prices">
+<h2>Calculating Option Prices<a class="headerlink" href="#calculating-option-prices" title="Link to this heading"></a></h2>
+<p>The following example demonstrates how to calculate option prices under a Geometric Brownian Motion (GBM) model using the <cite>OptionPricer</cite> class.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">quantmetrics.levy_models.geometric_brownian_motion</span> <span class="kn">import</span> <span class="n">GBM</span>
+<span class="kn">from</span> <span class="nn">quantmetrics.option_pricing.option_pricer</span> <span class="kn">import</span> <span class="n">OptionPricer</span>
+<span class="kn">from</span> <span class="nn">quantmetrics.option_pricing.option</span> <span class="kn">import</span> <span class="n">Option</span>
+
+<span class="c1"># Initialize the GBM model</span>
+<span class="n">gbm</span> <span class="o">=</span> <span class="n">GBM</span><span class="p">(</span><span class="n">S0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="c1"># Define the option parameters</span>
+<span class="n">option</span> <span class="o">=</span> <span class="n">Option</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">K</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="c1"># Create the option pricer</span>
+<span class="n">pricer</span> <span class="o">=</span> <span class="n">OptionPricer</span><span class="p">(</span><span class="n">gbm</span><span class="p">,</span> <span class="n">option</span><span class="p">)</span>
+
+<span class="c1"># Calculate the option price using the closed-form method</span>
+<span class="n">price</span> <span class="o">=</span> <span class="n">pricer</span><span class="o">.</span><span class="n">closed_form</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The calculated option price is: </span><span class="si">{</span><span class="n">price</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="monte-carlo-simulations">
+<h2>Monte Carlo Simulations<a class="headerlink" href="#monte-carlo-simulations" title="Link to this heading"></a></h2>
+<p>This example demonstrates how to calculate option prices using Monte Carlo simulations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">quantmetrics.levy_models.variance_gamma</span> <span class="kn">import</span> <span class="n">VarianceGamma</span>
+<span class="kn">from</span> <span class="nn">quantmetrics.option_pricing.option_pricer</span> <span class="kn">import</span> <span class="n">OptionPricer</span>
+<span class="kn">from</span> <span class="nn">quantmetrics.option_pricing.option</span> <span class="kn">import</span> <span class="n">Option</span>
+
+<span class="c1"># Initialize the Variance Gamma model</span>
+<span class="n">vg_model</span> <span class="o">=</span> <span class="n">VarianceGamma</span><span class="p">(</span><span class="n">S0</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">theta</span><span class="o">=-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="c1"># Define the option parameters</span>
+<span class="n">option</span> <span class="o">=</span> <span class="n">Option</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">K</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Create the option pricer</span>
+<span class="n">pricer</span> <span class="o">=</span> <span class="n">OptionPricer</span><span class="p">(</span><span class="n">vg_model</span><span class="p">,</span> <span class="n">option</span><span class="p">)</span>
+
+<span class="c1"># Calculate the option price using Monte Carlo simulations</span>
+<span class="n">price</span> <span class="o">=</span> <span class="n">pricer</span><span class="o">.</span><span class="n">monte_carlo</span><span class="p">(</span><span class="n">n_simulations</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The Monte Carlo estimated price is: </span><span class="si">{</span><span class="n">price</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="efficient-frontier-construction">
+<h2>Efficient Frontier Construction<a class="headerlink" href="#efficient-frontier-construction" title="Link to this heading"></a></h2>
+<p>Here’s how to optimize a portfolio and construct an efficient frontier using <cite>quantmetrics</cite> (if relevant modules exist):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">quantmetrics.utils.economic_data_downloader</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">quantmetrics.option_pricing.option_pricer2</span> <span class="kn">import</span> <span class="n">OptionPricer2</span>
+
+<span class="c1"># Fetch and preprocess financial data</span>
+<span class="n">data_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">()</span>
+<span class="n">historical_prices</span> <span class="o">=</span> <span class="n">data_loader</span><span class="o">.</span><span class="n">download_data</span><span class="p">(</span><span class="s1">&#39;AAPL&#39;</span><span class="p">)</span>
+
+<span class="c1"># Example placeholder for optimization</span>
+<span class="c1"># Run optimization or price-related processes using historical data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Efficient frontier example placeholder. Customize for your needs.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/index.html" class="btn btn-neutral float-right" title="API Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ella Elazkany.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

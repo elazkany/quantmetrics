@@ -1,0 +1,686 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Levy Models &mdash; quantmetrics  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Optio pricing" href="option_pricing.html" />
+    <link rel="prev" title="API Overview" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            quantmetrics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sections:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">API Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Levy Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#modules">Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#geometricbrownianmotion"><strong>GeometricBrownianMotion</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quantmetrics.levy_models.geometric_brownian_motion.GeometricBrownianMotion"><code class="docutils literal notranslate"><span class="pre">GeometricBrownianMotion</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#constantjumpdiffusion"><strong>ConstantJumpDiffusion</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion"><code class="docutils literal notranslate"><span class="pre">ConstantJumpDiffusion</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lognormaljumpdiffusion"><strong>LognormalJumpDiffusion</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion"><code class="docutils literal notranslate"><span class="pre">LognormalJumpDiffusion</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#doubleexponentialjumpdiffusion"><strong>DoubleExponentialJumpDiffusion</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion"><code class="docutils literal notranslate"><span class="pre">DoubleExponentialJumpDiffusion</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#variancegamma"><strong>VarianceGamma</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quantmetrics.levy_models.variance_gamma.VarianceGamma"><code class="docutils literal notranslate"><span class="pre">VarianceGamma</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="option_pricing.html">Optio pricing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="price_calculators.html">Price Calculators</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">quantmetrics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Overview</a></li>
+      <li class="breadcrumb-item active">Levy Models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/levy_models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="levy-models">
+<h1>Levy Models<a class="headerlink" href="#levy-models" title="Link to this heading"></a></h1>
+<p>The <cite>levy_models</cite> module provides a collection of stochastic models for option pricing.</p>
+<section id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>geometric_brownian_motion.py:</strong> Implements the geometric Brownian motion (GBM) model.</p></li>
+<li><p><strong>constant_jump_diffusion.py:</strong> Implements the constant jump-diffusion (CJD) model.</p></li>
+<li><p><strong>lognormal_jump_diffusion,py:</strong> Implements the lognormal jump-diffusion (LJD) model.</p></li>
+<li><p><strong>double_exponential_jump_diffusion.py:</strong> Implements the double-exponential jump-diffusion (DEJD) model.</p></li>
+<li><p><strong>variance_gamma.py:</strong> Implements the Variance Gamma (VG) model.</p></li>
+</ul>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
+<p>Below are the key classes defined in this module:</p>
+<section id="geometricbrownianmotion">
+<h3><strong>GeometricBrownianMotion</strong><a class="headerlink" href="#geometricbrownianmotion" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>Implements the GBM stochastic process for modeling asset prices.</p>
+</div></blockquote>
+<dl class="py class" id="module-quantmetrics.levy_models.geometric_brownian_motion">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.geometric_brownian_motion.GeometricBrownianMotion">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">quantmetrics.levy_models.geometric_brownian_motion.</span></span><span class="sig-name descname"><span class="pre">GeometricBrownianMotion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/quantmetrics/levy_models/geometric_brownian_motion.html#GeometricBrownianMotion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.geometric_brownian_motion.GeometricBrownianMotion" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LevyModel</span></code></p>
+<p>Geometric Brownian motion model.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>S0<span class="classifier">float</span></dt><dd><p>Initial stock price.</p>
+</dd>
+<dt>mu<span class="classifier">float</span></dt><dd><p>Expected return (drift).</p>
+</dd>
+<dt>sigma<span class="classifier">float</span></dt><dd><p>Volatility (annualized). Divide by the square root of the number of days in a year (e.g., 360) to convert to daily.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.geometric_brownian_motion.GeometricBrownianMotion.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Nelder-Mead'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brute_tuple</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">((-1,</span> <span class="pre">1,</span> <span class="pre">0.5),</span> <span class="pre">(0.05,</span> <span class="pre">2,</span> <span class="pre">0.5))</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/quantmetrics/levy_models/geometric_brownian_motion.html#GeometricBrownianMotion.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.geometric_brownian_motion.GeometricBrownianMotion.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the Geometric Brownian Motion model to the data using Maximum Likelihood Estimation (MLE).</p>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>data<span class="classifier">np.ndarray</span></dt><dd><p>The data points to fit the model.</p>
+</dd>
+<dt>method<span class="classifier">str</span></dt><dd><p>The minimization method, defualt is “Nelder-Mead”.</p>
+</dd>
+<dt>init_params<span class="classifier">np.ndarray</span></dt><dd><p>A 2x1-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).</p>
+</dd>
+<dt>brute_tuple<span class="classifier">tuple</span></dt><dd><p>If initial parameters are not specified, the brute function is applied with a 2x3-dimensional tuple for each parameter as (start value, end value, step size).</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h5>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>minimize</dt><dd><p>The result of the minimization process containing the estimated parameters.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.geometric_brownian_motion.GeometricBrownianMotion.model_params_conds_valid">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_params_conds_valid</span></span><a class="headerlink" href="#quantmetrics.levy_models.geometric_brownian_motion.GeometricBrownianMotion.model_params_conds_valid" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.geometric_brownian_motion.GeometricBrownianMotion.mu">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.geometric_brownian_motion.GeometricBrownianMotion.mu" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.geometric_brownian_motion.GeometricBrownianMotion.pdf">
+<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">est_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/quantmetrics/levy_models/geometric_brownian_motion.html#GeometricBrownianMotion.pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.geometric_brownian_motion.GeometricBrownianMotion.pdf" title="Link to this definition"></a></dt>
+<dd><p>Probability density function for the Geometric Brownian Motion model.</p>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>data<span class="classifier">np.ndarray</span></dt><dd><p>The data points for which the PDF is calculated.</p>
+</dd>
+<dt>est_params<span class="classifier">np.ndarray</span></dt><dd><p>Estimated parameters (mu, sigma).</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>np.ndarray</dt><dd><p>The probability density values.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.geometric_brownian_motion.GeometricBrownianMotion.sigma">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sigma</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.geometric_brownian_motion.GeometricBrownianMotion.sigma" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="constantjumpdiffusion">
+<h3><strong>ConstantJumpDiffusion</strong><a class="headerlink" href="#constantjumpdiffusion" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>Implements the constant jump diffusion model.</p>
+</div></blockquote>
+<dl class="py class" id="module-quantmetrics.levy_models.constant_jump_diffusion">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">quantmetrics.levy_models.constant_jump_diffusion.</span></span><span class="sig-name descname"><span class="pre">ConstantJumpDiffusion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/quantmetrics/levy_models/constant_jump_diffusion.html#ConstantJumpDiffusion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LevyModel</span></code></p>
+<p>Constant jump-diffusion model.</p>
+<section id="id4">
+<h4>Parameters<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>S0<span class="classifier">float</span></dt><dd><p>Initial stock price.</p>
+</dd>
+<dt>mu<span class="classifier">float</span></dt><dd><p>Expected return (drift).</p>
+</dd>
+<dt>sigma<span class="classifier">float</span></dt><dd><p>Volatility (annualized). Divide by the square root of the number of days in a year (e.g., 360) to convert to daily.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lambda_</span></code><span class="classifier">float</span></dt><dd><p>Jump intensity rate is strictly greater than zero.</p>
+</dd>
+<dt>gamma<span class="classifier">float</span></dt><dd><p>Mean jump size is strictly greater than -1 and non-zero.</p>
+</dd>
+<dt>N<span class="classifier">int</span></dt><dd><p>Number of big jumps (the Poisson jumps).</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Nelder-Mead'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brute_tuple</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">((-1,</span> <span class="pre">1,</span> <span class="pre">0.5),</span> <span class="pre">(0.05,</span> <span class="pre">2,</span> <span class="pre">0.5),</span> <span class="pre">(0.1,</span> <span class="pre">0.401,</span> <span class="pre">0.1),</span> <span class="pre">(-0.5,</span> <span class="pre">1,</span> <span class="pre">0.1))</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/quantmetrics/levy_models/constant_jump_diffusion.html#ConstantJumpDiffusion.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the constant jump-diffusion model to the data using Maximum Likelihood Estimation (MLE).</p>
+<section id="id5">
+<h5>Parameters<a class="headerlink" href="#id5" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>data<span class="classifier">np.ndarray</span></dt><dd><p>The data points to fit the model.</p>
+</dd>
+<dt>method<span class="classifier">str</span></dt><dd><p>The minimization method, defualt is “Nelder-Mead”. Other options are the same as for the minimize function from scipy.optimize.</p>
+</dd>
+<dt>init_params<span class="classifier">np.ndarray</span></dt><dd><p>A 4x1-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).</p>
+</dd>
+<dt>brute_tuple<span class="classifier">tuple</span></dt><dd><p>If initial parameters are not specified, the brute function is applied with a 4x3-dimensional tuple for each parameter as (start value, end value, step size).</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h5>Returns<a class="headerlink" href="#id6" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>minimize</dt><dd><p>The result of the minimization process containing the estimated parameters.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.gamma">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gamma</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.gamma" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.lambda_">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lambda_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.lambda_" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.model_params_conds_valid">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_params_conds_valid</span></span><a class="headerlink" href="#quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.model_params_conds_valid" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.mu">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.mu" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.pdf">
+<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">est_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/quantmetrics/levy_models/constant_jump_diffusion.html#ConstantJumpDiffusion.pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.pdf" title="Link to this definition"></a></dt>
+<dd><p>Probability density function for the constant jump-diffusion model.</p>
+<section id="id7">
+<h5>Parameters<a class="headerlink" href="#id7" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>data<span class="classifier">np.ndarray</span></dt><dd><p>The data points for which the PDF is calculated.</p>
+</dd>
+<dt>est_params<span class="classifier">np.ndarray</span></dt><dd><p>Estimated parameters (mu, sigma, lambda, gamma).</p>
+</dd>
+</dl>
+</section>
+<section id="id8">
+<h5>Returns<a class="headerlink" href="#id8" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>np.ndarray</dt><dd><p>The probability density values.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.sigma">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sigma</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.constant_jump_diffusion.ConstantJumpDiffusion.sigma" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="lognormaljumpdiffusion">
+<h3><strong>LognormalJumpDiffusion</strong><a class="headerlink" href="#lognormaljumpdiffusion" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>Implements the lognormal jump-diffusion model.</p>
+</div></blockquote>
+<dl class="py class" id="module-quantmetrics.levy_models.lognormal_jump_diffusion">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">quantmetrics.levy_models.lognormal_jump_diffusion.</span></span><span class="sig-name descname"><span class="pre">LognormalJumpDiffusion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">muJ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmaJ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/quantmetrics/levy_models/lognormal_jump_diffusion.html#LognormalJumpDiffusion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LevyModel</span></code></p>
+<p>Lognormal jump-diffusion model.</p>
+<section id="id9">
+<h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>S0<span class="classifier">float</span></dt><dd><p>Initial stock price.</p>
+</dd>
+<dt>mu<span class="classifier">float</span></dt><dd><p>Expected return (drift).</p>
+</dd>
+<dt>sigma<span class="classifier">float</span></dt><dd><p>Volatility (annualized). Divide by the square root of the number of days in a year (e.g., 360) to convert to daily.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lambda_</span></code><span class="classifier">float</span></dt><dd><p>Jump intensity rate is strictly greater than zero.</p>
+</dd>
+<dt>muJ<span class="classifier">float</span></dt><dd><p>Mean jump size is strictly greater than -1 and non-zero.</p>
+</dd>
+<dt>sigmaJ<span class="classifier">float</span></dt><dd><p>Standard deviation of the jump size. It is a positive number.</p>
+</dd>
+<dt>N<span class="classifier">int</span></dt><dd><p>Number of big jumps (the Poisson jumps).</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Nelder-Mead'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brute_tuple</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">((-1,</span> <span class="pre">1,</span> <span class="pre">0.5),</span> <span class="pre">(0.05,</span> <span class="pre">2,</span> <span class="pre">0.5),</span> <span class="pre">(0.1,</span> <span class="pre">0.401,</span> <span class="pre">0.1),</span> <span class="pre">(-0.5,</span> <span class="pre">1,</span> <span class="pre">0.1),</span> <span class="pre">(0.05,</span> <span class="pre">5,</span> <span class="pre">0.5))</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/quantmetrics/levy_models/lognormal_jump_diffusion.html#LognormalJumpDiffusion.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the constant jump-diffusion model to the data using Maximum Likelihood Estimation (MLE).</p>
+<section id="id10">
+<h5>Parameters<a class="headerlink" href="#id10" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>data<span class="classifier">np.ndarray</span></dt><dd><p>The data points to fit the model.</p>
+</dd>
+<dt>method<span class="classifier">str</span></dt><dd><p>The minimization method, defualt is “Nelder-Mead”. Other options are the same as for the minimize function from scipy.optimize.</p>
+</dd>
+<dt>init_params<span class="classifier">np.ndarray</span></dt><dd><p>A 5x1-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).</p>
+</dd>
+<dt>brute_tuple<span class="classifier">tuple</span></dt><dd><p>If initial parameters are not specified, the brute function is applied with a 5x3-dimensional tuple for each parameter as (start value, end value, step size).</p>
+</dd>
+</dl>
+</section>
+<section id="id11">
+<h5>Returns<a class="headerlink" href="#id11" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>minimize</dt><dd><p>The result of the minimization process containing the estimated parameters.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.lambda_">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lambda_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.lambda_" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.model_params_conds_valid">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_params_conds_valid</span></span><a class="headerlink" href="#quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.model_params_conds_valid" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.mu">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.mu" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.muJ">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">muJ</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.muJ" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.pdf">
+<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">est_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/quantmetrics/levy_models/lognormal_jump_diffusion.html#LognormalJumpDiffusion.pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.pdf" title="Link to this definition"></a></dt>
+<dd><p>Probability density function for the lognormal jump-diffusion model.</p>
+<section id="id12">
+<h5>Parameters<a class="headerlink" href="#id12" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>data<span class="classifier">np.ndarray</span></dt><dd><p>The data points for which the PDF is calculated.</p>
+</dd>
+<dt>est_params<span class="classifier">np.ndarray</span></dt><dd><p>Estimated parameters (mu, sigma, lambda, muJ, sigmaJ).</p>
+</dd>
+</dl>
+</section>
+<section id="id13">
+<h5>Returns<a class="headerlink" href="#id13" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>np.ndarray</dt><dd><p>The probability density values.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.sigma">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sigma</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.sigma" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.sigmaJ">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sigmaJ</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.lognormal_jump_diffusion.LognormalJumpDiffusion.sigmaJ" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="doubleexponentialjumpdiffusion">
+<h3><strong>DoubleExponentialJumpDiffusion</strong><a class="headerlink" href="#doubleexponentialjumpdiffusion" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>Implements the double-exponential jump-diffusion model.</p>
+</div></blockquote>
+<dl class="py class" id="module-quantmetrics.levy_models.double_exponential_jump_diffusion">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">quantmetrics.levy_models.double_exponential_jump_diffusion.</span></span><span class="sig-name descname"><span class="pre">DoubleExponentialJumpDiffusion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/quantmetrics/levy_models/double_exponential_jump_diffusion.html#DoubleExponentialJumpDiffusion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LevyModel</span></code></p>
+<p>Double exponential jump-diffusion model.</p>
+<section id="id14">
+<h4>Parameters<a class="headerlink" href="#id14" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>S0<span class="classifier">float</span></dt><dd><p>Initial stock price.</p>
+</dd>
+<dt>mu<span class="classifier">float</span></dt><dd><p>Expected return (drift).</p>
+</dd>
+<dt>sigma<span class="classifier">float</span></dt><dd><p>Volatility (annualized). Divide by the square root of the number of days in a year (e.g., 360) to convert to daily.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lambda_</span></code><span class="classifier">float</span></dt><dd><p>Jump intensity rate is strictly greater than zero.</p>
+</dd>
+<dt>eta1<span class="classifier">float</span></dt><dd><p>to be defined</p>
+</dd>
+<dt>eta2<span class="classifier">float</span></dt><dd><p>to be defined</p>
+</dd>
+<dt>p<span class="classifier">float</span></dt><dd><p>to be defined</p>
+</dd>
+<dt>N<span class="classifier">int</span></dt><dd><p>Number of big jumps (the Poisson jumps).</p>
+</dd>
+</dl>
+</section>
+<section id="references">
+<h4>References<a class="headerlink" href="#references" title="Link to this heading"></a></h4>
+<p>Kou, S. G. (2002). A jump-diffusion model for option pricing. Management science, 48(8), 1086-1101.
+Ramezani, C. A., &amp; Zeng, Y. (2007). Maximum likelihood estimation of the double exponential jump-diffusion process. Annals of Finance, 3, 487-507.</p>
+</section>
+<section id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h4>
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.eta1">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">eta1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.eta1" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.eta2">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">eta2</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.eta2" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Nelder-Mead'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brute_tuple</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">((-1,</span> <span class="pre">1,</span> <span class="pre">0.5),</span> <span class="pre">(0.05,</span> <span class="pre">2,</span> <span class="pre">0.5),</span> <span class="pre">(0.1,</span> <span class="pre">0.401,</span> <span class="pre">0.1),</span> <span class="pre">(-0.5,</span> <span class="pre">1,</span> <span class="pre">0.1),</span> <span class="pre">(0.05,</span> <span class="pre">5,</span> <span class="pre">0.5))</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/quantmetrics/levy_models/double_exponential_jump_diffusion.html#DoubleExponentialJumpDiffusion.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the constant jump-diffusion model to the data using Maximum Likelihood Estimation (MLE).</p>
+<section id="id15">
+<h5>Parameters<a class="headerlink" href="#id15" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>data<span class="classifier">np.ndarray</span></dt><dd><p>The data points to fit the model.</p>
+</dd>
+<dt>method<span class="classifier">str</span></dt><dd><p>The minimization method, defualt is “Nelder-Mead”. Other options are the same as for the minimize function from scipy.optimize.</p>
+</dd>
+<dt>init_params<span class="classifier">np.ndarray</span></dt><dd><p>A 5x1-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).</p>
+</dd>
+<dt>brute_tuple<span class="classifier">tuple</span></dt><dd><p>If initial parameters are not specified, the brute function is applied with a 5x3-dimensional tuple for each parameter as (start value, end value, step size).</p>
+</dd>
+</dl>
+</section>
+<section id="id16">
+<h5>Returns<a class="headerlink" href="#id16" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>minimize</dt><dd><p>The result of the minimization process containing the estimated parameters.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.lambda_">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lambda_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.lambda_" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.model_params_conds_valid">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_params_conds_valid</span></span><a class="headerlink" href="#quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.model_params_conds_valid" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.mu">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.mu" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.p">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">p</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.p" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.pdf">
+<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">est_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/quantmetrics/levy_models/double_exponential_jump_diffusion.html#DoubleExponentialJumpDiffusion.pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.pdf" title="Link to this definition"></a></dt>
+<dd><p>Probability density function for the lognormal jump-diffusion model.</p>
+<section id="id17">
+<h5>Parameters<a class="headerlink" href="#id17" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>data<span class="classifier">np.ndarray</span></dt><dd><p>The data points for which the PDF is calculated.</p>
+</dd>
+<dt>est_params<span class="classifier">np.ndarray</span></dt><dd><p>Estimated parameters (mu, sigma, lambda, muJ, sigmaJ).</p>
+</dd>
+</dl>
+</section>
+<section id="id18">
+<h5>Returns<a class="headerlink" href="#id18" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>np.ndarray</dt><dd><p>The probability density values.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.sigma">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sigma</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.double_exponential_jump_diffusion.DoubleExponentialJumpDiffusion.sigma" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="variancegamma">
+<h3><strong>VarianceGamma</strong><a class="headerlink" href="#variancegamma" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>Implements the Variance Gamma model for stochastic processes.</p>
+</div></blockquote>
+<dl class="py class" id="module-quantmetrics.levy_models.variance_gamma">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.variance_gamma.VarianceGamma">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">quantmetrics.levy_models.variance_gamma.</span></span><span class="sig-name descname"><span class="pre">VarianceGamma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">S0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/quantmetrics/levy_models/variance_gamma.html#VarianceGamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.variance_gamma.VarianceGamma" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LevyModel</span></code></p>
+<p>Variance Gamma model.</p>
+<section id="id19">
+<h4>Parameters<a class="headerlink" href="#id19" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>S0<span class="classifier">float</span></dt><dd><p>Initial stock price.</p>
+</dd>
+<dt>mu<span class="classifier">float</span></dt><dd><p>Expected return (drift).</p>
+</dd>
+<dt>m<span class="classifier">float</span></dt><dd><p>Drift of the subordinated Brownian motion at a random time given by a Gamma process. If m = 0, then we have a symmetric variance gamma distribution.</p>
+</dd>
+<dt>delta<span class="classifier">float</span></dt><dd><p>Volatility of the subordinated Brownian motion at a random time given by a Gamma process.</p>
+</dd>
+<dt>kappa<span class="classifier">float</span></dt><dd><p>Variance rate of the subordinator Gamma process.</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.variance_gamma.VarianceGamma.delta">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.variance_gamma.VarianceGamma.delta" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.variance_gamma.VarianceGamma.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Nelder-Mead'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brute_tuple</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">((-1,</span> <span class="pre">1,</span> <span class="pre">0.5),</span> <span class="pre">(-1,</span> <span class="pre">1,</span> <span class="pre">0.5),</span> <span class="pre">(0.05,</span> <span class="pre">2.05,</span> <span class="pre">0.5),</span> <span class="pre">(0.3,</span> <span class="pre">0.5,</span> <span class="pre">0.1))</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/quantmetrics/levy_models/variance_gamma.html#VarianceGamma.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.variance_gamma.VarianceGamma.fit" title="Link to this definition"></a></dt>
+<dd><p>Fit the variance Gamma model to the data using Maximum Likelihood Estimation (MLE).</p>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>data<span class="classifier">np.ndarray</span></dt><dd><p>The data points to fit the model.</p>
+</dd>
+<dt>method<span class="classifier">str</span></dt><dd><p>The minimization method, defualt is “Nelder-Mead”. Other options are the same as for the minimize function from scipy.optimize.</p>
+</dd>
+<dt>init_params<span class="classifier">np.ndarray</span></dt><dd><p>A 5x1-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).</p>
+</dd>
+<dt>brute_tuple<span class="classifier">tuple</span></dt><dd><p>If initial parameters are not specified, the brute function is applied with a 5x3-dimensional tuple for each parameter as (start value, end value, step size).</p>
+</dd>
+</dl>
+</section>
+<section id="id21">
+<h5>Returns<a class="headerlink" href="#id21" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>minimize</dt><dd><p>The result of the minimization process containing the estimated parameters.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.variance_gamma.VarianceGamma.kappa">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">kappa</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.variance_gamma.VarianceGamma.kappa" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.variance_gamma.VarianceGamma.m">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">m</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.variance_gamma.VarianceGamma.m" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.variance_gamma.VarianceGamma.model_params_conds_valid">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_params_conds_valid</span></span><a class="headerlink" href="#quantmetrics.levy_models.variance_gamma.VarianceGamma.model_params_conds_valid" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.variance_gamma.VarianceGamma.mu">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mu</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#quantmetrics.levy_models.variance_gamma.VarianceGamma.mu" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="quantmetrics.levy_models.variance_gamma.VarianceGamma.pdf">
+<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">est_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../_modules/quantmetrics/levy_models/variance_gamma.html#VarianceGamma.pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quantmetrics.levy_models.variance_gamma.VarianceGamma.pdf" title="Link to this definition"></a></dt>
+<dd><p>Probability density function for the Variance Gamma model.</p>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>data<span class="classifier">np.ndarray</span></dt><dd><p>The data points for which the PDF is calculated.</p>
+</dd>
+<dt>est_params<span class="classifier">np.ndarray</span></dt><dd><p>Estimated parameters (mu, m, delta, kappa).</p>
+</dd>
+</dl>
+</section>
+<section id="id23">
+<h5>Returns<a class="headerlink" href="#id23" title="Link to this heading"></a></h5>
+<dl class="simple">
+<dt>np.ndarray</dt><dd><p>The probability density values.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="API Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="option_pricing.html" class="btn btn-neutral float-right" title="Optio pricing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ella Elazkany.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

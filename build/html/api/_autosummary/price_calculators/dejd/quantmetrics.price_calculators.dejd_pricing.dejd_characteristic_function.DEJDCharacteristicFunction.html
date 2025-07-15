@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DEJDCharacteristicFunction &mdash; quantmetrics  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="DEJDSimulatePathsQ" href="quantmetrics.price_calculators.dejd_pricing.dejd_paths_Q.DEJDSimulatePathsQ.html" />
+    <link rel="prev" title="DEJDClosedForm" href="quantmetrics.price_calculators.dejd_pricing.dejd_closed_form.DEJDClosedForm.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            quantmetrics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sections:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">API Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../levy_models.html">Levy Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../option_pricing.html">Optio pricing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../price_calculators.html">Price Calculators</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../price_calculators.html#modules">Modules</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../price_calculators.html#classes">Classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../price_calculators.html#geometric-brownian-motion-gbm"><strong>Geometric Brownian Motion (GBM)</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../price_calculators.html#constant-jump-diffusion-cjd"><strong>Constant Jump Diffusion (CJD)</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../price_calculators.html#lognormal-jump-diffusion-ljd"><strong>Lognormal Jump Diffusion (LJD)</strong></a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../../price_calculators.html#double-exponential-jump-diffusion-dejd"><strong>Double Exponential Jump Diffusion (DEJD)</strong></a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="quantmetrics.price_calculators.dejd_pricing.dejd_calculator.DEJDCalculator.html">DEJDCalculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantmetrics.price_calculators.dejd_pricing.dejd_closed_form.DEJDClosedForm.html">DEJDClosedForm</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">DEJDCharacteristicFunction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quantmetrics.price_calculators.dejd_pricing.dejd_paths_Q.DEJDSimulatePathsQ.html">DEJDSimulatePathsQ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../price_calculators.html#variance-gamma-vg"><strong>Variance Gamma (VG)</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">quantmetrics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API Overview</a></li>
+          <li class="breadcrumb-item"><a href="../../../price_calculators.html">Price Calculators</a></li>
+      <li class="breadcrumb-item active">DEJDCharacteristicFunction</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/api/_autosummary/price_calculators/dejd/quantmetrics.price_calculators.dejd_pricing.dejd_characteristic_function.DEJDCharacteristicFunction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dejdcharacteristicfunction">
+<h1>DEJDCharacteristicFunction<a class="headerlink" href="#dejdcharacteristicfunction" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">quantmetrics.price_calculators.dejd_pricing.dejd_characteristic_function.</span></span><span class="sig-name descname"><span class="pre">DEJDCharacteristicFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LevyModel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Option</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/quantmetrics/price_calculators/dejd_pricing/dejd_characteristic_function.html#DEJDCharacteristicFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Implements the characteristic function for a lognormal jump-diffusion (LJD) model.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>model<span class="classifier">LevyModel</span></dt><dd><p>A LevyModel object specifying the underlying asset’s model and its parameters.</p>
+</dd>
+<dt>option<span class="classifier">Option</span></dt><dd><p>An Option object specifying the option parameters: interest rate, strike price, time to maturity, dividend yield and the equivalent martingale measure.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../../../_modules/quantmetrics/price_calculators/dejd_pricing/dejd_characteristic_function.html#DEJDCharacteristicFunction.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Calculate the characteristic function for the DEJD model.</p>
+<section id="id1">
+<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>u<span class="classifier">np.ndarray</span></dt><dd><p>Input array for the characteristic function.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>np.ndarray</dt><dd><p>The characteristic function values.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h3>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h3>
+<p>The characteristic function of the DEJD under the risk-neutral measure is defined as follows:</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">emm</span> <span class="pre">=</span> <span class="pre">&quot;mean-correcting&quot;</span></code>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\Phi^{\mathbb{Q}}(u) = \exp\left\{T \left[i u b^\mathbb{Q} -\frac{u^2}{2}c + \lambda \left( \frac{p\eta_1}{\eta_1 - iu} + \frac{q \eta_2}{\eta_2 + iu} - 1 \right) \right]\right\},\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[b^\mathbb{Q}= r - \frac{\sigma^2}{2} -\lambda \kappa \quad c = \sigma^2\]</div>
+<div class="math notranslate nohighlight">
+\[\kappa = \frac{p\eta_1}{\eta_1 -1} + \frac{q\eta_2}{\eta_2+1} - 1, \quad q = 1-p\]</div>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">emm</span> <span class="pre">=</span> <span class="pre">&quot;Esscher&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">psi</span> <span class="pre">=</span> <span class="pre">0</span></code>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\Phi^{\mathbb{Q}}(u) = \exp\left\{T \left[i u b^\mathbb{Q} -\frac{u^2}{2}c + \lambda^\mathbb{Q} \left( \frac{\frac{p\eta_1}{\eta_1 - (\theta +iu)} + \frac{q\eta_2}{\eta_2 + (\theta + iu)}}{\frac{p\eta_1}{\eta_1 - \theta} + \frac{q\eta_2}{\eta_2 + \theta}} - 1 \right) \right]\right\},\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[b^\mathbb{Q}= r - \frac{\sigma^2}{2} -\lambda \kappa + \theta \sigma^2  \quad c = \sigma^2\]</div>
+<div class="math notranslate nohighlight">
+\[\lambda^\mathbb{Q} = \lambda \left( \frac{p\eta_1}{\eta_1 - \theta} + \frac{q\eta_2}{\eta_2 + \theta} \right)\]</div>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">emm</span> <span class="pre">=</span> <span class="pre">&quot;Esscher&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">psi</span> <span class="pre">!=</span> <span class="pre">0</span></code>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\Phi^{\mathbb{Q}}(u) = \exp\left\{T \left[i u b^\mathbb{Q} -\frac{u^2}{2}c + \lambda^\mathbb{Q} \left(\frac{p\eta_1 I(\theta+iu, \eta_1, \psi) + q\eta_2 I(\theta +iu, -\eta_2, \psi)}{p\eta_1 I(\theta, \eta_1, \psi) + q\eta_2 I(\theta, -\eta_2, \psi)} - 1 \right)\right] \right\},\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[b^\mathbb{Q}= r - \frac{\sigma^2}{2} -\lambda \kappa + \theta(\psi) \sigma^2  \quad c = \sigma^2\]</div>
+<div class="math notranslate nohighlight">
+\[\lambda^\mathbb{Q} = \lambda \frac{1}{2}\sqrt{\frac{\pi}{|\psi|}} \left[p\eta_1 I(\theta, \eta_1, \psi) + q\eta_2 I(\theta, -\eta_2, \psi) \right],\]</div>
+<div class="math notranslate nohighlight">
+\[I(a,b,\psi):= \exp \left[-\psi \left(\frac{a-b}{2\psi} \right)^2 \right] \left\{1 - erf\left[\sqrt{|\psi|} \left(\frac{a-b}{2\psi} \right) \right]  \right\}\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[\psi &lt; 0.\]</div>
+<p>The first-order Esscher parameter <span class="math notranslate nohighlight">\(\theta\)</span> is the risk premium (market price of risk) and which is the unique solution to the martingale equation for each <span class="math notranslate nohighlight">\(\psi\)</span> which is the second-order Esscher parameter. See the documentation of the <code class="docutils literal notranslate"><span class="pre">RiskPremium</span></code> class for the martingale equation and refer to <a class="footnote-reference brackets" href="#id3" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> for more details.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbb{Q}\)</span> is the risk-neutral measure.</p></li>
+<li><p><span class="math notranslate nohighlight">\(T\)</span> is the time to maturity.</p></li>
+<li><p><span class="math notranslate nohighlight">\(i\)</span> is the imaginary unit.</p></li>
+<li><p><span class="math notranslate nohighlight">\(u\)</span> is the input variable.</p></li>
+<li><p><span class="math notranslate nohighlight">\(r\)</span> is the risk-free interest rate.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is the volatility of the underlying asset.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p,q\geq 0, p+q =1\)</span> are the probabilities of upward and downward jumps.</p></li>
+<li><p>The upward jump sizes are exponentially distributed with mean <span class="math notranslate nohighlight">\(1/\eta_1\)</span> with <span class="math notranslate nohighlight">\(\eta_1&gt;1\)</span>.</p></li>
+<li><p>The downward jump sizes are exponentially distributed with mean <span class="math notranslate nohighlight">\(1/\eta_2\)</span> with <span class="math notranslate nohighlight">\(\eta_2 &gt;0\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\lambda\)</span> is the jump intensity rate.</p></li>
+</ul>
+</section>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Link to this heading"></a></h3>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<p>Choulli, T., Elazkany, E., &amp; Vanmaele, M. (2024). Applications of the Second-Order Esscher Pricing in Risk Management. arXiv preprint arXiv:2410.21649.</p>
+</aside>
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Jeanblanc, M., Yor, M., &amp; Chesney, M. (2009). Mathematical methods for financial markets. Springer Science &amp; Business Media.</p>
+</aside>
+<aside class="footnote brackets" id="id5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<p>Kou, S. G. (2002). A jump-diffusion model for option pricing. Management science, 48(8), 1086-1101.</p>
+</aside>
+</aside>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quantmetrics.price_calculators.dejd_pricing.dejd_closed_form.DEJDClosedForm.html" class="btn btn-neutral float-left" title="DEJDClosedForm" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quantmetrics.price_calculators.dejd_pricing.dejd_paths_Q.DEJDSimulatePathsQ.html" class="btn btn-neutral float-right" title="DEJDSimulatePathsQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ella Elazkany.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
