@@ -1,7 +1,8 @@
 # quantmetrics/levy_models/variance_gamma.py
-from .levy_model import LevyModel
+from .levy_model_base import LevyModel
 import numpy as np
-from scipy.optimize import minimize, brute
+from scipy.optimize import minimize, differential_evolution
+import scipy.special as spsp
 import scipy.stats as st
 import time
 import math
@@ -61,63 +62,62 @@ class VarianceGamma(LevyModel):
         
         
     @property
-    def mu(self) -> float:
-        return self._mu
-    
-    @mu.setter
-    def mu(self, value: float):
-        self._mu = value
-        self.params['mu'] = value
-        self.model_params['mu'] = value
-        
-        
-    @property
-    def m(self) -> float:
-        return self._m
-    
-    @m.setter
-    def m(self, value: float):
-        self._m = value
-        self.params['m'] = value
-        self.model_params['m'] = value
+    def model_params_conds_valid(self) -> bool:
+        return self._delta > 0.0 and self._kappa > 0.0
 
-    @property
-    def delta(self) -> float:
-        return self._delta
-    
-    @delta.setter
-    def delta(self, value: float):
-        self._delta = value
-        self.params['delta'] = value
-        self.model_params['delta'] = value
-
-    @property
-    def kappa(self) -> float:
-        return self._kappa
-    
-    @kappa.setter
-    def kappa(self, value: float):
-        self._kappa = value
-        self.params['kappa'] = value
-        self.model_params['kappa'] = value
-
-    @property
-    def model_params_conds_valid(self):
-        return self._validate_model_params()
-    
-    def _validate_model_params(self) -> bool:
+    def logpdf(self, data: np.ndarray, est_params: np.ndarray) -> np.ndarray:
         """
-        Validate model parameters
-
-        Returns
-        -------
-        bool
-            True if all conditions on parameters are met, False otherwise.
+        Numerically stable log‐pdf of the VG distribution.
+        Returns -inf for any parameter set that violates domain constraints.
         """
-        return all([
-            self.model_params['delta'] > 0.0,
-            self.model_params['kappa'] > 0.0,
-            ])
+        mu, m, delta, kappa = est_params
+
+        # enforce positivity
+        if delta <= 0 or kappa <= 0:
+            return np.full_like(data, -np.inf)
+
+        # shift to enforce E[e^X] = 1
+        arg_inv = 1.0 - m * kappa - 0.5 * delta**2 * kappa
+        if arg_inv <= 0:
+            return np.full_like(data, -np.inf)
+
+        shift = np.log(arg_inv) / kappa
+        x = data - mu - shift
+
+        # precompute constants
+        beta = 2.0 * delta**2 / kappa + m**2
+        order = 1.0 / kappa - 0.5
+        arg_bessel = np.abs(x) * np.sqrt(beta) / (delta**2)
+
+        # avoid invalid Bessel arguments
+        with np.errstate(divide="ignore", invalid="ignore"):
+            log_bess = np.log(spsp.kv(order, arg_bessel))
+        log_bess = np.where(np.isfinite(log_bess), log_bess, -np.inf)
+
+        # log‐coefficients
+        log_coef = (
+            np.log(2.0)
+            - (1.0 / kappa) * np.log(kappa)
+            - 0.5 * np.log(2.0 * np.pi)
+            - np.log(delta)
+            - spsp.loggamma(1.0 / kappa)
+        )
+
+        # exponent term
+        log_exp = m * x / (delta**2)
+
+        # power term: (x^2 / beta)^(1/(2κ) − 1/4)
+        # => (1/(2κ) − 1/4) * [2 log|x| − log(beta)]
+        coeff_pow = 1.0 / (2.0 * kappa) - 0.25
+        with np.errstate(divide="ignore"):
+            log_pow = coeff_pow * (2.0 * np.log(np.abs(x)) - np.log(beta))
+
+        # assemble logpdf
+        logpdf_vals = log_coef + log_exp + log_pow + log_bess
+
+        # replace any NaN with -inf so optimizer knows to avoid
+        return np.where(np.isfinite(logpdf_vals), logpdf_vals, -np.inf)
+    
 
     def pdf(self, data: np.ndarray, est_params: np.ndarray) -> np.ndarray:
         """
@@ -135,29 +135,30 @@ class VarianceGamma(LevyModel):
         np.ndarray
             The probability density values.
         """
-        mu, m, delta, kappa = est_params
-        if not self.model_params_conds_valid: 
-            return 500.0
-        
-        x = data - mu - np.log(1 - m * kappa - delta**2 * kappa /2)/kappa
+        return np.exp(self.logpdf(data, est_params))
 
-        Bessel_order = 1/kappa - 0.5
-        Bessel_arg = (x**2 * (2*delta**2/kappa + m**2))**(0.5)/(delta**2)
+    def _moment_init(self, data: np.ndarray) -> np.ndarray:
+        """
+        Empirical‐moment initial guess:
+          μ0 = mean(data)
+          m0 = 0
+          δ0 = std(data)/2
+          κ0 = 1
+        """
+        mu0 = np.mean(data)
+        m0 = 0.0
+        delta0 = max(np.std(data) / 2.0, 1e-6)
+        kappa0 = 1.0
+        return np.array([mu0, m0, delta0, kappa0])
 
-        vgp_pdf = ( (2*np.exp(m*x/(delta**2))) / (kappa**(1/kappa) * (2*np.pi)**0.5 * delta * gamma(1/kappa) ) ) * (x**2 / (2*delta**2/kappa + m**2) )**(1/(2*kappa) -0.25) * kn(Bessel_order, Bessel_arg) 
-        return vgp_pdf
 
     def fit(
         self,
         data: np.ndarray,
-        method: str = "Nelder-Mead",
         init_params: Optional[np.ndarray] = None,
-        brute_tuple: tuple = (
-            (-1, 1, 0.5),  # mu
-            (-1, 1, 0.5),  # m
-            (0.05, 2.05, 0.5),  # delta
-            (0.3, 0.5, 0.1),  # kappa
-        ),
+        bounds: Optional[list] = None,
+        max_global_iter: int = 50,
+        multi_start: int = 3,
     ):
         """
         Fit the variance Gamma model to the data using Maximum Likelihood Estimation (MLE).
@@ -167,14 +168,8 @@ class VarianceGamma(LevyModel):
         data : np.ndarray
             The data points to fit the model.
 
-        method : str
-            The minimization method, defualt is "Nelder-Mead". Other options are the same as for the minimize function from scipy.optimize.
-
         init_params : np.ndarray
             A 5x1-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).
-
-        brute_tuple : tuple
-            If initial parameters are not specified, the brute function is applied with a 5x3-dimensional tuple for each parameter as (start value, end value, step size).
 
         Returns
         -------
@@ -182,26 +177,63 @@ class VarianceGamma(LevyModel):
             The result of the minimization process containing the estimated parameters.
         """
 
-        def MLE(params):
-            return -np.sum(
-                np.log(
-                    self.pdf(
-                        data=data,
-                        est_params=params,
-                    )
-                )
-            )
+        def neg_ll(params):
+            ll = self.logpdf(data, params)
+            # if ANY logpdf is -inf => likelihood zero => penalize heavily
+            if np.any(ll == -np.inf):
+                return 1e20
+            return -np.sum(ll)
 
-        start_time = time.time()
+        # default bounds: mu, m unconstrained; delta>0; kappa>0
+        if bounds is None:
+            bounds = [
+                (None, None),  # mu
+                (None, None),  # m
+                (1e-6, None),  # delta
+                (1e-6, None),  # kappa
+            ]
 
+        # 1) initial guess
         if init_params is None:
-            params = brute(MLE, brute_tuple, finish=None)
+            x0 = self._moment_init(data)
+            # 2) global search
+            de = differential_evolution(
+                neg_ll, bounds=bounds, maxiter=max_global_iter, polish=False
+            )
+            x0 = de.x
         else:
-            params = init_params
+            x0 = init_params
 
-        result = minimize(MLE, params, method=method)
+        # 3) local polish
+        best = minimize(neg_ll, x0, method="L-BFGS-B", bounds=bounds)
 
-        end_time = time.time()
-        #print(f"Elapsed time is {end_time - start_time} seconds")
+        # 4) multi‐start
+        for _ in range(multi_start):
+            trial = x0 + 0.1 * np.random.randn(4)
+            res = minimize(neg_ll, trial, method="L-BFGS-B", bounds=bounds)
+            if res.fun < best.fun:
+                best = res
 
-        return result
+        # store results
+        self._mu, self._m, self._delta, self._kappa = best.x
+        self.params.update(mu=self._mu, m=self._m, delta=self._delta, kappa=self._kappa)
+        self.model_params.update(self.params)
+        return best
+    
+    def levy_density(self, x, eps_levy = 1e-16):
+        m = self._m
+        delta = self._delta
+        kappa = self._kappa
+        # Precompute reused constants for speed
+        delta2 = delta * delta
+        ax = np.abs(x)
+
+        # The following is to avoid division by zero
+        ax_safe = np.where(ax < eps_levy, eps_levy, ax)
+
+        density_func = np.exp(
+            m * x / delta2 
+            - ax * np.sqrt(m**2 + 2 * delta2 / kappa) / delta2
+            ) / (kappa * ax_safe)
+    
+        return density_func
