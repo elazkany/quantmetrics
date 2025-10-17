@@ -1,7 +1,8 @@
 # quantmetrics/levy_models/lognormal_jump_diffusion.py
-from .levy_model import LevyModel
+from .levy_model_base import LevyModel
 import numpy as np
-from scipy.optimize import minimize, brute
+from scipy.optimize import minimize, differential_evolution
+from scipy.special import factorial
 import scipy.stats as st
 import time
 import math
@@ -69,76 +70,13 @@ class LognormalJumpDiffusion(LevyModel):
 
         super().__init__(self.params)
         
-        
     @property
-    def mu(self) -> float:
-        return self._mu
-    
-    @mu.setter
-    def mu(self, value: float):
-        self._mu = value
-        self.params['mu'] = value
-        self.model_params['mu'] = value
-        
-        
-    @property
-    def sigma(self) -> float:
-        return self._sigma
-    
-    @sigma.setter
-    def sigma(self, value: float):
-        self._sigma = value
-        self.params['sigma'] = value
-        self.model_params['sigma'] = value
-
-    @property
-    def lambda_(self) -> float:
-        return self._lambda_
-    
-    @lambda_.setter
-    def lambda_(self, value: float):
-        self._lambda_ = value
-        self.params['lambda_'] = value
-        self.model_params['lambda_'] = value
-
-    @property
-    def muJ(self) -> float:
-        return self._muJ
-    
-    @muJ.setter
-    def muJ(self, value: float):
-        self._muJ = value
-        self.params['muJ'] = value
-        self.model_params['muJ'] = value
-
-    @property
-    def sigmaJ(self) -> float:
-        return self._sigmaJ
-    
-    @sigmaJ.setter
-    def sigmaJ(self, value: float):
-        self._sigmaJ = value
-        self.params['sigmaJ'] = value
-        self.model_params['sigmaJ'] = value
-
-    @property
-    def model_params_conds_valid(self):
-        return self._validate_model_params()
-    
-    def _validate_model_params(self) -> bool:
-        """
-        Validate model parameters
-
-        Returns
-        -------
-        bool
-            True if all conditions on parameters are met, False otherwise.
-        """
-        return all([
-            self.model_params['sigma'] > 0.0,
-            self.model_params['lambda_'] > 0.0,
-            self.model_params['sigmaJ'] > 0.0,
-            ])
+    def model_params_conds_valid(self) -> bool:
+        return (
+            self.model_params["sigma"] > 0.0
+            and self.model_params["lambda_"] > 0.0
+            and self.model_params["sigmaJ"] > 0.0
+        )
 
     def pdf(self, data: np.ndarray, est_params: np.ndarray) -> np.ndarray:
         """
@@ -157,31 +95,38 @@ class LognormalJumpDiffusion(LevyModel):
             The probability density values.
         """
         mu, sigma, lambda_, muJ, sigmaJ = est_params
-        if not self.model_params_conds_valid: #sigma <= 0.0 or lambda_ <= 0.0 or sigmaJ <= 0.0:
-            return 500.0
-        
-        drift = mu - 0.5 * sigma**2 - lambda_ *(np.exp(muJ + sigmaJ**2/2) - 1) # TODO: consider a different drift
+        if sigma <= 0 or lambda_ <= 0 or sigmaJ <= 0:
+            return np.zeros_like(data) + 1e-300
 
-        sum_n = 0.0
-        for n in range(0, self.N + 1):
-            mean_n = drift + n * muJ
-            std_n = np.sqrt(sigma**2 + n * sigmaJ**2)
-            poi_pmf = np.exp(-lambda_) * lambda_**n / math.factorial(n)
-            sum_n = sum_n + poi_pmf * st.norm.pdf(data, loc=mean_n, scale=std_n)
-        return sum_n
+        drift = mu - 0.5 * sigma ** 2 - lambda_ * (np.exp(muJ + 0.5 * sigmaJ ** 2) - 1)
+
+        n = np.arange(self.N + 1)
+        pmf_n = np.exp(-lambda_) * lambda_ ** n / factorial(n)
+        means = drift + n * muJ
+        stds = np.sqrt(sigma ** 2 + n * sigmaJ ** 2)
+
+        pdf_matrix = st.norm.pdf(data[:, None], means[None, :], stds[None, :])
+        return np.dot(pdf_matrix, pmf_n)
+    
+    def _moment_init(self, data: np.ndarray) -> np.ndarray:
+        """
+        Build an initial guess from empirical moments of the data.
+        """
+        mu0 = np.mean(data)
+        sigma0 = np.std(data)
+        lambda0 = 0.5
+        muJ0 = np.median(data) - mu0
+        sigmaJ0 = max(sigma0 / 2, 1e-3)
+        return np.array([mu0, sigma0, lambda0, muJ0, sigmaJ0])
+
 
     def fit(
         self,
         data: np.ndarray,
-        method: str = "Nelder-Mead",
         init_params: Optional[np.ndarray] = None,
-        brute_tuple: tuple = (
-            (-1, 1, 0.5),  # mu
-            (0.05, 2, 0.5),  # sigma
-            (0.10, 0.401, 0.1),  # lambda
-            (-0.5, 1, 0.1),  # muJ
-            (0.05, 5, 0.5),  # sigmaJ
-        ),
+        bounds: Optional[list] = None,
+        max_global_iter: int = 50,
+        multi_start: int = 3,
     ):
         """
         Fit the constant jump-diffusion model to the data using Maximum Likelihood Estimation (MLE).
@@ -191,14 +136,8 @@ class LognormalJumpDiffusion(LevyModel):
         data : np.ndarray
             The data points to fit the model.
 
-        method : str
-            The minimization method, defualt is "Nelder-Mead". Other options are the same as for the minimize function from scipy.optimize.
-
         init_params : np.ndarray
             A 5x1-dimensional numpy array containing the initial estimates for the drift (mu) and volatility (sigma).
-
-        brute_tuple : tuple
-            If initial parameters are not specified, the brute function is applied with a 5x3-dimensional tuple for each parameter as (start value, end value, step size).
 
         Returns
         -------
@@ -206,26 +145,68 @@ class LognormalJumpDiffusion(LevyModel):
             The result of the minimization process containing the estimated parameters.
         """
 
-        def MLE(params):
-            return -np.sum(
-                np.log(
-                    self.pdf(
-                        data=data,
-                        est_params=params,
-                    )
-                )
-            )
+        def neg_log_likelihood(params):
+            p = self.pdf(data, params)
+            return -np.sum(np.log(np.clip(p, 1e-300, None)))
 
-        start_time = time.time()
+        if bounds is None:
+            bounds = [
+                (None, None),
+                (1e-6, None),
+                (1e-6, None),
+                (None, None),
+                (1e-6, None),
+            ]
 
+        # 1) initial guess
         if init_params is None:
-            params = brute(MLE, brute_tuple, finish=None)
+            x0 = self._moment_init(data)
+            # 2) global search
+            de_res = differential_evolution(
+                neg_log_likelihood,
+                bounds=bounds,
+                maxiter=max_global_iter,
+                polish=False,
+            )
+            x0 = de_res.x
         else:
-            params = init_params
+            x0 = init_params
 
-        result = minimize(MLE, params, method=method)
+        # 3) local polish with bounds
+        best = minimize(
+            neg_log_likelihood,
+            x0,
+            method="L-BFGS-B",
+            bounds=bounds,
+        )
 
-        end_time = time.time()
-        #print(f"Elapsed time is {end_time - start_time} seconds")
+        # 4) multi-start refinements
+        for _ in range(multi_start):
+            trial = x0 + 0.1 * np.random.randn(5)
+            res = minimize(
+                neg_log_likelihood,
+                trial,
+                method="L-BFGS-B",
+                bounds=bounds,
+            )
+            if res.fun < best.fun:
+                best = res
 
-        return result
+        # store and return
+        self._mu, self._sigma, self._lambda_, self._muJ, self._sigmaJ = best.x
+        self.params.update(
+            mu=self._mu,
+            sigma=self._sigma,
+            lambda_=self._lambda_,
+            muJ=self._muJ,
+            sigmaJ=self._sigmaJ,
+        )
+        self.model_params.update(self.params)
+        return best
+    
+    def levy_density(self, x):
+        sigmaJ2 = self._sigmaJ * self._sigmaJ
+        muJ = self._muJ
+        xs = (x - muJ) * (x - muJ)
+        density_func = np.exp(-0.5 * xs/sigmaJ2) / np.sqrt(2 * np.pi * sigmaJ2)
+        return density_func

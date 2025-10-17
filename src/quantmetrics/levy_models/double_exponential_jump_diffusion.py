@@ -1,5 +1,5 @@
 # quantmetrics/levy_models/double_exponential_jump_diffusion.py
-from .levy_model import LevyModel
+from .levy_model_base import LevyModel
 import numpy as np
 from scipy.optimize import minimize, brute
 import scipy.stats as st
