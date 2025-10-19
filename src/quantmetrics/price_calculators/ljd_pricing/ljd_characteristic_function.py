@@ -3,8 +3,9 @@
 import numpy as np
 from typing import TYPE_CHECKING
 
-from quantmetrics.risk_calculators.martingale_equation import RiskPremium
+
 from quantmetrics.utils.exceptions import UnsupportedEMMTypeError
+from quantmetrics.utils.integration import numeric_I_trap_array
 
 if TYPE_CHECKING:
     from quantmetrics.levy_models import LevyModel
@@ -25,7 +26,25 @@ class LJDCharacteristicFunction:
         self.model = model
         self.option = option
 
-    def calculate(self, u: np.ndarray) -> np.ndarray:
+    def __call__(
+            self,
+            u: np.ndarray,
+            exact = False,
+            theta = None,
+            L=1e-12,
+            M=1.0,
+            N_center=150,
+            N_tails=100,
+            EXP_CLIP=700,
+            search_bounds = (-50, 50),
+            xtol=1e-8,
+            rtol=1e-8,
+            maxiter=500,
+            M_int = 100,
+            N_int = 10_000,
+            sanity_theta: float = 1.0,
+            chunk_u = None,
+            ) -> np.ndarray:
         """
         Calculate the characteristic function for the LJD model.
 
@@ -106,9 +125,44 @@ class LJDCharacteristicFunction:
 
         .. [3] Merton, R. C. (1976). Option pricing when underlying stock returns are discontinuous. Journal of financial economics, 3(1-2), 125-144.
         """
-        return self._ljd_characteristic_function(u)
+        return self._ljd_characteristic_function(
+            u=u,
+            exact=exact,
+            theta=theta,
+            L=L,
+            M=M,
+            N_center=N_center,
+            N_tails=N_tails,
+            EXP_CLIP=EXP_CLIP,
+            search_bounds=search_bounds,
+            xtol=xtol,
+            rtol=rtol,
+            maxiter=maxiter,
+            M_int=M_int,
+            N_int=N_int,
+            sanity_theta=sanity_theta,
+            chunk_u = chunk_u,
+            )
 
-    def _ljd_characteristic_function(self, u: np.ndarray) -> np.ndarray:
+    def _ljd_characteristic_function(
+            self,
+            u: np.ndarray,
+            exact = False,
+            theta = None,
+            L=1e-12,
+            M=1.0,
+            N_center=150,
+            N_tails=100,
+            EXP_CLIP=700,
+            search_bounds = (-50, 50),
+            xtol=1e-8,
+            rtol=1e-8,
+            maxiter=500,
+            sanity_theta: float = 1.0,
+            M_int = 100,
+            N_int = 10_000,
+            chunk_u = None,
+            ) -> np.ndarray:
         """
         Calculate the characteristic function for the LJD model.
 
@@ -122,50 +176,85 @@ class LJDCharacteristicFunction:
         np.ndarray
             The characteristic function values.
         """
-        mu = self.model.mu
-        sigma = self.model.sigma
-        lambda_ = self.model.lambda_
-        muJ = self.model.muJ
-        sigmaJ = self.model.sigmaJ
+        mu = self.model._mu
+        sigma = self.model._sigma
+        lambda_ = self.model._lambda_
+        muJ = self.model._muJ
+        sigmaJ = self.model._sigmaJ
         r = self.option.r
         T = self.option.T
         emm = self.option.emm
         psi = self.option.psi
 
+        sigma2 = sigma * sigma
+        sigmaJ2 = sigmaJ * sigmaJ
+
         if emm == "mean-correcting":
-            b = r - sigma**2 / 2 - lambda_ * (np.exp(muJ + sigmaJ**2 / 2) - 1)
-            char_func = np.exp(
+            b = r - sigma2 / 2 - lambda_ * (np.exp(muJ + sigmaJ2 / 2) - 1)
+            return np.exp(
                 T
                 * (
                     1j * u * b
-                    - sigma**2 * u**2 / 2
-                    + lambda_ * (np.exp(1j * u * muJ - u**2 * sigmaJ**2 / 2) - 1)
+                    - sigma2 * u*u / 2
+                    + lambda_ * (np.exp(1j * u * muJ - u*u * sigmaJ2 / 2) - 1)
                 )
             )
         elif emm == "Esscher":
-            theta = RiskPremium(self.model, self.option).calculate()
+            if theta is None:
+                from quantmetrics.risk_neutral.market_price_of_risk import MarketPriceOfRisk
+                theta = MarketPriceOfRisk(self.model, self.option).solve(
+                    exact=exact,
+                    L=L,
+                    M=M,
+                    N_center=N_center,
+                    N_tails=N_tails,
+                    EXP_CLIP=EXP_CLIP,
+                    search_bounds=search_bounds,
+                    xtol=xtol,
+                    rtol=rtol,
+                    maxiter=maxiter,
+                    sanity_theta=sanity_theta
+                )
+
             b = (
                 mu
-                - 0.5 * sigma**2
-                - lambda_ * (np.exp(muJ + sigmaJ**2 / 2) - 1)
-                + theta * sigma**2
+                - 0.5 * sigma2
+                - lambda_ * (np.exp(muJ + sigmaJ2 / 2) - 1)
+                + theta * sigma2
             )
 
-            g_psi = 1 - 2 * psi * sigmaJ**2
+            if exact:
 
-            f = lambda x: np.exp(
-                (muJ * x + 0.5 * sigmaJ**2 * x**2 + psi * muJ**2) / g_psi
-            ) / (g_psi**0.5)
+                g_psi = 1 - 2 * psi * sigmaJ**2
 
-            char_func = np.exp(
-                T
-                * (
-                    1j * u * b
-                    - u**2 * sigma**2 / 2
-                    + lambda_ * (f(theta + 1j * u) - f(theta))
+                f = lambda x: np.exp(
+                    (muJ * x + 0.5 * sigmaJ**2 * x**2 + psi * muJ**2) / g_psi
+                ) / (g_psi**0.5)
+
+                return np.exp(
+                    T
+                    * (
+                        1j * u * b
+                        - u*u * sigma2 / 2
+                        + lambda_ * (f(theta + 1j * u) - f(theta))
+                    )
                 )
-            )
+            else:
+                I = numeric_I_trap_array(
+                    u=u,
+                    theta=theta,
+                    psi=psi,
+                    levy_density=self.model.levy_density,
+                    M=M_int,
+                    N=N_int,
+                    EXP_CLIP=EXP_CLIP,
+                    chunk_u = chunk_u,
+                    )
+                return np.exp(T * (
+                    1j * u * b
+                    - u*u * sigma2/2
+                    + lambda_ * I
+                    )) 
+
         else:
             raise UnsupportedEMMTypeError(emm)
-
-        return char_func

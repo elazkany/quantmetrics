@@ -50,8 +50,42 @@ class CJDCalculator(BaseCalculator):
     def calculate_closed_form(self) -> Union[float, np.ndarray]:
         return CJDClosedForm(self.model, self.option).calculate()
 
-    def calculate_characteristic_function(self, u: np.ndarray) -> np.ndarray:
-        return CJDCharacteristicFunction(self.model, self.option).calculate(u=u)
+    def calculate_characteristic_function(
+            self,
+            u: np.ndarray,
+            exact = False,
+            theta = None,
+            L=1e-12,
+            M=1.0,
+            N_center=150,
+            N_tails=100,
+            EXP_CLIP=700,
+            search_bounds = (-50, 50),
+            xtol=1e-8,
+            rtol=1e-8,
+            maxiter=500,
+            M_int = 100,
+            N_int = 10_000,
+            sanity_theta: float = 1.0,
+            chunk_u = None,
+            ) -> np.ndarray:
+        return CJDCharacteristicFunction(self.model, self.option)(
+            u=u,
+            exact=exact,
+            theta=theta,
+            L=L,
+            M=M,
+            N_center=N_center,
+            N_tails=N_tails,
+            EXP_CLIP=EXP_CLIP,
+            search_bounds=search_bounds,
+            xtol=xtol,
+            rtol=rtol,
+            maxiter=maxiter,
+            M_int=M_int,
+            N_int=N_int,
+            sanity_theta=sanity_theta,
+            chunk_u = chunk_u,)
 
     def simulate_paths_Q(self, num_timesteps: int, num_paths: int, seed: int) -> Dict[str, np.ndarray]:
         return CJDSimulatePathsQ(self.model, self.option).simulate(num_timesteps=num_timesteps, num_paths=num_paths, seed=seed)

@@ -1,8 +1,11 @@
 from quantmetrics.utils.integration import integrate_split
-from quantmetrics.risk_neutral.martingale_equations.martingale_equation_base import MartingaleEquation
-from quantmetrics.levy_models import VG
-from quantmetrics.option_pricing import Option
 import numpy as np
+
+
+from quantmetrics.risk_neutral.martingale_equation_base import MartingaleEquation
+
+from quantmetrics.option_pricing import Option
+from quantmetrics.levy_models import VG
 
 class VGMartingaleEquation(MartingaleEquation):
     """
