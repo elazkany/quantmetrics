@@ -1,10 +1,11 @@
-from quantmetrics.levy_models import GBM, CJD, LJD, VG
-from quantmetrics.option_pricing import Option
 from quantmetrics.risk_neutral.martingale_equations.vg_martingale_equation import VGMartingaleEquation
 from quantmetrics.risk_neutral.martingale_equations.ljd_martingale_equation import LJDMartingaleEquation
 from quantmetrics.risk_neutral.martingale_equations.cjd_martingale_equation import CJDMartingaleEquation
 from quantmetrics.risk_neutral.martingale_equations.gbm_martingale_equation import GBMMartingaleEquation
-from quantmetrics.risk_neutral.martingale_equations.martingale_equation_base import MartingaleEquation
+
+from quantmetrics.option_pricing import Option
+from quantmetrics.levy_models import GBM, CJD, LJD, VG
+from quantmetrics.risk_neutral.martingale_equation_base import MartingaleEquation
 
 def get_martingale_equation(model, option: Option) -> MartingaleEquation:
     """

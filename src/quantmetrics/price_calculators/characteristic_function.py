@@ -1,10 +1,8 @@
-from quantmetrics.risk_neutral.factory import get_martingale_equation
-from quantmetrics.risk_neutral.market_price_of_risk_solver import MarketPriceOfRiskSolver
+from quantmetrics.price_calculators.characteristic_function_factory import get_characteristic_function
 
-class MarketPriceOfRisk:
+class CharacteristicFunction:
     """
-    Wrapper class that automatically selects the correct martingale equation
-    and solves for the market price of risk (theta).
+    Wrapper class that automatically selects the correct characteristic function.
 
     Args:
         model: A LevyModel instance.
@@ -12,23 +10,30 @@ class MarketPriceOfRisk:
     """
 
     def __init__(self, model, option):
-        self.equation = get_martingale_equation(model, option)
-        self.solver = MarketPriceOfRiskSolver(self.equation)
+        self.model = model
+        self.option = option
+        self.cf = get_characteristic_function(model, option)
 
-    def solve(
+    def __call__(
         self,
-        exact: bool = False,
+        u,
+        theta=None,
+        exact=False,
         L=1e-12,
         M=1.0,
         N_center=150,
         N_tails=100,
         EXP_CLIP=700,
-        search_bounds: tuple = (-50.0, 50.0),
-        xtol: float = 1e-8,
-        rtol: float = 1e-8,
-        maxiter: int = 500,
-        sanity_theta: float = 1.0
+        search_bounds=(-50, 50),
+        xtol=1e-8,
+        rtol=1e-8,
+        maxiter=500,
+        sanity_theta=1.0,
+        M_int=100,
+        N_int=10_000,
+        chunk_u=None
     ) -> float:
+
         """
         Solves the martingale equation for theta.
 
@@ -43,7 +48,9 @@ class MarketPriceOfRisk:
         Returns:
             float: Market price of risk (theta).
         """
-        return self.solver.solve(
+        return self.cf(
+            u=u,
+            theta=theta,
             exact=exact,
             L=L,
             M=M,
@@ -54,5 +61,8 @@ class MarketPriceOfRisk:
             xtol=xtol,
             rtol=rtol,
             maxiter=maxiter,
-            sanity_theta=sanity_theta
+            sanity_theta=sanity_theta,
+            M_int=M_int,
+            N_int=N_int,
+            chunk_u=chunk_u
         )

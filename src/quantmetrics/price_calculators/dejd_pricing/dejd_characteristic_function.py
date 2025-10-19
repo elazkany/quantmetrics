@@ -25,7 +25,25 @@ class DEJDCharacteristicFunction:
         self.model = model
         self.option = option
 
-    def calculate(self, u: np.ndarray) -> np.ndarray:
+    def __call__(
+            self,
+            u: np.ndarray,
+            exact = False,
+            theta = None,
+            L=1e-12,
+            M=1.0,
+            N_center=150,
+            N_tails=100,
+            EXP_CLIP=700,
+            search_bounds = (-50, 50),
+            xtol=1e-8,
+            rtol=1e-8,
+            maxiter=500,
+            M_int = 100,
+            N_int = 10_000,
+            sanity_theta: float = 1.0,
+            chunk_u = None,
+            ) -> np.ndarray:
         """
         Calculate the characteristic function for the DEJD model.
 
@@ -123,9 +141,44 @@ class DEJDCharacteristicFunction:
 
         .. [3] Kou, S. G. (2002). A jump-diffusion model for option pricing. Management science, 48(8), 1086-1101.
         """
-        return self._dejd_characteristic_function(u)
+        return self._dejd_characteristic_function(
+            u=u,
+            exact=exact,
+            theta=theta,
+            L=L,
+            M=M,
+            N_center=N_center,
+            N_tails=N_tails,
+            EXP_CLIP=EXP_CLIP,
+            search_bounds=search_bounds,
+            xtol=xtol,
+            rtol=rtol,
+            maxiter=maxiter,
+            M_int=M_int,
+            N_int=N_int,
+            sanity_theta=sanity_theta,
+            chunk_u = chunk_u,
+        )
 
-    def _dejd_characteristic_function(self, u: np.ndarray) -> np.ndarray:
+    def _dejd_characteristic_function(
+            self,
+            u: np.ndarray,
+            exact = False,
+            theta = None,
+            L=1e-12,
+            M=1.0,
+            N_center=150,
+            N_tails=100,
+            EXP_CLIP=700,
+            search_bounds = (-50, 50),
+            xtol=1e-8,
+            rtol=1e-8,
+            maxiter=500,
+            sanity_theta: float = 1.0,
+            M_int = 100,
+            N_int = 10_000,
+            chunk_u = None,
+    ) -> np.ndarray:
         """
         Calculate the characteristic function for the DEJD model.
 
@@ -139,12 +192,12 @@ class DEJDCharacteristicFunction:
         np.ndarray
             The characteristic function values.
         """
-        mu = self.model.mu
-        sigma = self.model.sigma
-        lambda_ = self.model.lambda_
-        eta1 = self.model.eta1
-        eta2 = self.model.eta2
-        p = self.model.p
+        mu = self.model._mu
+        sigma = self.model._sigma
+        lambda_ = self.model._lambda_
+        eta1 = self.model._eta1
+        eta2 = self.model._eta2
+        p = self.model._p
         r = self.option.r
         T = self.option.T
         emm = self.option.emm
@@ -170,7 +223,21 @@ class DEJDCharacteristicFunction:
                 )
             )
         elif (emm == "Esscher") & (psi == 0.0):
-            theta = RiskPremium(self.model, self.option).calculate()
+            if theta is None:
+                from quantmetrics.risk_neutral.market_price_of_risk import MarketPriceOfRisk
+                theta = MarketPriceOfRisk(self.model, self.option).solve(
+                    exact=exact,
+                    L=L,
+                    M=M,
+                    N_center=N_center,
+                    N_tails=N_tails,
+                    EXP_CLIP=EXP_CLIP,
+                    search_bounds=search_bounds,
+                    xtol=xtol,
+                    rtol=rtol,
+                    maxiter=maxiter,
+                    sanity_theta=sanity_theta
+                )
 
             b = (
                 mu
@@ -178,7 +245,7 @@ class DEJDCharacteristicFunction:
                 - lambda_ * (p / (eta1 - 1) - (1 - p) / (eta2 + 1) + theta * sigma**2)
             )
 
-            char_func = np.exp(
+            return np.exp(
                 T
                 * (
                     1j * u * b

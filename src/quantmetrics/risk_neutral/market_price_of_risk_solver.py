@@ -1,6 +1,6 @@
 import numpy as np
 import scipy.optimize
-from quantmetrics.risk_neutral.martingale_equations.martingale_equation_base import MartingaleEquation
+from quantmetrics.risk_neutral.martingale_equation_base import MartingaleEquation
 
 class MarketPriceOfRiskSolver:
     """

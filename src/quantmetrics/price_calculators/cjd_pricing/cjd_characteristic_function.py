@@ -3,7 +3,6 @@
 import numpy as np
 from typing import TYPE_CHECKING
 
-from quantmetrics.risk_calculators.martingale_equation import RiskPremium
 
 if TYPE_CHECKING:
     from quantmetrics.levy_models import LevyModel
@@ -24,7 +23,26 @@ class CJDCharacteristicFunction:
         self.model = model
         self.option = option
 
-    def calculate(self, u: np.ndarray) -> np.ndarray:
+    def __call__(
+            self,
+            u: np.ndarray,
+            exact = False,
+            theta = None,
+            L=1e-12,
+            M=1.0,
+            N_center=150,
+            N_tails=100,
+            EXP_CLIP=700,
+            search_bounds = (-50, 50),
+            xtol=1e-8,
+            rtol=1e-8,
+            maxiter=500,
+            M_int = 100,
+            N_int = 10_000,
+            sanity_theta: float = 1.0,
+            chunk_u = None,
+            ) -> np.ndarray:
+
         """
         Calculate the characteristic function for the CJD model.
 
@@ -94,9 +112,44 @@ class CJDCharacteristicFunction:
 
         .. [3] Merton, R. C. (1976). Option pricing when underlying stock returns are discontinuous. Journal of financial economics, 3(1-2), 125-144.
         """
-        return self._cjd_characteristic_function(u)
+        return self._cjd_characteristic_function(
+            u=u,
+            exact=exact,
+            theta=theta,
+            L=L,
+            M=M,
+            N_center=N_center,
+            N_tails=N_tails,
+            EXP_CLIP=EXP_CLIP,
+            search_bounds=search_bounds,
+            xtol=xtol,
+            rtol=rtol,
+            maxiter=maxiter,
+            M_int=M_int,
+            N_int=N_int,
+            sanity_theta=sanity_theta,
+            chunk_u = chunk_u,
+        )
 
-    def _cjd_characteristic_function(self, u: np.ndarray) -> np.ndarray:
+    def _cjd_characteristic_function(
+            self,
+            u: np.ndarray,
+            exact = False,
+            theta = None,
+            L=1e-12,
+            M=1.0,
+            N_center=150,
+            N_tails=100,
+            EXP_CLIP=700,
+            search_bounds = (-50, 50),
+            xtol=1e-8,
+            rtol=1e-8,
+            maxiter=500,
+            sanity_theta: float = 1.0,
+            M_int = 100,
+            N_int = 10_000,
+            chunk_u = None,
+            ) -> np.ndarray:
         """
         Calculate the characteristic function for the CJD model.
 
@@ -110,10 +163,10 @@ class CJDCharacteristicFunction:
         np.ndarray
             The characteristic function values.
         """
-        mu = self.model.mu
-        sigma = self.model.sigma
-        lambda_ = self.model.lambda_
-        gamma = self.model.gamma
+        mu = self.model._mu
+        sigma = self.model._sigma
+        lambda_ = self.model._lambda_
+        gamma = self.model._gamma
         r = self.option.r
         q = self.option.q
         T = self.option.T
@@ -123,31 +176,44 @@ class CJDCharacteristicFunction:
         gamma_tilde = np.exp(gamma) - 1
 
         if emm == "mean-correcting":
-            b = r - sigma**2 / 2 - lambda_ * gamma_tilde
-            char_func = np.exp(
+            b = r - sigma*sigma / 2 - lambda_ * gamma_tilde
+            return np.exp(
                 T
                 * (
                     1j * u * b
-                    - sigma**2 * u**2 / 2
+                    - sigma*sigma * u*u / 2
                     + lambda_ * (np.exp(1j * u * gamma) - 1)
                 )
             )
         elif emm == "Esscher":
-            theta = RiskPremium(self.model, self.option).calculate()
-            b = mu - sigma**2 / 2 - lambda_ * gamma_tilde + theta * sigma**2
-            char_func = np.exp(
+            if theta is None:
+                from quantmetrics.risk_neutral.market_price_of_risk import MarketPriceOfRisk
+                theta = MarketPriceOfRisk(self.model, self.option).solve(
+                        exact=exact,
+                        L=L,
+                        M=M,
+                        N_center=N_center,
+                        N_tails=N_tails,
+                        EXP_CLIP=EXP_CLIP,
+                        search_bounds=search_bounds,
+                        xtol=xtol,
+                        rtol=rtol,
+                        maxiter=maxiter,
+                        sanity_theta=sanity_theta
+            )
+
+            b = mu - sigma*sigma / 2 - lambda_ * gamma_tilde + theta * sigma*sigma
+            return np.exp(
                 T
                 * (
                     1j * u * b
-                    - u**2 * sigma**2 / 2
+                    - u*u * sigma*sigma / 2
                     + lambda_
                     * (
-                        np.exp((theta + 1j * u) * gamma + psi * gamma**2)
-                        - np.exp(theta * gamma + psi * gamma**2)
+                        np.exp((theta + 1j * u) * gamma + psi * gamma*gamma)
+                        - np.exp(theta * gamma + psi * gamma*gamma)
                     )
                 )
             )
         else:
             raise ValueError(f"Unknown or unsupported EMM type: {emm}. emm is either 'mean-correcting' or 'Esscher'.")
-
-        return char_func

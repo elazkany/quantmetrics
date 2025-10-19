@@ -53,7 +53,7 @@ class LJDCalculator(BaseCalculator):
         # Check conditions when using the second-order Esscher measure.
         if self.option.emm == "Esscher":
             psi = self.option.psi
-            sigmaJ = self.model.sigmaJ
+            sigmaJ = self.model._sigmaJ
             if not psi < 1.0 / (2 * sigmaJ**2):
                 raise InvalidParametersError(
                     f"Invalid psi for {self.model.__class__.__name__}: psi must be less than 1.0 / (2 * sigmaJ**2) = "
@@ -63,8 +63,42 @@ class LJDCalculator(BaseCalculator):
     def calculate_closed_form(self) -> Union[float, np.ndarray]:
         return LJDClosedForm(self.model, self.option).calculate()
 
-    def calculate_characteristic_function(self, u: np.ndarray) -> np.ndarray:
-        return LJDCharacteristicFunction(self.model, self.option).calculate(u=u)
+    def calculate_characteristic_function(
+            self,
+            u: np.ndarray,
+            exact = False,
+            theta = None,
+            L=1e-12,
+            M=1.0,
+            N_center=150,
+            N_tails=100,
+            EXP_CLIP=700,
+            search_bounds = (-50, 50),
+            xtol=1e-8,
+            rtol=1e-8,
+            maxiter=500,
+            M_int = 100,
+            N_int = 10_000,
+            sanity_theta: float = 1.0,
+            chunk_u = None,
+            ) -> np.ndarray:
+        return LJDCharacteristicFunction(self.model, self.option)(
+            u=u,
+            exact=exact,
+            theta=theta,
+            L=L,
+            M=M,
+            N_center=N_center,
+            N_tails=N_tails,
+            EXP_CLIP=EXP_CLIP,
+            search_bounds=search_bounds,
+            xtol=xtol,
+            rtol=rtol,
+            maxiter=maxiter,
+            M_int=M_int,
+            N_int=N_int,
+            sanity_theta=sanity_theta,
+            chunk_u = chunk_u,)
 
     def simulate_paths_Q(self, num_timesteps: int, num_paths: int, seed: int) -> Dict[str, np.ndarray]:
         return LJDSimulatePathsQ(self.model, self.option).simulate(num_timesteps=num_timesteps, num_paths=num_paths, seed=seed)

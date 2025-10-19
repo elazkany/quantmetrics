@@ -1,7 +1,8 @@
-from quantmetrics.risk_neutral.martingale_equations.martingale_equation_base import MartingaleEquation
-from quantmetrics.levy_models import GBM
+
 from quantmetrics.option_pricing import Option
-import numpy as np
+from quantmetrics.levy_models import GBM
+from quantmetrics.risk_neutral.martingale_equation_base import MartingaleEquation
+
 
 class GBMMartingaleEquation(MartingaleEquation):
     """
