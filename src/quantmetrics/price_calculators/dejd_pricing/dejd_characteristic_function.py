@@ -28,7 +28,7 @@ class DEJDCharacteristicFunction:
     def __call__(
             self,
             u: np.ndarray,
-            exact = False,
+            exact = True,
             theta = None,
             L=1e-12,
             M=1.0,

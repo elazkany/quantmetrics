@@ -18,7 +18,7 @@ class MarketPriceOfRiskSolver:
 
     def solve(
         self,
-        exact=False,
+        exact=True,
         L=1e-12,
         M=20.0,
         N_center=150,

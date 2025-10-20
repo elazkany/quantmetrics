@@ -53,7 +53,7 @@ class CJDCalculator(BaseCalculator):
     def calculate_characteristic_function(
             self,
             u: np.ndarray,
-            exact = False,
+            exact = True,
             theta = None,
             L=1e-12,
             M=1.0,

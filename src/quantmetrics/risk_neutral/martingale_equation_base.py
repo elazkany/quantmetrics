@@ -19,7 +19,7 @@ class MartingaleEquation(ABC):
         self.option = option
 
     @abstractmethod
-    def evaluate(self, theta: float, exact: bool = False) -> float:
+    def evaluate(self, theta: float, exact: bool = True) -> float:
         """
         Evaluate the martingale equation at a given theta.
 

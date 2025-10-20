@@ -26,7 +26,7 @@ class CJDCharacteristicFunction:
     def __call__(
             self,
             u: np.ndarray,
-            exact = False,
+            exact = True,
             theta = None,
             L=1e-12,
             M=1.0,
@@ -86,7 +86,7 @@ class CJDCharacteristicFunction:
         
         .. math::
 
-            b^\\mathbb{Q}= r - \\frac{\\sigma^2}{2} -\\lambda \\kappa + \\theta \\sigma^2  \\quad c = \\sigma^2
+            b^\\mathbb{Q}= \\mu - \\frac{\\sigma^2}{2} -\\lambda \\kappa + \\theta \\sigma^2  \\quad c = \\sigma^2
 
         .. math::
 
@@ -134,7 +134,7 @@ class CJDCharacteristicFunction:
     def _cjd_characteristic_function(
             self,
             u: np.ndarray,
-            exact = False,
+            exact = True,
             theta = None,
             L=1e-12,
             M=1.0,
@@ -203,16 +203,16 @@ class CJDCharacteristicFunction:
             )
 
             b = mu - sigma*sigma / 2 - lambda_ * gamma_tilde + theta * sigma*sigma
+            def f(theta):
+                exp0 = theta * gamma + psi * gamma * gamma
+                return np.exp(np.clip(exp0, -EXP_CLIP, EXP_CLIP))
+            
             return np.exp(
                 T
                 * (
                     1j * u * b
                     - u*u * sigma*sigma / 2
-                    + lambda_
-                    * (
-                        np.exp((theta + 1j * u) * gamma + psi * gamma*gamma)
-                        - np.exp(theta * gamma + psi * gamma*gamma)
-                    )
+                    + lambda_ * (f(theta + 1j * u)- f(theta))
                 )
             )
         else:

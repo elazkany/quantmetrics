@@ -110,10 +110,10 @@ class CJDClosedForm:
     def _closed_form_solution(self) -> Union[float, np.ndarray]:
         # implements the closed form calculations
         S0 = self.model.S0
-        mu = self.model.mu
-        sigma = self.model.sigma
-        lambda_ = self.model.lambda_
-        gamma = self.model.gamma
+        mu = self.model._mu
+        sigma = self.model._sigma
+        lambda_ = self.model._lambda_
+        gamma = self.model._gamma
         N = self.model.N
         r = self.option.r
         q = self.option.q

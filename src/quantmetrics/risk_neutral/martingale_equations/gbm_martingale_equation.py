@@ -17,7 +17,7 @@ class GBMMartingaleEquation(MartingaleEquation):
     def evaluate(
             self,
             theta: float,
-            exact: bool = False,
+            exact: bool = True,
             EXP_CLIP = 700,
             L=1e-12,
             M=1.0,

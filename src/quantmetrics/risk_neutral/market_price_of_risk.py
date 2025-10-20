@@ -17,7 +17,7 @@ class MarketPriceOfRisk:
 
     def solve(
         self,
-        exact: bool = False,
+        exact: bool =True,
         L=1e-12,
         M=1.0,
         N_center=150,
