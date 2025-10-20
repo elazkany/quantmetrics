@@ -53,10 +53,10 @@ class RiskPremium:
         return theta
 
     def _cjd_esscher_risk_premium(self):
-        mu = self.model.mu
-        sigma = self.model.sigma
-        lambda_ = self.model.lambda_
-        gamma = self.model.gamma
+        mu = self.model._mu
+        sigma = self.model._sigma
+        lambda_ = self.model._lambda_
+        gamma = self.model._gamma
         r = self.option.r
         psi = self.option.psi
 

@@ -19,7 +19,7 @@ class CJDMartingaleEquation(MartingaleEquation):
     def evaluate(
             self,
             theta: float,
-            exact: bool = False,
+            exact: bool = True,
             EXP_CLIP = 700,
             L=1e-12,
             M=1.0,
@@ -43,7 +43,7 @@ class CJDMartingaleEquation(MartingaleEquation):
 
         elif emm == "Esscher":
             exp0 = theta * gamma + psi * gamma * gamma
-            exp_clipped = np.clip(exp0, -EXP_CLIP, EXP_CLIP)
+            exp_clipped = np.exp(np.clip(exp0, -EXP_CLIP, EXP_CLIP))
             return mu - r + theta * sigma2 + lambda_ * gamma_tilde * (exp_clipped - 1)
 
         else:
