@@ -23,7 +23,7 @@ class VGMartingaleEquation(MartingaleEquation):
     def evaluate(
             self,
             theta: float,
-            exact: bool = True,
+            exact: bool = False,
             EXP_CLIP = 700,
             L=1e-12,
             M=1.0,
